@@ -1,27 +1,22 @@
 package kr.brain.our_app.tag.dto;
 
+import jakarta.persistence.*;
+import kr.brain.our_app.bookmark.dto.Bookmark;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name ="tag")
+@Getter
+@Setter
 public class Tag {
-    private Long id;
+    @Id
+    private Long id;//user의 system id
     private String tagname;
 
-    public Tag() {
-        this.tagname = "기타태그"; // 기본값
-    }
+    @ManyToOne
+    @JoinColumn(name = "bookmarkid")
+    private Bookmark bookmark;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTagname() {
-        return tagname;
-    }
-
-    public void setTagname(String tagname) {
-        this.tagname = tagname;
-    }
 }
 

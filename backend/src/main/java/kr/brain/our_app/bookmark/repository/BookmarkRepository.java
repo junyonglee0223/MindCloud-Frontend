@@ -1,43 +1,18 @@
 package kr.brain.our_app.bookmark.repository;
 
 import kr.brain.our_app.bookmark.dto.Bookmark;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@Repository
-public class BookmarkRepository  {
-    //일단은 hashmap해서 메모리저장, db 직접 저장은 다음에
+public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
+//    jpa interface를 상속받아서 빈등록, 기초함수 구현을 하지않아도됨.
+//    대신 repository도 class가 아닌 interface로 받아줘야함
 
+    // 북마크 이름(name)으로 찾기
+    List<Bookmark> findByName(String name);
 
-    private static final Map<Long, Bookmark> store = new HashMap<>();
-    private static long sequence = 0L;
-
-    public Bookmark save(Bookmark bookmark) {
-        bookmark.setId(++sequence);
-        store.put(bookmark.getId(),bookmark);
-        return bookmark;
-    }
-
-    public Bookmark findById(Long id) {
-        return store.get(id);
-    }
-
-    public List<Bookmark> findAll() {
-        return new ArrayList<>(store.values());
-    }
-
-    public void update(Long Id, Bookmark updateParam) {
-        Bookmark findItem = findById(Id);
-        findItem.setName(updateParam.getName());
-        findItem.setTags(updateParam.getTags());
-    }
-
-    public void clearStore(){
-        store.clear();
-    }
+    // 특정 태그를 가진 북마크 찾기 (다대다 조회)
+    List<Bookmark> findByTags_Tagname(String tagname);
 
 }

@@ -1,106 +1,49 @@
 package kr.brain.our_app.tag.repository;
 
+import kr.brain.our_app.bookmark.dto.Bookmark;
+import kr.brain.our_app.bookmark.repository.BookmarkRepository;
 import kr.brain.our_app.tag.dto.Tag;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
+import java.util.Optional;
 
-class TagRepositoryTest {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    TagRepository tagRepository;
+@DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class TagRepositoryTest {
 
-    @BeforeEach
-    void setUp() {
-        tagRepository = new TagRepository();
-    }
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @Test
-    void save() {
-        // given
+    public void testCreateAndFindTagByTagname() {
+        // Given: 북마크와 태그 생성
+        Bookmark bookmark = new Bookmark();
+        bookmark.setName("Another Bookmark");
+
         Tag tag = new Tag();
-        tag.setTagname("Spring Boot");
+        tag.setTagname("Another Tag");
+        tag.setBookmark(bookmark);
 
-        // when
-        Tag savedTag = tagRepository.save(tag);
+        bookmark.setTags(List.of(tag));
 
-        // then
-        assertThat(savedTag).isNotNull();
-        assertThat(savedTag.getId()).isGreaterThan(0);
-        assertThat(savedTag.getTagname()).isEqualTo("Spring Boot");
-    }
+        // When: 북마크와 태그 저장
+        bookmarkRepository.save(bookmark);
+        tagRepository.save(tag);
 
-    @Test
-    void findById() {
-        // given
-        Tag tag = new Tag();
-        tag.setTagname("Java");
-        Tag savedTag = tagRepository.save(tag);
+        // Then: 태그명으로 조회하여 연결된 북마크 확인
+        List<Tag> foundTags = tagRepository.findByTagname("Another Tag");
 
-        // when
-        Tag foundTag = tagRepository.findById(savedTag.getId());
-
-        // then
-        assertThat(foundTag).isNotNull();
-        assertThat(foundTag.getId()).isEqualTo(savedTag.getId());
-        assertThat(foundTag.getTagname()).isEqualTo("Java");
-    }
-
-    @Test
-    void findAll() {
-        // given
-        Tag tag1 = new Tag();
-        tag1.setTagname("Java");
-
-        Tag tag2 = new Tag();
-        tag2.setTagname("Spring");
-
-        tagRepository.save(tag1);
-        tagRepository.save(tag2);
-
-        // when
-        List<Tag> tags = tagRepository.findAll();
-
-        // then
-        assertThat(tags).hasSize(2);
-        assertThat(tags).extracting(Tag::getTagname).containsExactly("Java", "Spring");
-    }
-
-    @Test
-    void update() {
-        // given
-        Tag tag = new Tag();
-        tag.setTagname("Old Tag");
-        Tag savedTag = tagRepository.save(tag);
-
-        // when
-        Tag updateParam = new Tag();
-        updateParam.setTagname("Updated Tag");
-        tagRepository.update(savedTag.getId(), updateParam);
-
-        // then
-        Tag updatedTag = tagRepository.findById(savedTag.getId());
-        assertThat(updatedTag.getTagname()).isEqualTo("Updated Tag");
-    }
-
-    @Test
-    void clearStore() {
-        // given
-        Tag tag1 = new Tag();
-        tag1.setTagname("Tag 1");
-
-        Tag tag2 = new Tag();
-        tag2.setTagname("Tag 2");
-
-        tagRepository.save(tag1);
-        tagRepository.save(tag2);
-
-        // when
-        tagRepository.clearStore();
-
-        // then
-        List<Tag> tags = tagRepository.findAll();
-        assertThat(tags).isEmpty();
+        assertThat(foundTags).isNotEmpty();
+        assertThat(foundTags.get(0).getBookmark().getName()).isEqualTo("Another Bookmark");
     }
 }
