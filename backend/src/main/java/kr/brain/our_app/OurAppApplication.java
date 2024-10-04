@@ -3,6 +3,7 @@ package kr.brain.our_app;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,11 +14,12 @@ public class OurAppApplication {
 		SpringApplication.run(OurAppApplication.class, args);
 	}
 
-	@RestController
+	@Controller
 	public static class HelloController{
 		@GetMapping("/")
 		public String Hello(){
-			return "Hello World!";
+			//return "Hello World!";
+			return "index";
 		}
 	}
 }
