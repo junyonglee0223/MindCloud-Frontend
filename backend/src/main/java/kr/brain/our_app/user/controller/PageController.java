@@ -1,5 +1,6 @@
 package kr.brain.our_app.user.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.brain.our_app.user.dto.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,17 @@ public class PageController {
     public PageController(){
         this.restTemplate = new RestTemplate();
     }
+
+    // 서버 기본 URL을 동적으로 가져오는 메서드
+    private String getBaseUrl(HttpServletRequest request) {
+        String scheme = request.getScheme();             // http 또는 https
+        String serverName = request.getServerName();     // 서버 이름 또는 IP
+        int serverPort = request.getServerPort();        // 포트 번호
+        String contextPath = request.getContextPath();   // 컨텍스트 경로
+
+        // 기본 경로 생성
+        return scheme + "://" + serverName + ":" + serverPort + contextPath;
+    }
     // 로그인 페이지 렌더링
     @GetMapping("/login")
     public String loginPage() {
@@ -28,8 +40,9 @@ public class PageController {
     }
     // 로그인 처리
     @PostMapping("/login")
-    public String handleLogin(@RequestParam String email, Model model) {
-        String apiUrl = "http://localhost:8080/api/users/profile?email=" + email;
+    public String handleLogin(@RequestParam String email, Model model, HttpServletRequest request) {
+        String baseUrl = getBaseUrl(request);
+        String apiUrl = baseUrl + "/api/users/profile?email=" + email;
         try {
             ResponseEntity<User> response = restTemplate.getForEntity(apiUrl, User.class);
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
@@ -47,9 +60,10 @@ public class PageController {
 
     // 사용자 목록 페이지 렌더링
     @GetMapping("/list")
-    public String userListPage(Model model) {
+    public String userListPage(Model model, HttpServletRequest request) {
         // /api/users/all 경로로 GET 요청하여 사용자 데이터 가져옴
-        String apiUrl = "http://localhost:8080/api/users/all"; // UserController의 엔드포인트
+        String baseUrl = getBaseUrl(request);
+        String apiUrl = baseUrl + "/api/users/all"; // UserController의 엔드포인트
         User[] users = restTemplate.getForObject(apiUrl, User[].class);
         List<User> userList = Arrays.asList(users);
 
