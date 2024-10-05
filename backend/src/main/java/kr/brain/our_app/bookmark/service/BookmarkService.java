@@ -18,6 +18,9 @@ public class BookmarkService {
 
     // 북마크 저장
     public Bookmark createBookmark(Bookmark bookmark) {
+        if (bookmark.getUser() == null) {
+            throw new IllegalArgumentException("Bookmark must have an associated User");
+        }
         return bookmarkRepository.save(bookmark);
     }
 
@@ -32,13 +35,13 @@ public class BookmarkService {
     }
 
     // 이름으로 북마크 조회
-    public List<Bookmark> getBookmarkByName(String bookmarkname) {
-        return bookmarkRepository.findByName(bookmarkname);
+    public List<Bookmark> getBookmarkByName(String bookmarkName) {
+        return bookmarkRepository.findByName(bookmarkName);
     }
 
     // 태그 이름으로 북마크 조회
-    public List<Bookmark> getBookmarkByTagName(String tagname) {
-        return bookmarkRepository.findByTags_Tagname(tagname);
+    public List<Bookmark> getBookmarkByTagName(String tagName) {
+        return bookmarkRepository.findByTags_Tagname(tagName);
     }
 
 

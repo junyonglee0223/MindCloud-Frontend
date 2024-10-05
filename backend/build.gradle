@@ -36,7 +36,13 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Hibernate Validator는 Java Bean Validation API를 구현한 라이브러리로, @URL 어노테이션을 제공하는 역할을 합니다.
+	implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'  // Java Bean Validation 표준 스펙
+	implementation 'javax.validation:validation-api:2.0.1.Final'  // Java Validation API
+
 }
+
 
 
 tasks.named('test') {

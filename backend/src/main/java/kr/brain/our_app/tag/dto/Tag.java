@@ -15,8 +15,28 @@ public class Tag {
     private String tagname;
 
     @ManyToOne
-    @JoinColumn(name = "bookmarkid")
+    @JoinColumn(name = "bookmark_id")
     private Bookmark bookmark;
 
 }
 
+//@Entity
+//@Table(name ="tag", uniqueConstraints = @UniqueConstraint(columnNames = {"tagname"}))
+//@Getter
+//@Setter
+//public class Tag {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//
+//    @Column(unique = true, nullable = false)
+//    private String tagname;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "bookmark_id")
+//    private Bookmark bookmark;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    private User user;
+//}

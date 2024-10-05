@@ -1,11 +1,8 @@
 package kr.brain.our_app.bookmark.controller;
 
-import jakarta.persistence.Access;
 import kr.brain.our_app.bookmark.dto.Bookmark;
 import kr.brain.our_app.bookmark.service.BookmarkService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,23 +11,22 @@ import java.util.List;
 @RequestMapping("/bookmark")
 public class BookmarkController {
 
-    @Autowired
     private BookmarkService bookmarkService;
 
-    //모든 북마크 조회
-    @GetMapping
-    public List<Bookmark> getAllBookmark(){
-        return bookmarkService.getAllBookmark();
-    }
     //북마크 생성
     @PostMapping
     public Bookmark createBookmark(@RequestBody Bookmark bookmark){
         return bookmarkService.createBookmark(bookmark);
     }
+    //모든 북마크 조회
+    @GetMapping
+    public List<Bookmark> getAllBookmark(){
+        return bookmarkService.getAllBookmark();
+    }
     //이름으로 북마크 조회
    @GetMapping("/search")
-    public List<Bookmark> getBookmarkByName(@RequestParam String name){
-        return bookmarkService.getBookmarkByName(name);
+    public List<Bookmark> getBookmarkByName(@RequestParam String bookmarkName){
+        return bookmarkService.getBookmarkByName(bookmarkName);
    }
    //태그로 북마크 조회
     @GetMapping("/tag")
@@ -43,12 +39,5 @@ public class BookmarkController {
         bookmarkService.deleteBookmark(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
-
-
-
 
 }
