@@ -5,9 +5,15 @@ package kr.brain.our_app.bookmark.dto;
 
 import jakarta.persistence.*;
 import kr.brain.our_app.tag.dto.Tag;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
+@Entity
+@Table(name = "Tag_Bookmark")
+@Getter
+@Setter
 public class TagBookmark implements Serializable {
 
     @Id
@@ -27,6 +33,10 @@ public class TagBookmark implements Serializable {
     @ManyToOne
     @JoinColumn(name = "bookmark_id")
     private Bookmark bookmark;
+
+    protected TagBookmark() {
+        //기본생성자
+    }
 
     public TagBookmark(final Tag tag, final Bookmark bookmark) {
         this.tag = tag;

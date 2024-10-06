@@ -13,9 +13,13 @@ import java.util.List;
 @RequestMapping("/tag")
 public class TagController {
 
-    @Autowired
-    private TagService tagService;
+    private final TagService tagService;
 
+
+    @Autowired
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
+    }
     @PostMapping
     public ResponseEntity<Tag> createTag(@RequestBody Tag tag) {
         Tag savedTag = tagService.createTag(tag);
