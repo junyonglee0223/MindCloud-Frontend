@@ -26,7 +26,7 @@ public class TagBookmarkController {
 
     // 1. 태그와 북마크의 결합 생성
     @PostMapping
-    public ResponseEntity<TagBookmark> addBookmarkToTag(@RequestParam Long tagId, @RequestBody Bookmark bookmark) {
+    public ResponseEntity<TagBookmark> createTagBookmark(@RequestParam Long tagId, @RequestBody Bookmark bookmark) {
         Tag tag = tagRepository.findById(tagId).orElseThrow(() ->
                 new IllegalArgumentException("해당 ID의 태그를 찾을 수 없습니다."));
         TagBookmark tagBookmark = tagBookmarkService.createTagBookmark(tag, bookmark);
@@ -39,6 +39,7 @@ public class TagBookmarkController {
         Tag tag = tagRepository.findById(tagId).orElseThrow(() ->
                 new IllegalArgumentException("해당 ID의 태그를 찾을 수 없습니다."));
         Page<TagBookmark> bookmarks = tagBookmarkService.getBookmarksByTag(tag, pageable);
+
         return ResponseEntity.ok(bookmarks);
     }
 
