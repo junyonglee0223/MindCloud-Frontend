@@ -10,8 +10,8 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 //    대신 repository도 class가 아닌 interface로 받아줘야함
 
     // 북마크 이름(name)으로 찾기, BOOKMARK는 LIST
-    List<Bookmark> findByName(String bookmarkName);
+    List<Bookmark> findByBookmarkName(String bookmarkName);
 
     // 특정 태그를 가진 북마크 찾기 (다대다 조회),TAG로 북마크 찾음 -> LIST
-    List<Bookmark> findByTags_Tagname(String tagName);
+    List<Bookmark> findByTags_Tag_Tagname(String tagName);
 }

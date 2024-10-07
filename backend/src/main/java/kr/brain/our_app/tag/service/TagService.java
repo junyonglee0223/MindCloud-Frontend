@@ -24,7 +24,7 @@ public class TagService {
         return tagRepository.save(tag);
     }
     public List<Bookmark> getBookmarkByTagname(String tagname) {
-        return bookmarkRepository.findByTags_Tagname(tagname);
+        return bookmarkRepository.findByTags_Tag_Tagname(tagname);
     }
 
 //    public List<Bookmark> getBookmarkByTagname(String tagname){

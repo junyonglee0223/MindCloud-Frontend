@@ -1,14 +1,11 @@
 package kr.brain.our_app.bookmark.dto;
 
 import jakarta.persistence.*;
-import kr.brain.our_app.tag.dto.Tag;
 import kr.brain.our_app.user.dto.User;
 import lombok.*;
-import org.apache.ibatis.annotations.UpdateProvider;
 import org.hibernate.validator.constraints.URL;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
