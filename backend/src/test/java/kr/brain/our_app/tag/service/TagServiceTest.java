@@ -54,13 +54,13 @@ public class TagServiceTest {
         // given
         String tagname = "Java";
         List<Bookmark> bookmarks = new ArrayList<>();
-        when(bookmarkRepository.findByTags_Tagname(tagname)).thenReturn(bookmarks);
+        when(bookmarkRepository.findByTags_Tag_Tagname(tagname)).thenReturn(bookmarks);
 
         // when
         List<Bookmark> result = tagService.getBookmarkByTagname(tagname);
 
         // then
         assertNotNull(result);
-        verify(bookmarkRepository, times(1)).findByTags_Tagname(tagname);
+        verify(bookmarkRepository, times(1)).findByTags_Tag_Tagname(tagname);
     }
 }

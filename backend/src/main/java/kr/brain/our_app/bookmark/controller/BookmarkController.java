@@ -1,5 +1,4 @@
 package kr.brain.our_app.bookmark.controller;
-
 import kr.brain.our_app.bookmark.dto.Bookmark;
 import kr.brain.our_app.bookmark.service.BookmarkService;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bookmark")
+@RequestMapping("/api/bookmark")
 public class BookmarkController {
 
     private BookmarkService bookmarkService;
