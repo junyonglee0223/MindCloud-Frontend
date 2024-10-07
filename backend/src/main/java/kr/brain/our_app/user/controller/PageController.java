@@ -78,14 +78,17 @@ public class PageController {
     }
     // 회원가입 요청 처리
     @PostMapping("/register")
-    public String handleRegistration(@RequestParam String username, @RequestParam String email, Model model) {
+    public String handleRegistration(@RequestParam String username, @RequestParam String email, Model model
+                                     ,HttpServletRequest srequest) {
         // 회원가입을 위한 데이터 준비
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setEmail(email);
 
         // API 호출 경로
-        String apiUrl = "http://localhost:8080/api/users"; // UserController의 엔드포인트
+        //String apiUrl = "http://localhost:8080/api/users"; // UserController의 엔드포인트
+        String baseUrl = getBaseUrl(srequest);
+        String apiUrl = baseUrl + "/api/users";
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
