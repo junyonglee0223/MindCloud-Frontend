@@ -1,7 +1,6 @@
 package kr.brain.our_app.tag.dto;
 
 import jakarta.persistence.*;
-import kr.brain.our_app.bookmark.dto.Bookmark;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name ="tag")
+@Table(name ="Tag")
 @Getter
 @Setter
 public class Tag {

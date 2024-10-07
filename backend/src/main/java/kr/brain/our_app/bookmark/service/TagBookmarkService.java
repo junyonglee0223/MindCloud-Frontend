@@ -30,7 +30,7 @@ public class TagBookmarkService {
     public TagBookmark createTagBookmark(Tag tag, Bookmark bookmark) {
         // 이미 존재하는 조합인지 확인 (optional 이용)
         Optional<TagBookmark> existingTagBookmark = tagBookmarkRepository.findByTagAndBookmark(tag, bookmark);
-        if (!existingTagBookmark.isPresent()) {
+        if (existingTagBookmark.isEmpty()) {
             TagBookmark tagBookmark = new TagBookmark(tag, bookmark);
             return tagBookmarkRepository.save(tagBookmark);
         }
