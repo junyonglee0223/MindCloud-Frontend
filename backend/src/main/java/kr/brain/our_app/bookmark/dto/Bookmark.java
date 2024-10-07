@@ -1,35 +1,48 @@
 package kr.brain.our_app.bookmark.dto;
 
-import kr.brain.our_app.tag.dto.Tag;
+import jakarta.persistence.*;
+import kr.brain.our_app.user.dto.User;
+import lombok.*;
+import org.hibernate.validator.constraints.URL;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@Entity
+@Table(name = "Bookmark")
+@Getter
+@Setter
 
 public class Bookmark {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "bookmark_id")
     private Long id;
-    private String name;
-    private List<Tag> tags;
 
-    public Long getId() {
-        return id;
-    }
+    //BOOKMARKNAME은 중복을 허용. ID는 중복 허용 X 따라서 리스트사용
+    @Column
+    private String bookmarkName;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @URL
+    @Column
+    @Lob
+    private String url;
 
-    public String getName() {
-        return name;
-    }
+    // User와 일대일 관계 설정
+    @ManyToOne
+    @JoinColumn(name = "user_id") // Bookmark 테이블에 user_id FK 생성
+    private User user;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    //태그는 중복을 허용하지않음. 따라서 SET을 사용
+    @OneToMany(mappedBy = "bookmark", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<TagBookmark> tags = new HashSet<>();
 
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    @Builder
+    public Bookmark(final String url, final User user , final String bookmarkName){
+        this.url = url;
+        this.user = user;
+        this.bookmarkName = bookmarkName;
     }
 }
+
