@@ -35,10 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   function fetchGPTTags(url, title) {
-    const apiKey = 'process.env.REACT_APP_OPENAI_API_KEY'; // GPT API 키 입력
+    const apiKey = config.OPENAI_API_KEY;
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
   
-    const prompt = `Generate 6 tags for the following website based on its URL and title: URL: ${url}, Title: ${title}`;
+    const prompt = `Generate 6 tags in korean for the following website based on its URL and title: URL: ${url}, Title: ${title}`;
   
     return fetch(apiUrl, {
       method: 'POST',
