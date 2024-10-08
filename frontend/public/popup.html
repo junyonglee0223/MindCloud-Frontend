@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>북마크 관리</title>
+  <style>
+    body {
+      width: 300px;
+      font-family: Arial, sans-serif;
+    }
+    .tag {
+      cursor: pointer;
+      padding: 5px;
+      background-color: #4CAF50;
+      color: white;
+      margin-right: 5px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    .tag:hover {
+      background-color: #45a049;
+    }
+    #bookmarkList {
+      margin-top: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <button id="saveBookmarkBtn">북마크 저장</button>
+  
+  <!-- 태그 목록을 표시할 영역 -->
+  <div id="tagContainer"></div>
+
+  <!-- 북마크 목록을 표시할 영역 -->
+  <ul id="bookmarkList"></ul>
+
+  <script src="popup.js"></script>
+</body>
+</html>
