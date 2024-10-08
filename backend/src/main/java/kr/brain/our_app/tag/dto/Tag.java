@@ -22,7 +22,7 @@ public class Tag {
     @Column(nullable = false, length = 25)
     private String tagname;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

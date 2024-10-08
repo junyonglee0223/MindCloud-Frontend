@@ -33,7 +33,7 @@
     <!-- 여기에 서버에서 전송된 태그 리스트 데이터가 표시됩니다. -->
     <tr th:each="tag : ${tagList}">
         <td th:text="${tag.id}"></td>
-        <td th:text="${tag.tagName}"></td>
+        <td th:text="${tag.tagname}"></td>
         <td th:text="${tag.user.id}"></td>
     </tr>
     </tbody>
