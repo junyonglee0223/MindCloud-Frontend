@@ -21,7 +21,7 @@ public class Tag {
     @Column(nullable = false, length = 25)
     private String tagname;
 
-    protected Tag() {
+    public Tag() {
         // 기본 생성자는 아무 동작을 하지 않거나 초기값을 설정 할 수 있음
     }
 
