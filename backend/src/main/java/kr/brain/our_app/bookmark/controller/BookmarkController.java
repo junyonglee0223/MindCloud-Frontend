@@ -10,7 +10,11 @@ import java.util.List;
 @RequestMapping("/api/bookmark")
 public class BookmarkController {
 
-    private BookmarkService bookmarkService;
+    private final BookmarkService bookmarkService;
+
+    public BookmarkController(BookmarkService bookmarkService){
+        this.bookmarkService = bookmarkService;
+    }
 
     //북마크 생성
     @PostMapping

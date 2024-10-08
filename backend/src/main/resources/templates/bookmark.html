@@ -2,9 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Management</title>
 </head>
 <body>
+<h1>Bookmark Manager</h1>
 
+<!-- Bookmark 생성 폼 -->
+<form action="/bookmark" method="POST">
+    <label for="bookmarkName">Bookmark Name:</label>
+    <input type="text" id="bookmarkName" name="bookmarkName" required>
+
+    <label for="url">URL:</label>
+    <input type="url" id="url" name="url" required>
+
+<!--    <label for="user">User ID:</label>-->
+<!--    <input type="number" id="user" name="userId" required>-->
+
+    <button type="submit">Create Bookmark</button>
+</form>
+
+<hr>
+
+<!-- Bookmark 리스트 표시 -->
+<h2>Your Bookmarks</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Bookmark Name</th>
+        <th>URL</th>
+        <th>User ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 여기에 서버에서 전송된 북마크 리스트 데이터가 표시됩니다. -->
+    <tr th:each="bookmark : ${bookmarkList}">
+        <td th:text="${bookmark.id}"></td>
+        <td th:text="${bookmark.bookmarkName}"></td>
+        <td><a th:href="${bookmark.url}" th:text="${bookmark.url}"></a></td>
+        <td th:text="${bookmark.user.id}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
