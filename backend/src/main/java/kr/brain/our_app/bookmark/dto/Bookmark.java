@@ -14,6 +14,8 @@ import java.util.Set;
 @Getter
 @Setter
 
+//얘는 dto 라기 보다는 entity인데, 폴더 이름 수정 건의해야겠다.
+
 public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +45,13 @@ public class Bookmark {
         this.url = url;
         this.user = user;
         this.bookmarkName = bookmarkName;
+    }
+    public void addTagBookmark(final TagBookmark tagBookmark) {
+        tags.add(tagBookmark);
+    }
+
+    public void removeTagBookmark(final TagBookmark tagBookmark) {
+        tags.remove(tagBookmark);
     }
 }
 

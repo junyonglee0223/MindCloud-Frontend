@@ -1,48 +1,68 @@
 package kr.brain.our_app.bookmark.service;
 
 import kr.brain.our_app.bookmark.dto.Bookmark;
+import kr.brain.our_app.bookmark.dto.BookmarkCreateRequest;
+import kr.brain.our_app.bookmark.dto.BookmarkResponse;
+import kr.brain.our_app.bookmark.dto.TagBookmark;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
-import kr.brain.our_app.user.dto.User;
-import kr.brain.our_app.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import kr.brain.our_app.bookmark.repository.TagBookmarkRepository;
+import kr.brain.our_app.tag.dto.Tag;
+import kr.brain.our_app.tag.repository.TagRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class BookmarkService {
 
-    @Autowired
-    private BookmarkRepository bookmarkRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final TagRepository tagRepository;
+    private final TagBookmarkRepository tagBookmarkRepository;
 
-    // 북마크 저장
-    public Bookmark createBookmark(Bookmark bookmark) {
-        if (bookmark.getUser() == null) {
-            throw new IllegalArgumentException("Bookmark must have an associated User");
+    public BookmarkResponse createBookmark(BookmarkCreateRequest bookmarkCreateRequest) {
+        Bookmark bookmark = new Bookmark(bookmarkCreateRequest.getUrl(),
+                bookmarkCreateRequest.getUser(),
+                bookmarkCreateRequest.getTitle());
+
+        bookmarkRepository.save(bookmark);
+
+        for (String tagName : bookmarkCreateRequest.getTags()) {
+            Tag tag = tagRepository.findByName(tagName).orElseGet(() -> {
+                Tag newTag = new Tag(tagName);
+                return tagRepository.save(newTag);
+            });
+            TagBookmark tagBookmark = new TagBookmark(tag, bookmark);
+            tagBookmarkRepository.save(tagBookmark);
+            bookmark.addTagBookmark(tagBookmark);
         }
-        return bookmarkRepository.save(bookmark);
+
+        return BookmarkResponse.of(bookmark);
     }
 
-    // 북마크 전체 조회
-    public List<Bookmark> getAllBookmark() {
-        return bookmarkRepository.findAll();
+    public List<BookmarkResponse> getAllBookmark() {
+        return bookmarkRepository.findAll().stream()
+                .map(BookmarkResponse::of)
+                .collect(Collectors.toList());
     }
 
-    // 북마크 삭제
+    public List<BookmarkResponse> getBookmarkByName(String bookmarkName) {
+        return bookmarkRepository.findByBookmarkName(bookmarkName).stream()
+                .map(BookmarkResponse::of)
+                .collect(Collectors.toList());
+    }
+
+    public List<BookmarkResponse> getBookmarkByTagName(String tagName) {
+        return bookmarkRepository.findByTags_Name(tagName).stream()
+                .map(BookmarkResponse::of)
+                .collect(Collectors.toList());
+    }
+
     public void deleteBookmark(Long id) {
         bookmarkRepository.deleteById(id);
     }
-
-    // 이름으로 북마크 조회
-    public List<Bookmark> getBookmarkByName(String bookmarkName) {
-        return bookmarkRepository.findByBookmarkName(bookmarkName);
-    }
-
-    // 태그 이름으로 북마크 조회
-    public List<Bookmark> getBookmarkByTagName(String tagName) {
-        return bookmarkRepository.findByTags_Tag_Tagname(tagName);
-    }
-
-
 }
