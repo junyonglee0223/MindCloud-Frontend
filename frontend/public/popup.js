@@ -15,13 +15,12 @@ document.addEventListener('DOMContentLoaded', function() {
       // GPT API 호출하여 태그 생성
       fetchGPTTags(bookmark.url, bookmark.title)
         .then((tags) => {
-          bookmark.tags = tags; // GPT에서 생성된 태그 추가
+          bookmark.tags = tags.map(tag => tag.trim()); // GPT에서 생성된 태그를 깔끔하게 정리
 
           // 기존 북마크 불러오기 및 새로운 북마크 저장
           chrome.storage.sync.get({ bookmarks: [] }, function(data) {
             const bookmarks = data.bookmarks;
             bookmarks.push(bookmark);
-
             chrome.storage.sync.set({ bookmarks: bookmarks }, function() {
               displayTags(); // 태그 목록 업데이트
               displayBookmarks(bookmarks); // 북마크 목록 업데이트
@@ -37,9 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function fetchGPTTags(url, title) {
     const apiKey = config.OPENAI_API_KEY;
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
-  
-    const prompt = `Generate 6 tags in korean for the following website based on its URL and title: URL: ${url}, Title: ${title}`;
-  
+
+    const prompt = `Generate 6 tags in korean for the following website based on its URL and title: URL: ${url}, Title: ${title}. Output format: tag1, tag2, tag3, tag4, tag5, tag6`;
+
     return fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
       if (data.choices && data.choices.length > 0 && data.choices[0].message.content) {
-        const tags = data.choices[0].message.content.trim().split(',').slice(0, 6);
+        const tags = data.choices[0].message.content.trim().split(',').map(tag => tag.trim()).slice(0, 6); // 쉼표로 분리하여 태그 배열 생성
         return tags;
       } else {
         throw new Error('GPT 응답에서 태그를 생성할 수 없습니다.');
@@ -74,28 +73,28 @@ document.addEventListener('DOMContentLoaded', function() {
       return [];
     });
   }
-  
-  
-  
+
   // 모든 태그 표시
   function displayTags() {
     chrome.storage.sync.get({ bookmarks: [] }, function(data) {
       const bookmarks = data.bookmarks;
-      const tagSet = new Set(); // 태그 중복 방지
+      tagContainer.innerHTML = ''; // 기존 태그 목록 초기화
+      const colors = ['#FF6666', '#FFB266', '#FFFF66', '#B2FF66', '#66FF66', '#66FFB2']; // 버튼 색상 배열
+      let colorIndex = 0; // 색상 인덱스 초기화
 
       bookmarks.forEach(bookmark => {
-        bookmark.tags.forEach(tag => tagSet.add(tag));
-      });
-
-      tagContainer.innerHTML = ''; // 기존 태그 목록 초기화
-      tagSet.forEach(tag => {
-        const tagElement = document.createElement('span');
-        tagElement.className = 'tag';
-        tagElement.textContent = tag;
-        tagElement.addEventListener('click', function() {
-          filterBookmarksByTag(tag); // 태그 클릭 시 해당 북마크 필터링
+        bookmark.tags.forEach(tag => {
+          const tagElement = document.createElement('button'); // 버튼으로 변경
+          tagElement.className = 'tag';
+          tagElement.textContent = tag; // 태그 표시
+          tagElement.style.backgroundColor = colors[colorIndex]; // 버튼 색상 지정
+          tagElement.style.margin = '5px'; // 버튼 간격 지정
+          tagElement.addEventListener('click', function() {
+            filterBookmarksByTag(tag); // 태그 클릭 시 해당 북마크 필터링
+          });
+          tagContainer.appendChild(tagElement);
+          colorIndex = (colorIndex + 1) % colors.length; // 색상 인덱스 순환
         });
-        tagContainer.appendChild(tagElement);
       });
     });
   }
@@ -124,3 +123,5 @@ document.addEventListener('DOMContentLoaded', function() {
     displayBookmarks(data.bookmarks);
   });
 });
+
+// 코파일럿은 바보다
