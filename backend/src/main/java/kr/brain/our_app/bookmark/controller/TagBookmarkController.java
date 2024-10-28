@@ -1,9 +1,10 @@
 package kr.brain.our_app.bookmark.controller;
 
-import kr.brain.our_app.bookmark.dto.Bookmark;
-import kr.brain.our_app.bookmark.dto.TagBookmark;
+import kr.brain.our_app.bookmark.domain.Bookmark;
+import kr.brain.our_app.bookmark.domain.TagBookmark;
+import kr.brain.our_app.bookmark.repository.BookmarkRepository;
 import kr.brain.our_app.bookmark.service.TagBookmarkService;
-import kr.brain.our_app.tag.dto.Tag;
+import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,25 +13,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/bookmarks/tags")
+@RequestMapping("/api/tagbookmark")
 public class TagBookmarkController {
 
     private final TagBookmarkService tagBookmarkService;
     private final TagRepository tagRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     @Autowired
-    public TagBookmarkController(TagBookmarkService tagBookmarkService, TagRepository tagRepository) {
+    public TagBookmarkController(TagBookmarkService tagBookmarkService, TagRepository tagRepository,
+                                 BookmarkRepository bookmarkRepository) {
         this.tagBookmarkService = tagBookmarkService;
         this.tagRepository = tagRepository;
+        this.bookmarkRepository = bookmarkRepository;
     }
 
-    // 1. 태그와 북마크의 결합 생성
+    // 1. bookmark id와 tag id로 태그와 북마크의 결합 생성
     @PostMapping
-    public ResponseEntity<TagBookmark> createTagBookmark(@RequestParam Long tagId, @RequestBody Bookmark bookmark) {
-        Tag tag = tagRepository.findById(tagId).orElseThrow(() ->
-                new IllegalArgumentException("해당 ID의 태그를 찾을 수 없습니다."));
-        TagBookmark tagBookmark = tagBookmarkService.createTagBookmark(tag, bookmark);
-        return ResponseEntity.ok(tagBookmark);
+    public ResponseEntity<TagBookmark> createTagBookmark(@RequestParam String tagName, @RequestParam String bookmarkName) {
+        TagBookmark tagbookmark = tagBookmarkService.createTagBookmark(tagName, bookmarkName);
+        return ResponseEntity.ok(tagbookmark);
     }
 
     // 2. 특정 태그에 속한 북마크들을 페이징 형식으로 조회
@@ -59,4 +61,27 @@ public class TagBookmarkController {
         tagBookmarkService.deleteAllByTagId(tagId);
         return ResponseEntity.noContent().build();
     }
+
+
+
+//    //2. 태그명으로 북마크 조회
+//    @GetMapping("/{tagName}/bookmarks")
+//    public ResponseEntity<List<Bookmark>> sgetBookmarksByTagName(@PathVariable String tagName) {
+//        List<Bookmark> bookmarks = bookmarkService.getBookmarksByTagName(tagName); // 서비스에서 메서드가 필요함
+//        return ResponseEntity.ok(bookmarks);  // 빈 리스트가 반환되어도 200 OK
+//    }
+//
+//    //3. 북마크에 어떤 태그가 있는지 조회하는 API
+//    @GetMapping("/bookmarks/{bookmarkId}/tags")
+//    public ResponseEntity<List<Tag>> getTagsByBookmarkId(@PathVariable Long bookmarkId) {
+//        List<Tag> tags = tagBookmarkService.getTagsByBookmarkId(bookmarkId); // 서비스에서 메서드가 필요함
+//        return ResponseEntity.ok(tags);
+//    }
+
+    // 위 주석처리한 두개는 tagbookmark controlelr에서 다룰 예정.
+
 }
+
+
+// json 으로 postman으로 db 연결 되고있는지 확인하고,
+// front에서 json으로 데이터 전송 -> postman에서 controller api 로 데이터 전송해보라.

@@ -1,7 +1,7 @@
-package kr.brain.our_app.bookmark.dto;
+package kr.brain.our_app.bookmark.domain;
 
 import jakarta.persistence.*;
-import kr.brain.our_app.user.dto.User;
+import kr.brain.our_app.user.domain.User;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 

@@ -1,7 +1,7 @@
 package kr.brain.our_app.user.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.brain.our_app.user.dto.User;
+import kr.brain.our_app.user.domain.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

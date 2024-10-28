@@ -1,7 +1,6 @@
 package kr.brain.our_app.user.repository;
 
-import kr.brain.our_app.user.dto.User;
-import lombok.extern.java.Log;
+import kr.brain.our_app.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

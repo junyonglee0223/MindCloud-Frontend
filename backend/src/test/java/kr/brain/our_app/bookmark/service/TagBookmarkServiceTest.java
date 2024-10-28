@@ -1,9 +1,9 @@
 package kr.brain.our_app.bookmark.service;
 
-import kr.brain.our_app.bookmark.dto.Bookmark;
-import kr.brain.our_app.bookmark.dto.TagBookmark;
+import kr.brain.our_app.bookmark.domain.Bookmark;
+import kr.brain.our_app.bookmark.domain.TagBookmark;
 import kr.brain.our_app.bookmark.repository.TagBookmarkRepository;
-import kr.brain.our_app.tag.dto.Tag;
+import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

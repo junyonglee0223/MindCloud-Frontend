@@ -1,7 +1,7 @@
 package kr.brain.our_app.tag.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.brain.our_app.tag.dto.Tag;
+import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

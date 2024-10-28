@@ -1,6 +1,6 @@
 package kr.brain.our_app.user.service;
 
-import kr.brain.our_app.user.dto.User;
+import kr.brain.our_app.user.domain.User;
 import kr.brain.our_app.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

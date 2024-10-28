@@ -7,26 +7,36 @@
 <body>
 <h2>Tag and Bookmark List</h2>
 
+<!-- 태그 ID와 북마크 ID를 입력받는 폼 -->
+<form action="/tagbookmark" method="post">
+    <label for="tagId">Tag ID:</label>
+    <input type="number" id="tagId" name="tagId" required>
+
+    <label for="bookmarkId">Bookmark ID:</label>
+    <input type="number" id="bookmarkId" name="bookmarkId" required>
+
+    <button type="submit">Add Tag-Bookmark Association</button>
+</form>
+
+<!-- 태그와 북마크 리스트를 출력 -->
 <table>
+    <thead>
     <tr>
         <th>Tag ID</th>
         <th>Tag Name</th>
-        <th>Bookmarks</th>
+        <th>Bookmark Title</th>
+        <th>Bookmark URL</th>
     </tr>
-
-    <!-- 태그별로 루프-->
-    <tr th:each="tag in ${tags}">
-        <td th:text="${tag.id}"></td>
-        <td th:text="${tag.name}"></td>
-
-        <!-- 하나의 태그에 속한 북마크 리스트 -->
-        <td>
-            <ul>
-                <!-- 북마크(TagBookmark) 목록을 출력 -->
-                <li th:each="bookmark in ${tag.tagBookmarks}" th:text="${bookmark.bookmark.title}"></li>
-            </ul>
-        </td>
+    </thead>
+    <tbody>
+    <!-- 태그-북마크 관계를 루프 돌면서 출력 -->
+    <tr th:each="tagBookmark : ${tagBookmarks}">
+        <td th:text="${tagBookmark.tag.tagname}"></td> <!-- 태그 이름 -->
+        <td th:text="${tagBookmark.bookmark.bookmarkName}"></td> <!-- 북마크 이름 -->
+        <td><a th:href="${tagBookmark.bookmark.url}" th:text="${tagBookmark.bookmark.url}"></a></td> <!-- 북마크 URL -->
+        <td th:text="${tagBookmark.bookmark.user.id}"></td> <!-- 북마크에 연결된 User ID -->
     </tr>
+    </tbody>
 </table>
 
 </body>

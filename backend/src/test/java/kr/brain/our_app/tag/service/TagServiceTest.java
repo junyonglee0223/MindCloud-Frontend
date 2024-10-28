@@ -1,8 +1,8 @@
 package kr.brain.our_app.tag.service;
 
-import kr.brain.our_app.bookmark.dto.Bookmark;
+import kr.brain.our_app.bookmark.domain.Bookmark;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
-import kr.brain.our_app.tag.dto.Tag;
+import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

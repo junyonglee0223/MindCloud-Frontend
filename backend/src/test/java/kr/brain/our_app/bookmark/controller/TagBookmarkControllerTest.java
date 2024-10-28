@@ -1,9 +1,9 @@
 package kr.brain.our_app.bookmark.controller;
 
-import kr.brain.our_app.bookmark.dto.Bookmark;
-import kr.brain.our_app.bookmark.dto.TagBookmark;
+import kr.brain.our_app.bookmark.domain.Bookmark;
+import kr.brain.our_app.bookmark.domain.TagBookmark;
 import kr.brain.our_app.bookmark.service.TagBookmarkService;
-import kr.brain.our_app.tag.dto.Tag;
+import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +59,15 @@ public class TagBookmarkControllerTest {
         bookmark.setUrl("http://example.com");
 
         tagBookmark = new TagBookmark(tag, bookmark);
+    }
+
+    @Test
+    public void testCreateTagBookmarkByRequestParam()throws Exception{
+        mockMvc.perform(post("/api/tagbookmark")
+                .param("bookmarkName", "test1")
+                .param("bookmarkUrl", "https://testGoogle.com")
+                .contentType(MediaType.APPLICATION_JSON)
+        );
     }
 
     @Test
