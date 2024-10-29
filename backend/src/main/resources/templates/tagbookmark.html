@@ -31,7 +31,7 @@
     <tbody>
     <!-- 태그-북마크 관계를 루프 돌면서 출력 -->
     <tr th:each="tagBookmark : ${tagBookmarks}">
-        <td th:text="${tagBookmark.tag.tagname}"></td> <!-- 태그 이름 -->
+        <td th:text="${tagBookmark.tag.getTagName}"></td> <!-- 태그 이름 -->
         <td th:text="${tagBookmark.bookmark.bookmarkName}"></td> <!-- 북마크 이름 -->
         <td><a th:href="${tagBookmark.bookmark.url}" th:text="${tagBookmark.bookmark.url}"></a></td> <!-- 북마크 URL -->
         <td th:text="${tagBookmark.bookmark.user.id}"></td> <!-- 북마크에 연결된 User ID -->

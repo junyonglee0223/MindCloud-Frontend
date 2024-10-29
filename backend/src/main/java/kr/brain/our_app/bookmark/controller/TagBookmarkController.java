@@ -2,67 +2,115 @@ package kr.brain.our_app.bookmark.controller;
 
 import kr.brain.our_app.bookmark.domain.Bookmark;
 import kr.brain.our_app.bookmark.domain.TagBookmark;
+import kr.brain.our_app.bookmark.dto.BookmarkDto;
+import kr.brain.our_app.bookmark.dto.TagBookmarkDto;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
+import kr.brain.our_app.bookmark.service.BookmarkService;
 import kr.brain.our_app.bookmark.service.TagBookmarkService;
 import kr.brain.our_app.tag.domain.Tag;
+import kr.brain.our_app.tag.dto.TagDto;
 import kr.brain.our_app.tag.repository.TagRepository;
+import kr.brain.our_app.tag.service.TagService;
+import kr.brain.our_app.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/tagbookmark")
 public class TagBookmarkController {
 
     private final TagBookmarkService tagBookmarkService;
-    private final TagRepository tagRepository;
-    private final BookmarkRepository bookmarkRepository;
+    private final TagService tagService;
+    private final BookmarkService bookmarkService;
+    private final UserService userService;
+
 
     @Autowired
-    public TagBookmarkController(TagBookmarkService tagBookmarkService, TagRepository tagRepository,
-                                 BookmarkRepository bookmarkRepository) {
+    public TagBookmarkController(TagBookmarkService tagBookmarkService, TagService tagService
+            , BookmarkService bookmarkService
+            , UserService userService){
         this.tagBookmarkService = tagBookmarkService;
-        this.tagRepository = tagRepository;
-        this.bookmarkRepository = bookmarkRepository;
+        this.bookmarkService = bookmarkService;
+        this.tagService = tagService;
+        this.userService = userService;
     }
-
-    // 1. bookmark id와 tag id로 태그와 북마크의 결합 생성
+    // 1. TagBookmark 생성
     @PostMapping
-    public ResponseEntity<TagBookmark> createTagBookmark(@RequestParam String tagName, @RequestParam String bookmarkName) {
-        TagBookmark tagbookmark = tagBookmarkService.createTagBookmark(tagName, bookmarkName);
-        return ResponseEntity.ok(tagbookmark);
+    public ResponseEntity<TagBookmarkDto> createTagBookmark(@RequestBody TagBookmarkDto tagBookmarkDto) {
+        TagBookmarkDto createdTagBookmark = tagBookmarkService.createTagBookmark(tagBookmarkDto);
+        return ResponseEntity.ok(createdTagBookmark);
     }
 
-    // 2. 특정 태그에 속한 북마크들을 페이징 형식으로 조회
-    @GetMapping("/{tagId}/bookmarks")
-    public ResponseEntity<Page<TagBookmark>> getBookmarksByTag(@PathVariable Long tagId, Pageable pageable) {
-        Tag tag = tagRepository.findById(tagId).orElseThrow(() ->
-                new IllegalArgumentException("해당 ID의 태그를 찾을 수 없습니다."));
-        Page<TagBookmark> bookmarks = tagBookmarkService.getBookmarksByTag(tag, pageable);
-
-        return ResponseEntity.ok(bookmarks);
+    // 2. 특정 Bookmark에 연결된 모든 Tag 조회
+    @GetMapping("/by-bookmark/{bookmarkName}")
+    public ResponseEntity<List<TagBookmarkDto>> getTagsByBookmark(@PathVariable String bookmarkName) {
+        BookmarkDto bookmarkDto = bookmarkService.findByBookmarkName(bookmarkName)
+                .orElseThrow(() -> new IllegalArgumentException("Bookmark not found"));
+        List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.findAllByBookmark(bookmarkDto);
+        return ResponseEntity.ok(tagBookmarkDtos);
     }
 
-    // 3. 태그와 북마크의 결합 삭제 -> 일부 북마크에서
-    @DeleteMapping
-    public ResponseEntity<Void> removeTagBookmark(@RequestParam Long tagId, @RequestBody Bookmark bookmark) {
-        Tag tag = tagRepository.findById(tagId).orElseThrow(() ->
-                new IllegalArgumentException("해당 ID의 태그를 찾을 수 없습니다."));
-        tagBookmarkService.removeTagBookmark(tag, bookmark);
-        return ResponseEntity.noContent().build();
+    // 3. 특정 Tag에 연결된 모든 Bookmark 조회
+    @GetMapping("/by-tag/{tagName}")
+    public ResponseEntity<List<TagBookmarkDto>> getBookmarksByTag(@PathVariable String tagName) {
+        TagDto tagDto = tagService.findByTagName(tagName)
+                .orElseThrow(() -> new IllegalArgumentException("Tag not found"));
+        List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.findAllByTag(tagDto);
+        return ResponseEntity.ok(tagBookmarkDtos);
     }
 
-    // 4. 특정 태그와 관련된 모든 결합 삭제 -> 태그 삭제 시 결합 모두 삭제, 이거 태그에서 구현 해야함
-    // 근데 아직은 구현 안 함
-    @DeleteMapping("/{tagId}/all-bookmarks")
-    public ResponseEntity<Void> deleteAllTagBookmarks(@PathVariable Long tagId) {
-        tagBookmarkService.deleteAllByTagId(tagId);
-        return ResponseEntity.noContent().build();
-    }
+ /*************************************************************************************/
+//    private final TagRepository tagRepository;
+//    private final BookmarkRepository bookmarkRepository;
+//
+//    @Autowired
+//    public TagBookmarkController(TagBookmarkService tagBookmarkService, TagRepository tagRepository,
+//                                 BookmarkRepository bookmarkRepository) {
+//        this.tagBookmarkService = tagBookmarkService;
+//        this.tagRepository = tagRepository;
+//        this.bookmarkRepository = bookmarkRepository;
+//    }
+//
+//    // 1. bookmark id와 tag id로 태그와 북마크의 결합 생성
+//    @PostMapping
+//    public ResponseEntity<TagBookmark> createTagBookmark(@RequestParam String tagName, @RequestParam String bookmarkName) {
+//        TagBookmark tagbookmark = tagBookmarkService.createTagBookmark(tagName, bookmarkName);
+//        return ResponseEntity.ok(tagbookmark);
+//    }
+//
+//    // 2. 특정 태그에 속한 북마크들을 페이징 형식으로 조회
+//    @GetMapping("/{tagId}/bookmarks")
+//    public ResponseEntity<Page<TagBookmark>> getBookmarksByTag(@PathVariable Long tagId, Pageable pageable) {
+//        Tag tag = tagRepository.findById(tagId).orElseThrow(() ->
+//                new IllegalArgumentException("해당 ID의 태그를 찾을 수 없습니다."));
+//        Page<TagBookmark> bookmarks = tagBookmarkService.getBookmarksByTag(tag, pageable);
+//
+//        return ResponseEntity.ok(bookmarks);
+//    }
+//
+//    // 3. 태그와 북마크의 결합 삭제 -> 일부 북마크에서
+//    @DeleteMapping
+//    public ResponseEntity<Void> removeTagBookmark(@RequestParam Long tagId, @RequestBody Bookmark bookmark) {
+//        Tag tag = tagRepository.findById(tagId).orElseThrow(() ->
+//                new IllegalArgumentException("해당 ID의 태그를 찾을 수 없습니다."));
+//        tagBookmarkService.removeTagBookmark(tag, bookmark);
+//        return ResponseEntity.noContent().build();
+//    }
+//
+//    // 4. 특정 태그와 관련된 모든 결합 삭제 -> 태그 삭제 시 결합 모두 삭제, 이거 태그에서 구현 해야함
+//    // 근데 아직은 구현 안 함
+//    @DeleteMapping("/{tagId}/all-bookmarks")
+//    public ResponseEntity<Void> deleteAllTagBookmarks(@PathVariable Long tagId) {
+//        tagBookmarkService.deleteAllByTagId(tagId);
+//        return ResponseEntity.noContent().build();
+//    }
 
-
+/*******************************************************************************************/
 
 //    //2. 태그명으로 북마크 조회
 //    @GetMapping("/{tagName}/bookmarks")
