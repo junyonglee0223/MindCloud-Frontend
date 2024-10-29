@@ -47,6 +47,14 @@ public class BookmarkService {
                 .collect(Collectors.toList());
 
     }
+
+    public Optional<BookmarkDto> findByBookmarkName(String bookmarkName) {
+        return bookmarkRepository.findByBookmarkName(bookmarkName)
+                .map(bookmark -> new BookmarkDto(
+                        bookmark.getBookmarkName(),
+                        bookmark.getUrl()
+                ));
+    }
 //
 //    // 3. 북마크 삭제
 //    public void deleteBookmark(Long id) {

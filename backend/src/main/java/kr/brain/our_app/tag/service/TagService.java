@@ -41,6 +41,13 @@ public class TagService {
                 .collect(Collectors.toList());
     }
 
+    public Optional<TagDto> findByTagName(String tagName) {
+        return tagRepository.findByTagName(tagName)
+                .map(tag -> TagDto.builder()
+                        .tagName(tag.getTagName())
+                        .build());
+    }
+
 
 
 //
