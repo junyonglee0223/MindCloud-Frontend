@@ -1,6 +1,11 @@
 package kr.brain.our_app.bookmark.controller;
 import kr.brain.our_app.bookmark.domain.Bookmark;
+import kr.brain.our_app.bookmark.dto.BookmarkDto;
 import kr.brain.our_app.bookmark.service.BookmarkService;
+import kr.brain.our_app.user.domain.User;
+import kr.brain.our_app.user.dto.UserDto;
+import kr.brain.our_app.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,34 +17,43 @@ import java.util.Optional;
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
+    private final UserService userService;
 
-    public BookmarkController(BookmarkService bookmarkService){
+    @Autowired
+    public BookmarkController(BookmarkService bookmarkService, UserService userService){
 
         this.bookmarkService = bookmarkService;
+        this.userService = userService;
     }
 
     // 1. 북마크 생성
     @PostMapping
-    public Bookmark createBookmark(@RequestBody Bookmark bookmark){
+    public ResponseEntity<BookmarkDto> createBookmark(@RequestBody BookmarkDto bookmarkDto, @RequestParam String userId){
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        return bookmarkService.createBookmark(bookmark);
+        BookmarkDto savedBookmark = bookmarkService.createBookmark(bookmarkDto, user);
+        return ResponseEntity.ok(savedBookmark);
     }
     // 2. 모든 북마크 조회
     @GetMapping
-    public List<Bookmark> getAllBookmark(){
+    public ResponseEntity<List<BookmarkDto>> getAllBookmark(@RequestParam String userId){
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        return bookmarkService.getAllBookmark();
+        List<BookmarkDto> bookmarks = bookmarkService.findAllBookmarks(user);
+        return ResponseEntity.ok(bookmarks);
     }
-    // 3. 이름으로 북마크 조회
-    @GetMapping("/search")
-    public Optional<Bookmark> getBookmarkByName(@RequestParam String bookmarkName){
-        return bookmarkService.getBookmarkByName(bookmarkName);
-    }
-    //북마크 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBookmark(@PathVariable Long id){
-        bookmarkService.deleteBookmark(id);
-        return ResponseEntity.noContent().build();
-    }
+//    // 3. 이름으로 북마크 조회
+//    @GetMapping("/search")
+//    public Optional<Bookmark> getBookmarkByName(@RequestParam String bookmarkName){
+//        return bookmarkService.getBookmarkByName(bookmarkName);
+//    }
+//    //북마크 삭제
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteBookmark(@PathVariable Long id){
+//        bookmarkService.deleteBookmark(id);
+//        return ResponseEntity.noContent().build();
+//    }
 
 }

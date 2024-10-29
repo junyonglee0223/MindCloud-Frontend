@@ -1,6 +1,7 @@
 package kr.brain.our_app.bookmark.repository;
 
 import kr.brain.our_app.bookmark.domain.Bookmark;
+import kr.brain.our_app.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.*;
@@ -11,4 +12,5 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     // 북마크 이름(name)으로 찾기, BOOKMARK는 LIST
     Optional<Bookmark> findByBookmarkName(String bookmarkName);
+    List<Bookmark>findAllByUser(User user);
 }
