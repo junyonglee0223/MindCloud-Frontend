@@ -19,8 +19,8 @@ public class Tag {
     private Long id;
 
     @NotEmpty
-    @Column(nullable = false, length = 25)
-    private String tagname;
+    @Column(nullable = false, length = 25, unique = true)
+    private String tagName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,9 +32,9 @@ public class Tag {
 
 
     @Builder
-    public Tag( final String tagname) {
+    public Tag( final String tagName) {
 
-        this.tagname = tagname;
+        this.tagName = tagName;
     }
 
 }
