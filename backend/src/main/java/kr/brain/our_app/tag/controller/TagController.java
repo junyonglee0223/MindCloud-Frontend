@@ -27,20 +27,23 @@ public class TagController {
         this.userService = userService;
     }
 
+    @PostMapping
+    public ResponseEntity<TagDto> createTag(@RequestBody TagDto tagDto, @RequestParam String userId) {
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        TagDto savedTag = tagService.createTag(tagDto, user);
+        return ResponseEntity.ok(savedTag);
+    }
+
     @GetMapping
-    public ResponseEntity<List<TagDto>> getAllTags(@RequestBody UserDto userDto) {
-        Optional<User> user = userService.findById(userDto.getId());
+    public ResponseEntity<List<TagDto>> getAllTags(@RequestParam String userId) {
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         List<TagDto> tags = tagService.findAllTags(user);
         return ResponseEntity.ok(tags);
     }
 
-    //1. 태그생성
-    @PostMapping
-    public ResponseEntity<TagDto> createTag(@RequestBody TagDto tagDto, @RequestBody UserDto userDto) {
-        Optional<User> user = userService.findById(userDto.getId());
-        TagDto savedTag = tagService.createTag(tagDto, user);
-        return ResponseEntity.ok(savedTag);
-    }
+
 //
 //    // 2. tagname으로 tag 찾기
 //    @GetMapping("/{tagname}")

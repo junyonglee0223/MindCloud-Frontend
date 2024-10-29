@@ -21,13 +21,10 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
     // 1. tag 생성
-    public TagDto createTag(TagDto tagDto, Optional<User> user) {
-        //TODO user null 일 경우
-        User actualUser = user.orElseThrow(IllegalArgumentException::new);
-
+    public TagDto createTag(TagDto tagDto, User user) {
         Tag tag = new Tag();
         tag.setTagName(tagDto.getTagName());
-        tag.setUser(actualUser);
+        tag.setUser(user);
 
         Tag savedTag = tagRepository.save(tag);
         return TagDto.builder()
@@ -35,7 +32,7 @@ public class TagService {
                 .build();
     }
 
-    public List<TagDto> findAllTags(Optional<User> user) {
+    public List<TagDto> findAllTags(User user) {
         return tagRepository.findAllByUser(user)
                 .stream()
                 .map(tag -> TagDto.builder()
