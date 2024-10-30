@@ -20,7 +20,7 @@ public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookmark_id")
-    private Long id;
+    private String id;
 
     //BOOKMARKNAME은 중복을 허용. ID는 중복 허용 X 따라서 리스트사용
     @Column

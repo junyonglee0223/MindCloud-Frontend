@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 //Page 객체를 사용할 떄, 위 2개를 사용하지 않고 딴거 사용하면 오류난다.
 import java.util.Optional;
 
-public interface TagBookmarkRepository extends JpaRepository<TagBookmark, Long>  {
+public interface TagBookmarkRepository extends JpaRepository<TagBookmark, String>  {
 
     //optional 은 null이 될 가능성이 있을 때 사용, tag와 bookmark가 조합이 없을 경우가 있을수 있기에 사용
     Optional<TagBookmark> findByTagAndBookmark(final Tag tag, final Bookmark bookmark);

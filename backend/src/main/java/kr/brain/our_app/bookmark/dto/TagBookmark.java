@@ -19,7 +19,7 @@ public class TagBookmark implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_bookmark_id")
-    private long id;
+    private String id;
 
     //여기서 다대일 관계가 좀 헷갈릴 수 있는데, 여러개의 TB가 한개의 T에 연결
     //즉 tag 하나 조회하면 여러개의 TB가 나오기에 TB가 T에 의존적이다.

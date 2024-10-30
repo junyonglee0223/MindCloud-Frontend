@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.*;
 
-public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
+public interface BookmarkRepository extends JpaRepository<Bookmark, String> {
 //    jpa interface를 상속받아서 빈등록, 기초함수 구현을 하지않아도됨.
 //    대신 repository도 class가 아닌 interface로 받아줘야함
 

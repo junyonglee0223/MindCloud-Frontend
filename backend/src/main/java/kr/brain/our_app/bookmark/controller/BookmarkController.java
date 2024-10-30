@@ -1,7 +1,5 @@
 package kr.brain.our_app.bookmark.controller;
 
-import kr.brain.our_app.bookmark.dto.BookmarkCreateRequest;
-import kr.brain.our_app.bookmark.dto.BookmarkResponse;
 import kr.brain.our_app.bookmark.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
