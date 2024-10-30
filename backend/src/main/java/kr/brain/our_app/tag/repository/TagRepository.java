@@ -1,13 +1,15 @@
 package kr.brain.our_app.tag.repository;
 
-import kr.brain.our_app.tag.dto.Tag;
+import kr.brain.our_app.tag.domain.Tag;
+import kr.brain.our_app.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TagRepository extends JpaRepository<Tag, String> {
 
-    List<Tag> findByTagname(String tagname);
+    Optional<Tag> findByTagName(String tagName);
+    List<Tag> findAllByUser(User user);
 
 }

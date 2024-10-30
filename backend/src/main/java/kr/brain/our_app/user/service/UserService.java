@@ -1,6 +1,6 @@
 package kr.brain.our_app.user.service;
 
-import kr.brain.our_app.user.dto.User;
+import kr.brain.our_app.user.domain.User;
 import kr.brain.our_app.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ public class UserService {
     public User createUser(User user){
         return userRepository.save(user);
     }
-    public Optional<User> findById(Long id){
+    public Optional<User> findById(String id){
         return userRepository.findById(id);
     }
     /**************************************************/

@@ -42,7 +42,7 @@ public class TagService {
                         .tagName(tag.getTagName())
                         .build())
                 .collect(Collectors.toList());
-
+    }
 
     // 3. tagName 으로 태그 조회 -> tagdto에 tagname이 담겨서 전달
     public Optional<TagDto> findByTagName(String tagName) {
@@ -50,6 +50,7 @@ public class TagService {
                 .map(tag -> TagDto.builder()
                         .tagName(tag.getTagName())
                         .build());
+    }
 
     // 4. TagId로 태그 조회 -> tagdto에 tagname이 담겨서 전달
     public Optional<TagDto> findById(String id) {
@@ -58,5 +59,4 @@ public class TagService {
                         .tagName(tag.getTagName())
                         .build());
     }
-
 }

@@ -1,16 +1,8 @@
 package kr.brain.our_app.bookmark.repository;
 
 import jakarta.transaction.Transactional;
-import kr.brain.our_app.bookmark.dto.Bookmark;
-import kr.brain.our_app.tag.dto.Tag;
-import kr.brain.our_app.tag.repository.TagRepository;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

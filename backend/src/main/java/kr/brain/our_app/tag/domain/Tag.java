@@ -1,7 +1,7 @@
-package kr.brain.our_app.tag.dto;
+package kr.brain.our_app.tag.domain;
 
 import jakarta.persistence.*;
-import kr.brain.our_app.user.dto.User;
+import kr.brain.our_app.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +19,8 @@ public class Tag {
     private String id;
 
     @NotEmpty
-    @Column(nullable = false, length = 25)
-    private String tagname;
+    @Column(nullable = false, length = 25, unique = true)
+    private String tagName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,9 +32,9 @@ public class Tag {
 
 
     @Builder
-    public Tag( final String tagname) {
+    public Tag( final String tagName) {
 
-        this.tagname = tagname;
+        this.tagName = tagName;
     }
 
 }
