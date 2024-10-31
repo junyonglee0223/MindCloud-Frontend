@@ -11,10 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 public class UserDto {
-    @NotEmpty
     private String id;
-    @NotEmpty
     private String email;
-    @NotEmpty
     private String userName;
 }

@@ -36,10 +36,21 @@ public class UserService {
                 .email(createdUser.getEmail())
                 .build();
     }
+    public List<UserDto> findAll(){
+        List<User> userList = userRepository.findAll();
+        return userList.stream()
+                .map(
+                        user -> UserDto.builder()
+                                .id(user.getId())
+                                .userName(user.getUserName())
+                                .email(user.getEmail())
+                                .build()
+                ).collect(Collectors.toList());
+    }
+    /**************************************************/
     public Optional<User> findById(String id){
         return userRepository.findById(id);
     }
-    /**************************************************/
     public UserDto findByEmail(String email){
         User findUser = userRepository.findByEmail(email)
                 .orElseThrow(IllegalArgumentException::new);
@@ -51,17 +62,4 @@ public class UserService {
                 .build();
     }
     /**************************************************/
-    public List<UserDto> findAll(){
-        List<User> userList = userRepository.findAll();
-        List<UserDto>userDtoList = userList.stream()
-                .map(
-                        user -> UserDto.builder()
-                                .id(user.getId())
-                                .userName(user.getUserName())
-                                .email(user.getEmail())
-                                .build()
-                ).collect(Collectors.toList());
-
-        return userDtoList;
-    }
 }
