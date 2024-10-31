@@ -14,6 +14,8 @@ public interface TagBookmarkRepository extends JpaRepository<TagBookmark, String
     Optional<TagBookmark> findByTagAndBookmark(Tag tag, Bookmark bookmark);
     List<TagBookmark> findAllByBookmark(Bookmark bookmark);
     List<TagBookmark> findAllByTag(Tag tag);
+
+
 //    // 2-1. Tag의 ID와 Bookmark의 ID로 TagBookmark객체 생성
 //    Optional<TagBookmark> createTagBookmarkById(Long tagId, Long bookmarkId);
 //

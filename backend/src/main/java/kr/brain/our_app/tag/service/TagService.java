@@ -7,7 +7,6 @@ import kr.brain.our_app.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +32,6 @@ public class TagService {
                 .build();
     }
 
-
     // 2. 유저가 가지고 있는 Tag 모두 출력
     public List<TagDto> findAllTags(User user) {
         return tagRepository.findAllByUser(user)
@@ -42,21 +40,23 @@ public class TagService {
                         .tagName(tag.getTagName())
                         .build())
                 .collect(Collectors.toList());
-    }
+    } // tag가 없을 경우... 빈 리스트가 출력되는지 확인해봐야함
 
     // 3. tagName 으로 태그 조회 -> tagdto에 tagname이 담겨서 전달
-    public Optional<TagDto> findByTagName(String tagName) {
+    public TagDto findByTagName(String tagName) {
         return tagRepository.findByTagName(tagName)
                 .map(tag -> TagDto.builder()
                         .tagName(tag.getTagName())
-                        .build());
-    }
+                        .build())
+                .orElseThrow(()->new IllegalArgumentException("TagName을 가진 Tag가 존재하지 않습니다." + tagName));
+    }// Optional 제거하고, 그냥 TagDto로 수정.
 
     // 4. TagId로 태그 조회 -> tagdto에 tagname이 담겨서 전달
-    public Optional<TagDto> findById(String id) {
+    public TagDto findById(String id) {
         return tagRepository.findById(id)
                 .map(tag -> TagDto.builder()
                         .tagName(tag.getTagName())
-                        .build());
+                        .build())
+                .orElseThrow(()->new IllegalArgumentException("해당 TagId를 가진 Tag가 존재하지 않습니다" + id));
     }
 }

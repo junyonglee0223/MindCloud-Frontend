@@ -67,8 +67,9 @@ public class TagBookmarkController {
     // 3. 특정 Tag에 연결된 모든 Bookmark 조회
     @GetMapping("/by-tag/{tagName}")
     public ResponseEntity<List<TagBookmarkDto>> getBookmarksByTag(@PathVariable String tagName) {
-        TagDto tagDto = tagService.findByTagName(tagName)
-                .orElseThrow(() -> new IllegalArgumentException("Tag not found"));
+        TagDto tagDto = tagService.findByTagName(tagName);
+//                .orElseThrow(() -> new IllegalArgumentException("Tag not found"));
+//                  tag서비스 내부에서 예외처리를 하면서, 컨트롤러에서 예외처리할 필요가 없어짐
         List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.findAllByTag(tagDto);
         return ResponseEntity.ok(tagBookmarkDtos);
     }

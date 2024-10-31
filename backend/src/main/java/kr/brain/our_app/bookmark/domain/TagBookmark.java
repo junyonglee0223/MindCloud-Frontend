@@ -29,13 +29,13 @@ public class TagBookmark implements Serializable {
     //즉 tag 하나 조회하면 여러개의 TB가 나오기에 TB가 T에 의존적이다.
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_name")
+    @JoinColumn(name = "tag_id")
     //TB 테이블에 tag_id라는 이름의 컬럼을 사용해서 Tag 엔티티를 참조한다.
     // 이 컬럼이 외래키 역할을 하고, Tag의 기본키(id)와 연결된다.
     private Tag tag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bookmark_name")
+    @JoinColumn(name = "bookmark_id")
     private Bookmark bookmark;
 
 //    protected TagBookmark() {

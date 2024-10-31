@@ -16,3 +16,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, String> {
     List<Bookmark> findAllByUser_Id(String user_id);
     Optional<Bookmark> findByBookmarkNameAndUser_Id(String bookmarkName, String user_id);
 }
+
+// 여기서 Optional<Bookmark>를 받아서 service에서 BookmarkDto로 변환함
+// Optional로 빈 객체인지 조회하고, bookmarkDto로 리턴해주기에 문제 없음

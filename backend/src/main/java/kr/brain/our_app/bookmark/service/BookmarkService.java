@@ -48,42 +48,45 @@ public class BookmarkService {
 
     }
 
-    // 3. BookmarkName으로 북마크 찾기
-    public Optional<BookmarkDto> findByBookmarkName(String bookmarkName) {
+    // 이걸로 할거야 아니면 findByUser_Id(String user_id) 로 할거야?
+
+    // 3. 이름으로 북마크 찾기
+    public BookmarkDto findByBookmarkName(String bookmarkName) {
         return bookmarkRepository.findByBookmarkName(bookmarkName)
                 .map(bookmark -> new BookmarkDto(
                         bookmark.getBookmarkName(),
                         bookmark.getUrl()
-                ));
+                )).orElseThrow(()->new IllegalArgumentException("해당 bookmark가 존재하지 않습니다 " +bookmarkName));
     }
 
+    // bookmarkname과 UserId로 북마크 조회
     public BookmarkDto findBookmarkByBookmarkNameAndUserId(BookmarkDto bookmarkDto, UserDto userDto){
         return bookmarkRepository
                 .findByBookmarkNameAndUser_Id(bookmarkDto.getBookmarkName(), userDto.getId())
                 .map(bookmark -> new BookmarkDto(
                         bookmark.getBookmarkName(),
                         bookmark.getUrl()
-                )).orElseThrow(IllegalArgumentException::new);
-    }
+                )).orElseThrow(()->new IllegalArgumentException("이 userId에 해당 bookmark가 존재하지 않습니다." + bookmarkDto.getBookmarkName()));
+    } //bookmarkDto.getBookmarkName()이 제대로 출력되는지 살펴봐야한다.
 
 
-    // 4. 북마크 삭제
+    //  북마크 삭제
     public void deleteBookmark(String bookmarkId) {
         // 1. Bookmark ID로 객체 조회
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 Bookmark가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 Bookmark가 존재하지 않습니다."));
 
         // 2. Bookmark 객체 삭제
         bookmarkRepository.delete(bookmark);
-    } // 여기는 dto를 삭제하는게 아닌, 엔티티를 직접 삭제하는 것
+    }
 
     // 5. 북마크 아이디로 북마크 조회
-    public Optional<BookmarkDto> findBookmarkById(String bookmarkId) {
+    public BookmarkDto findBookmarkById(String bookmarkId) {
         return bookmarkRepository.findById(bookmarkId) // Optional<Bookmark>를 반환하는 메서드 사용
                 .map(bookmark -> new BookmarkDto(
                         bookmark.getId(),
                         bookmark.getUrl()
-                ));
+                )).orElseThrow(()-> new IllegalArgumentException("해당 ID를 가진 Bookmark를 찾을 수 없습니다."));
     }
 }
 

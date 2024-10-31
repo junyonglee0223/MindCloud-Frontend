@@ -69,8 +69,9 @@ public class TagBookmarkService {
 
         for(String tag : requestFrontDto.getTags()){
             TagDto checkedTagDto
-                    = tagService.findByTagName(tag)
-                    .orElseThrow(IllegalArgumentException::new);
+                    = tagService.findByTagName(tag);
+//                    .orElseThrow(IllegalArgumentException::new);
+            //service 내에서 예외처리하면서 삭제함
             //entity check -> create dto
             //check logic is impied in other method
             TagBookmarkDto checkedTagBookmarkDto = findTagBookmarkByTagAndBookmark(checkedTagDto, checkedBookmarkDto);
@@ -157,19 +158,6 @@ public class TagBookmarkService {
                         .build())
                 .collect(Collectors.toList());
     }
-
-
-//
-//    // 1. Tag/Bookmark name으로  TagBookmark 생성 또는 기존 객체 반환
-//    public TagBookmark createTagBookmark(String tagName, String bookmarkName) {
-//        //TagName을 가진 Tag객체가 있는지 조회
-//        Tag tag = tagRepository.findByTagName(tagName)
-//                .orElseThrow(()-> new IllegalArgumentException("해당 tagname을 가진 tag가 없습니다"));
-//
-//        Bookmark bookmark = bookmarkRepository.findByBookmarkName(bookmarkName)
-//                .orElseThrow(()-> new IllegalArgumentException("해당 bookmarkname을 가진 bookmark가 없습니다"));
-//        return new TagBookmark(tag, bookmark);
-//    }
 
 //    // 2. TagId로 연결된 모든 Bookmark 조회
 //    public List<Bookmark> getBookmarksByTagId(Long tagId) {
