@@ -1,9 +1,9 @@
 package kr.brain.our_app.user.controller;
 
+import kr.brain.our_app.idsha.IDGenerator;
 import kr.brain.our_app.user.domain.User;
 import kr.brain.our_app.user.dto.OAuthUserDto;
 import kr.brain.our_app.user.dto.UserDto;
-import kr.brain.our_app.user.idsha.IDGenerator;
 import kr.brain.our_app.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,24 +22,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    private String createIdByEmail(String email) {
-        IDGenerator idGenerator = new IDGenerator();
-        try {
-            return idGenerator.generateIdFromEmail(email);
-        } catch (NoSuchAlgorithmException e) {
-            // 예외가 발생한 경우 처리 방법 (로그 출력 또는 기본 값 반환 등)                        //FIXME 예외처리 따로 해야 할 수 있다.
-            System.err.println("알고리즘을 찾을 수 없습니다: " + e.getMessage());
-            return null;
-        }
-    }
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody OAuthUserDto oAuthUserDto){
 
-        String userId = createIdByEmail(oAuthUserDto.getEmail());
+        String userId = IDGenerator.generateId(oAuthUserDto.getEmail());
         User user = User.builder()
                 .id(userId)
-                .username(oAuthUserDto.getUserName())
+                .userName(oAuthUserDto.getUserName())
                 .email(oAuthUserDto.getEmail())  // 이메일 설정 수정
                 .build();
 
