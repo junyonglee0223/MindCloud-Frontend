@@ -4,7 +4,6 @@ import kr.brain.our_app.user.domain.User;
 import kr.brain.our_app.user.dto.UserDto;
 import kr.brain.our_app.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +28,7 @@ public class UserService {
 
         return UserDto.builder()
                 .id(findUser.getId())
-                .userName(findUser.getUsername())
+                .userName(findUser.getUserName())
                 .email(findUser.getEmail())
                 .build();
     }

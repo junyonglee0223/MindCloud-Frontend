@@ -32,16 +32,20 @@ public class TagBookmarkService {
     private final TagService tagService;
     private final UserService userService;
 
+
     @Autowired
     public TagBookmarkService(TagBookmarkRepository tagBookmarkRepository,
                               BookmarkService bookmarkService,
                               TagService tagService,
+
                               UserService userService,
+
                               TagRepository tagRepository,
                               BookmarkRepository bookmarkRepository) {
         this.tagBookmarkRepository = tagBookmarkRepository;
         this.bookmarkService = bookmarkService;
         this.tagService = tagService;
+
         this.userService = userService;
 
         this.tagRepository = tagRepository;
@@ -49,6 +53,7 @@ public class TagBookmarkService {
     }
 
     public List<TagBookmarkDto> requestTagBookmark(RequestFrontDto requestFrontDto){
+
         UserDto userDto = userService.findByEmail(requestFrontDto.getEmail());
 
         BookmarkDto bookmarkDto = new BookmarkDto();

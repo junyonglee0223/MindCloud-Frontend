@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -62,7 +61,7 @@ public class UserController {
         for(User user : userList){
             UserDto userDto = UserDto.builder()
                     .id(user.getId())
-                    .userName(user.getUsername())
+                    .userName(user.getUserName())
                     .email(user.getEmail())
                     .build();
             userDtoList.add(userDto);
