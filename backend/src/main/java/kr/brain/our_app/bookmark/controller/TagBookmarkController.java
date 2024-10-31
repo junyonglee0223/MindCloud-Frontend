@@ -4,6 +4,7 @@ package kr.brain.our_app.bookmark.controller;
 import kr.brain.our_app.bookmark.domain.Bookmark;
 import kr.brain.our_app.bookmark.domain.TagBookmark;
 import kr.brain.our_app.bookmark.dto.BookmarkDto;
+import kr.brain.our_app.bookmark.dto.RequestFrontDto;
 import kr.brain.our_app.bookmark.dto.TagBookmarkDto;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
 import kr.brain.our_app.bookmark.service.BookmarkService;
@@ -40,6 +41,14 @@ public class TagBookmarkController {
         this.tagService = tagService;
         this.userService = userService;
     }
+
+    //0. front에서 request 받고 처리하는 부분
+    @PostMapping("/in")
+    public ResponseEntity<List<TagBookmarkDto>> createTagBookmarksFromRequest(@RequestBody RequestFrontDto requestFrontDto){
+        List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.requestTagBookmark(requestFrontDto);
+        return ResponseEntity.ok(tagBookmarkDtos);
+    }
+
     // 1. TagBookmark 생성
     @PostMapping
     public ResponseEntity<TagBookmarkDto> createTagBookmark(@RequestBody TagBookmarkDto tagBookmarkDto) {

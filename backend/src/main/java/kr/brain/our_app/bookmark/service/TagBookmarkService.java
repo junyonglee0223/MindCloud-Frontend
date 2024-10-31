@@ -3,15 +3,20 @@ package kr.brain.our_app.bookmark.service;
 import kr.brain.our_app.bookmark.domain.Bookmark;
 import kr.brain.our_app.bookmark.domain.TagBookmark;
 import kr.brain.our_app.bookmark.dto.BookmarkDto;
+import kr.brain.our_app.bookmark.dto.RequestFrontDto;
 import kr.brain.our_app.bookmark.dto.TagBookmarkDto;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
 import kr.brain.our_app.bookmark.repository.TagBookmarkRepository;
 import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.dto.TagDto;
 import kr.brain.our_app.tag.repository.TagRepository;
+import kr.brain.our_app.tag.service.TagService;
+import kr.brain.our_app.user.dto.UserDto;
+import kr.brain.our_app.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,13 +28,82 @@ public class TagBookmarkService {
     private final TagRepository tagRepository;
     private final BookmarkRepository bookmarkRepository;
 
+    private final BookmarkService bookmarkService;
+    private final TagService tagService;
+    private final UserService userService;
+
     @Autowired
     public TagBookmarkService(TagBookmarkRepository tagBookmarkRepository,
+                              BookmarkService bookmarkService,
+                              TagService tagService,
+                              UserService userService,
                               TagRepository tagRepository,
                               BookmarkRepository bookmarkRepository) {
         this.tagBookmarkRepository = tagBookmarkRepository;
+        this.bookmarkService = bookmarkService;
+        this.tagService = tagService;
+        this.userService = userService;
+
         this.tagRepository = tagRepository;
         this.bookmarkRepository = bookmarkRepository;
+    }
+
+    public List<TagBookmarkDto> requestTagBookmark(RequestFrontDto requestFrontDto){
+        UserDto userDto = userService.findByEmail(requestFrontDto.getEmail());
+
+        BookmarkDto bookmarkDto = new BookmarkDto();
+        bookmarkDto.setBookmarkName(requestFrontDto.getTitle());
+        bookmarkDto.setUrl(requestFrontDto.getUrl());
+
+        List<TagBookmarkDto>tagBookmarkDtoList = new ArrayList<>();
+
+        BookmarkDto checkedBookmarkDto
+                = bookmarkService
+                .findByBookmarkName(bookmarkDto.getBookmarkName())
+                .orElseThrow(IllegalArgumentException::new);
+
+        for(String tag : requestFrontDto.getTags()){
+            TagDto checkedTagDto
+                    = tagService.findByTagName(tag)
+                    .orElseThrow(IllegalArgumentException::new);
+            //entity check -> create dto
+            //check logic is impied in other method
+            TagBookmarkDto checkedTagBookmarkDto = findTagBookmarkByTagAndBookmark(checkedTagDto, checkedBookmarkDto);
+            if(checkedTagBookmarkDto == null){
+                TagBookmarkDto savingTabBookmark
+                        = TagBookmarkDto.builder()
+                        .tagName(checkedTagDto.getTagName())
+                        .bookmarkName(checkedTagBookmarkDto.getBookmarkName())
+                        .build();
+
+                tagBookmarkDtoList.add(this.createTagBookmark(savingTabBookmark));
+            }
+            else{
+                tagBookmarkDtoList.add(checkedTagBookmarkDto);
+            }
+        }
+        return tagBookmarkDtoList;
+    }
+
+    //TODO check tagBookmark entity
+        //option1 = get tag, bookmark dto -> get tagbookmark
+        //option2 = get entities -> get tagbookmark
+    public TagBookmarkDto findTagBookmarkByTagAndBookmark(
+            TagDto tagDto, BookmarkDto bookmarkDto
+    ){
+       Tag tag = tagRepository
+               .findByTagName(tagDto.getTagName())
+               .orElseThrow(IllegalArgumentException::new);
+
+       Bookmark bookmark = bookmarkRepository
+               .findByBookmarkName(bookmarkDto.getBookmarkName())
+               .orElseThrow(IllegalArgumentException::new);
+
+
+         return TagBookmarkDto.builder()
+                .tagName(tag.getTagName())
+                .bookmarkName(bookmark.getBookmarkName())
+                .build();
     }
 
     public TagBookmarkDto createTagBookmark(TagBookmarkDto tagBookmarkDto){

@@ -1,6 +1,7 @@
 package kr.brain.our_app.user.service;
 
 import kr.brain.our_app.user.domain.User;
+import kr.brain.our_app.user.dto.UserDto;
 import kr.brain.our_app.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,6 @@ public class UserService {
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
-    @Transactional
     public User createUser(User user){
         return userRepository.save(user);
     }
@@ -23,8 +23,15 @@ public class UserService {
         return userRepository.findById(id);
     }
     /**************************************************/
-    public Optional<User> findByEmail(String email){
-        return userRepository.findByEmail(email);
+    public UserDto findByEmail(String email){
+        User findUser = userRepository.findByEmail(email)
+                .orElseThrow(IllegalArgumentException::new);
+
+        return UserDto.builder()
+                .id(findUser.getId())
+                .userName(findUser.getUsername())
+                .email(findUser.getEmail())
+                .build();
     }
     /**************************************************/
     public List<User> findAll(){
