@@ -57,6 +57,15 @@ public class BookmarkService {
                 ));
     }
 
+    public BookmarkDto findBookmarkByBookmarkNameAndUserId(BookmarkDto bookmarkDto, UserDto userDto){
+        return bookmarkRepository
+                .findByBookmarkNameAndUser_Id(bookmarkDto.getBookmarkName(), userDto.getId())
+                .map(bookmark -> new BookmarkDto(
+                        bookmark.getBookmarkName(),
+                        bookmark.getUrl()
+                )).orElseThrow(IllegalArgumentException::new);
+    }
+
 
     // 4. 북마크 삭제
     public void deleteBookmark(String bookmarkId) {
