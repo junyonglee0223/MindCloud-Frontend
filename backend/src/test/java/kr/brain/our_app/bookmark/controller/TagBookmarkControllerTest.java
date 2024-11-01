@@ -50,12 +50,12 @@ public class TagBookmarkControllerTest {
         MockitoAnnotations.openMocks(this);
 
         tag = new Tag();
-        tag.setId(1L);
+        tag.setId("1L");
         tag.setTagName("Technology");
 
 
         bookmark = new Bookmark();
-        bookmark.setId(1L);
+        bookmark.setId("1L");
         bookmark.setUrl("http://example.com");
 
         tagBookmark = new TagBookmark(tag, bookmark);

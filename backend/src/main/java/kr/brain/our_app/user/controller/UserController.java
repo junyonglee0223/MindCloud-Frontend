@@ -26,37 +26,18 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody OAuthUserDto oAuthUserDto){
 
-        String userId = IDGenerator.generateId(oAuthUserDto.getEmail());
-        User user = User.builder()
-                .id(userId)
+        UserDto userDto = UserDto.builder()
+                .id(oAuthUserDto.getAuthId())
                 .userName(oAuthUserDto.getUserName())
-                .email(oAuthUserDto.getEmail())  // 이메일 설정 수정
+                .email(oAuthUserDto.getEmail())
                 .build();
 
-        userService.createUser(user);
-
-        UserDto userDto = UserDto.builder()
-                        .id(userId)
-                        .userName(oAuthUserDto.getUserName())
-                        .email(oAuthUserDto.getEmail())
-                        .build();
-
-        return ResponseEntity.ok(userDto);
+        return ResponseEntity.ok(userService.createUser(userDto));
     }
 
     @GetMapping
     public ResponseEntity<List<UserDto>>findAllUsers(){
-        List<User> userList = userService.findAll();
-        List<UserDto>userDtoList = new ArrayList<>();
-        for(User user : userList){
-            UserDto userDto = UserDto.builder()
-                    .id(user.getId())
-                    .userName(user.getUserName())
-                    .email(user.getEmail())
-                    .build();
-            userDtoList.add(userDto);
-        }
-        return ResponseEntity.ok(userDtoList);
+        return ResponseEntity.ok(userService.findAll());
     }
 
     /*********************************************************************/

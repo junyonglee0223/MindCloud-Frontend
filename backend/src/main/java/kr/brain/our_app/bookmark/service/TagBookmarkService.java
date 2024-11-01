@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,8 +63,7 @@ public class TagBookmarkService {
 
         BookmarkDto checkedBookmarkDto
                 = bookmarkService
-                .findByBookmarkName(bookmarkDto.getBookmarkName())
-                .orElseThrow(IllegalArgumentException::new);
+                .findByBookmarkName(bookmarkDto.getBookmarkName());
 
         for(String tag : requestFrontDto.getTags()){
             TagDto checkedTagDto

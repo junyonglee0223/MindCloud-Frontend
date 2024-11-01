@@ -64,7 +64,9 @@ public class TagBookmarkController {
         List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.findAllByBookmark(bookmarkDto);
         return ResponseEntity.ok(tagBookmarkDtos);
     }
-    // 3. 특정 Tag에 연결된 모든 Bookmark 조회
+
+    // 3. 특정 Tag에 연결된 모
+    // 든 Bookmark 조회
     @GetMapping("/by-tag/{tagName}")
     public ResponseEntity<List<TagBookmarkDto>> getBookmarksByTag(@PathVariable String tagName) {
         TagDto tagDto = tagService.findByTagName(tagName);

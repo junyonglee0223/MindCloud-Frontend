@@ -33,31 +33,58 @@ public class UserControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-    @Test
-    public void createUserTest() throws Exception {
-        // Given: OAuthUserDto 객체 준비
-        OAuthUserDto oAuthUserDto = new OAuthUserDto();
-        oAuthUserDto.setAuthId("example-auth-id");
-        oAuthUserDto.setEmail("user@example.com");
-        oAuthUserDto.setUserName("JohnDoe");
 
-        // When: POST 요청을 보냄
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
+    @Test
+    public void testCreateUser() throws Exception {
+        // given
+        OAuthUserDto oAuthUserDto = OAuthUserDto.builder()
+                .authId("auth123")
+                .userName("Test User")
+                .email("testuser@example.com")
+                .build();
+
+        // when
+        MvcResult result = mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(oAuthUserDto)))
-                // Then: 응답이 정상이어야 함
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.userName").value("JohnDoe"))
-                .andExpect(jsonPath("$.email").value("user@example.com"))
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.userName").value("Test User"))
+                .andExpect(jsonPath("$.email").value("testuser@example.com"))
                 .andReturn();
-        String responseContent = result.getResponse().getContentAsString();
-        System.out.println(responseContent);
 
-        UserDto userDto = objectMapper.readValue(responseContent, UserDto.class);
-        System.out.println(userDto);
+        String jsonResponse = result.getResponse().getContentAsString();
+        System.out.println("response = "+jsonResponse);
+
+        // then
+        String responseContent = result.getResponse().getContentAsString();
+        UserDto createdUser = objectMapper.readValue(responseContent, UserDto.class);
+        User savedUser = userRepository.findById(createdUser.getId()).orElse(null);
+        assert savedUser != null;
+        assert savedUser.getUserName().equals("Test User");
+        assert savedUser.getEmail().equals("testuser@example.com");
     }
 
+    @Test
+    public void testFindAllUsers() throws Exception {
+        // given
+        User user1 = User.builder().id("1").userName("User One").email("userone@example.com").build();
+        User user2 = User.builder().id("2").userName("User Two").email("usertwo@example.com").build();
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        // when
+        MvcResult result = mockMvc.perform(get("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].userName").value("User One"))
+                .andExpect(jsonPath("$[1].userName").value("User Two"))
+                .andExpect(jsonPath("$[0].email").value("userone@example.com"))
+                .andExpect(jsonPath("$[1].email").value("usertwo@example.com"))
+                .andReturn();
+        String jsonResponse = result.getResponse().getContentAsString();
+        System.out.println("!!!!!!!!! result = " + jsonResponse);
+    }
 
 //    @BeforeEach
 //    public void setUp() {
