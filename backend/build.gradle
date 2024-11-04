@@ -28,9 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	//implementation 'com.h2database:h2:1.4.200'  // H2 데이터베이스
-	// MySQL Connector (MySQL JDBC Driver)
 	implementation 'mysql:mysql-connector-java:8.0.32'
-
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'  // MyBatis
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'  // Thymeleaf
 

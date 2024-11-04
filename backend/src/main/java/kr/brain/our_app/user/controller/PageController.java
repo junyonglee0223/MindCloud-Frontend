@@ -1,7 +1,7 @@
 package kr.brain.our_app.user.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.brain.our_app.user.dto.User;
+import kr.brain.our_app.user.domain.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -46,7 +46,7 @@ public class PageController {
         try {
             ResponseEntity<User> response = restTemplate.getForEntity(apiUrl, User.class);
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                model.addAttribute("message", "Login successful, welcome " + response.getBody().getUsername());
+                model.addAttribute("message", "Login successful, welcome " + response.getBody().getUserName());
                 return "index";  // 로그인 성공 시 리다이렉트할 페이지
             } else {
                 model.addAttribute("message", "Login failed: Email not found.");
@@ -82,7 +82,7 @@ public class PageController {
                                      ,HttpServletRequest srequest) {
         // 회원가입을 위한 데이터 준비
         User newUser = new User();
-        newUser.setUsername(username);
+        newUser.setUserName(username);
         newUser.setEmail(email);
 
         // API 호출 경로

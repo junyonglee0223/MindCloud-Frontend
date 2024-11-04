@@ -1,7 +1,7 @@
-package kr.brain.our_app.bookmark.dto;
+package kr.brain.our_app.bookmark.domain;
 
 import jakarta.persistence.*;
-import kr.brain.our_app.user.dto.User;
+import kr.brain.our_app.user.domain.User;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
@@ -14,11 +14,13 @@ import java.util.Set;
 @Getter
 @Setter
 
+//얘는 dto 라기 보다는 entity인데, 폴더 이름 수정 건의해야겠다.
+
 public class Bookmark {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookmark_id")
-    private Long id;
+    private String id;
 
     //BOOKMARKNAME은 중복을 허용. ID는 중복 허용 X 따라서 리스트사용
     @Column
@@ -43,6 +45,13 @@ public class Bookmark {
         this.url = url;
         this.user = user;
         this.bookmarkName = bookmarkName;
+    }
+    public void addTagBookmark(final TagBookmark tagBookmark) {
+        tags.add(tagBookmark);
+    }
+
+    public void removeTagBookmark(final TagBookmark tagBookmark) {
+        tags.remove(tagBookmark);
     }
 }
 
