@@ -48,9 +48,16 @@ public class UserService {
                 ).collect(Collectors.toList());
     }
     /**************************************************/
-    public Optional<User> findById(String id){
-        return userRepository.findById(id);
+    public UserDto findById(String id){
+        User findUser = userRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+        return UserDto.builder()
+                .id(findUser.getId())
+                .userName(findUser.getUserName())
+                .email(findUser.getEmail())
+                .build();
     }
+
     public UserDto findByEmail(String email){
         User findUser = userRepository.findByEmail(email)
                 .orElseThrow(IllegalArgumentException::new);

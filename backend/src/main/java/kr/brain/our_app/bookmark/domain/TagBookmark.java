@@ -21,7 +21,7 @@ import java.util.List;
 public class TagBookmark implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_bookmark_id")
     private String id;
 

@@ -59,8 +59,7 @@ public class TagBookmarkController {
     // 2. 특정 Bookmark에 연결된 모든 Tag 조회
     @GetMapping("/by-bookmark/{bookmarkName}")
     public ResponseEntity<List<TagBookmarkDto>> getTagsByBookmark(@PathVariable String bookmarkName) {
-        BookmarkDto bookmarkDto = bookmarkService.findByBookmarkName(bookmarkName)
-                .orElseThrow(() -> new IllegalArgumentException("Bookmark not found"));
+        BookmarkDto bookmarkDto = bookmarkService.findByBookmarkName(bookmarkName);
         List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.findAllByBookmark(bookmarkDto);
         return ResponseEntity.ok(tagBookmarkDtos);
     }

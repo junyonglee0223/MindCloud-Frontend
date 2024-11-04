@@ -3,31 +3,46 @@ package kr.brain.our_app.bookmark.service;
 import kr.brain.our_app.bookmark.domain.Bookmark;
 import kr.brain.our_app.bookmark.dto.BookmarkDto;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
+import kr.brain.our_app.idsha.IDGenerator;
 import kr.brain.our_app.user.domain.User;
 import kr.brain.our_app.user.dto.UserDto;
+import kr.brain.our_app.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
+    private final UserService userService;
 
     @Autowired
-    public BookmarkService(BookmarkRepository bookmarkRepository) {
+    public BookmarkService(BookmarkRepository bookmarkRepository, UserService userService) {
         this.bookmarkRepository = bookmarkRepository;
+        this.userService = userService;
     }
 
     // 1. 북마크 저장
-    public BookmarkDto createBookmark(BookmarkDto bookmarkDto, User user) {
+    public BookmarkDto createBookmark(BookmarkDto bookmarkDto, UserDto userDto) {
+        // 유저 ID로 User 객체 조회
+        UserDto findUserDto = userService.findById(userDto.getId());
+
+        //FIXME entity 변경 로직 추가 toEntity 메서드 추가 고려하는게 좋을 듯...
+        User user = User.builder()
+                .id(findUserDto.getId())
+                .userName(findUserDto.getUserName())
+                .email(findUserDto.getEmail())
+                .build();
+
+        String createbookmarkId = IDGenerator.generateId(bookmarkDto.getBookmarkName());
+        //user 객체를 전달해서 setUser(user) 전달x
+
         Bookmark bookmark = new Bookmark();
         bookmark.setBookmarkName(bookmarkDto.getBookmarkName());
         bookmark.setUrl(bookmarkDto.getUrl());
         bookmark.setUser(user);
-
         Bookmark savedBookmark = bookmarkRepository.save(bookmark);
 
         return BookmarkDto.builder()
@@ -37,8 +52,8 @@ public class BookmarkService {
     }
 
     // 2. 북마크 전체 조회
-    public List<BookmarkDto> findAllBookmarks(User user) {
-        return bookmarkRepository.findAllByUser(user)
+    public List<BookmarkDto> findAllBookmarks(UserDto userDto) {
+        return bookmarkRepository.findAllByUser_Id(userDto.getId())
                 .stream()
                 .map(bookmark -> BookmarkDto.builder()
                         .bookmarkName(bookmark.getBookmarkName())

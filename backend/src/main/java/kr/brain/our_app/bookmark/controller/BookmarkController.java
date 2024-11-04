@@ -31,18 +31,16 @@ public class BookmarkController {
 
     public ResponseEntity<BookmarkDto> createBookmark(@RequestBody BookmarkDto bookmarkDto,
                                                       @RequestParam String userId) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        UserDto userDto = userService.findById(userId);
 
-        BookmarkDto savedBookmark = bookmarkService.createBookmark(bookmarkDto, user);
+        BookmarkDto savedBookmark = bookmarkService.createBookmark(bookmarkDto, userDto);
         return ResponseEntity.ok(savedBookmark);
     }
         // 2. 모든 북마크 조회
         public ResponseEntity<List<BookmarkDto>> getAllBookmark (@RequestParam String userId) {
-            User user = userService.findById(userId)
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            UserDto userDto = userService.findById(userId);
 
-            List<BookmarkDto> bookmarks = bookmarkService.findAllBookmarks(user);
+            List<BookmarkDto> bookmarks = bookmarkService.findAllBookmarks(userDto);
             return ResponseEntity.ok(bookmarks);
         }
 //    // 3. 이름으로 북마크 조회

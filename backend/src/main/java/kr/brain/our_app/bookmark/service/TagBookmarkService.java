@@ -72,15 +72,16 @@ public class TagBookmarkService {
             //service 내에서 예외처리하면서 삭제함
             //entity check -> create dto
             //check logic is impied in other method
-            TagBookmarkDto checkedTagBookmarkDto = findTagBookmarkByTagAndBookmark(checkedTagDto, checkedBookmarkDto);
+            TagBookmarkDto checkedTagBookmarkDto =
+                    findTagBookmarkByTagAndBookmark(checkedTagDto, checkedBookmarkDto);
             if(checkedTagBookmarkDto == null){
-                TagBookmarkDto savingTabBookmark
+                TagBookmarkDto savingTagBookmark
                         = TagBookmarkDto.builder()
                         .tagName(checkedTagDto.getTagName())
                         .bookmarkName(checkedTagBookmarkDto.getBookmarkName())
                         .build();
 
-                tagBookmarkDtoList.add(this.createTagBookmark(savingTabBookmark));
+                tagBookmarkDtoList.add(this.createTagBookmark(savingTagBookmark));
             }
             else{
                 tagBookmarkDtoList.add(checkedTagBookmarkDto);

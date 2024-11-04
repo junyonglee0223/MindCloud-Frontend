@@ -29,17 +29,15 @@ public class TagController {
 
     @PostMapping
     public ResponseEntity<TagDto> createTag(@RequestBody TagDto tagDto, @RequestParam String userId) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        TagDto savedTag = tagService.createTag(tagDto, user);
+        UserDto userDto = userService.findById(userId);
+        TagDto savedTag = tagService.createTag(tagDto, userDto);
         return ResponseEntity.ok(savedTag);
     }
 
     @GetMapping
     public ResponseEntity<List<TagDto>> getAllTags(@RequestParam String userId) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        List<TagDto> tags = tagService.findAllTags(user);
+        UserDto userDto = userService.findById(userId);
+        List<TagDto> tags = tagService.findAllTags(userDto);
         return ResponseEntity.ok(tags);
     }
 

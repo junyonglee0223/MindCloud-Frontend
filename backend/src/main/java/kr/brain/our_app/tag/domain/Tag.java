@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="tag_id")
     private String id;
 
