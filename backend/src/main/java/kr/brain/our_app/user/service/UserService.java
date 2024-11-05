@@ -24,12 +24,17 @@ public class UserService {
         }
 
         String createId = IDGenerator.generateId(userDto.getEmail());
-        User user = User.builder()
-                .id(createId)
-                .userName(userDto.getUserName())
-                .email(userDto.getEmail())
-                .build();
+        userDto.setId(createId);    // userDto에 생성된 ID 넣기
+
+        // User 객체를 직접 생성
+        User user = new User();
+        user.setId(createId);
+        user.setUserName(userDto.getUserName());
+        user.setEmail(userDto.getEmail());
+
+        // User 객체 저장
         User createdUser = userRepository.save(user);
+
         return UserDto.builder()
                 .id(createdUser.getId())
                 .userName(createdUser.getUserName())
@@ -51,6 +56,9 @@ public class UserService {
     public UserDto findById(String id){
         User findUser = userRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
+
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!findin repo"+findUser);//test
+
         return UserDto.builder()
                 .id(findUser.getId())
                 .userName(findUser.getUserName())

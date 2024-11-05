@@ -9,10 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@Entity
+@AllArgsConstructor
 @Table(name = "Bookmark")
 @Getter
 @Setter
+@Entity
+@Builder
 
 //얘는 dto 라기 보다는 entity인데, 폴더 이름 수정 건의해야겠다.
 
@@ -40,18 +42,5 @@ public class Bookmark {
     @OneToMany(mappedBy = "bookmark", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<TagBookmark> tags = new HashSet<>();
 
-    @Builder
-    public Bookmark(final String url, final User user , final String bookmarkName){
-        this.url = url;
-        this.user = user;
-        this.bookmarkName = bookmarkName;
-    }
-    public void addTagBookmark(final TagBookmark tagBookmark) {
-        tags.add(tagBookmark);
-    }
-
-    public void removeTagBookmark(final TagBookmark tagBookmark) {
-        tags.remove(tagBookmark);
-    }
 }
 

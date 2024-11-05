@@ -28,24 +28,20 @@ public class BookmarkService {
     public BookmarkDto createBookmark(BookmarkDto bookmarkDto, UserDto userDto) {
         // 유저 ID로 User 객체 조회
         UserDto findUserDto = userService.findById(userDto.getId());
-
-        //FIXME entity 변경 로직 추가 toEntity 메서드 추가 고려하는게 좋을 듯...
-        User user = User.builder()
-                .id(findUserDto.getId())
-                .userName(findUserDto.getUserName())
-                .email(findUserDto.getEmail())
-                .build();
+        User user = findUserDto.toEntity();
 
         String createbookmarkId = IDGenerator.generateId(bookmarkDto.getBookmarkName());
         //user 객체를 전달해서 setUser(user) 전달x
 
         Bookmark bookmark = new Bookmark();
+        bookmark.setId(createbookmarkId);
         bookmark.setBookmarkName(bookmarkDto.getBookmarkName());
         bookmark.setUrl(bookmarkDto.getUrl());
         bookmark.setUser(user);
         Bookmark savedBookmark = bookmarkRepository.save(bookmark);
 
         return BookmarkDto.builder()
+                .id(savedBookmark.getId())
                 .bookmarkName(savedBookmark.getBookmarkName())
                 .url(savedBookmark.getUrl())
                 .build();
@@ -56,6 +52,7 @@ public class BookmarkService {
         return bookmarkRepository.findAllByUser_Id(userDto.getId())
                 .stream()
                 .map(bookmark -> BookmarkDto.builder()
+                        .id(bookmark.getId())
                         .bookmarkName(bookmark.getBookmarkName())
                         .url(bookmark.getUrl())
                         .build())
@@ -69,6 +66,7 @@ public class BookmarkService {
     public BookmarkDto findByBookmarkName(String bookmarkName) {
         return bookmarkRepository.findByBookmarkName(bookmarkName)
                 .map(bookmark -> new BookmarkDto(
+                        bookmark.getId(),
                         bookmark.getBookmarkName(),
                         bookmark.getUrl()
                 )).orElseThrow(()->new IllegalArgumentException("해당 bookmark가 존재하지 않습니다 " +bookmarkName));
@@ -79,10 +77,13 @@ public class BookmarkService {
         return bookmarkRepository
                 .findByBookmarkNameAndUser_Id(bookmarkDto.getBookmarkName(), userDto.getId())
                 .map(bookmark -> new BookmarkDto(
+                        bookmark.getId(),
                         bookmark.getBookmarkName(),
                         bookmark.getUrl()
                 )).orElseThrow(()->new IllegalArgumentException("이 userId에 해당 bookmark가 존재하지 않습니다." + bookmarkDto.getBookmarkName()));
-    } //bookmarkDto.getBookmarkName()이 제대로 출력되는지 살펴봐야한다.
+    }
+    //bookmarkDto.getBookmarkName()이 제대로 출력되는지 살펴봐야한다.
+
 
 
     //  북마크 삭제
@@ -100,6 +101,7 @@ public class BookmarkService {
         return bookmarkRepository.findById(bookmarkId) // Optional<Bookmark>를 반환하는 메서드 사용
                 .map(bookmark -> new BookmarkDto(
                         bookmark.getId(),
+                        bookmark.getBookmarkName(),
                         bookmark.getUrl()
                 )).orElseThrow(()-> new IllegalArgumentException("해당 ID를 가진 Bookmark를 찾을 수 없습니다."));
     }

@@ -1,65 +1,139 @@
 package kr.brain.our_app.tag.service;
 
-import kr.brain.our_app.bookmark.domain.Bookmark;
-import kr.brain.our_app.bookmark.repository.BookmarkRepository;
+import kr.brain.our_app.OurAppApplication;
+import kr.brain.our_app.idsha.IDGenerator;
 import kr.brain.our_app.tag.domain.Tag;
+import kr.brain.our_app.tag.dto.TagDto;
 import kr.brain.our_app.tag.repository.TagRepository;
+import kr.brain.our_app.user.domain.User;
+import kr.brain.our_app.user.dto.UserDto;
+import kr.brain.our_app.user.repository.UserRepository;
+import kr.brain.our_app.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = OurAppApplication.class)// 실제 스프링 부트를 이용한 통합 테스트를 위한 어노테이션
+@Transactional  // 데이터베이스에 영향을 주지 않도록 롤백 처리
+class TagServiceTest {
 
-public class TagServiceTest {
-
-    @Mock
-    private TagRepository tagRepository;
-
-    @Mock
-    private BookmarkRepository bookmarkRepository;
-
-    @InjectMocks
+    @Autowired
     private TagService tagService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private UserDto userDto;
+    private TagDto tagDto;
+
     @BeforeEach
-    public void setUp() {
-        // Mock 객체 초기화
-        MockitoAnnotations.openMocks(this);
+    void setUp() {
+        // 테스트 데이터 생성 및 저장
+        userDto = UserDto.builder()
+                .id(IDGenerator.generateId("user1@example.com"))
+                .userName("testUser")
+                .email("user1@example.com")
+                .build();
+
+        // User를 데이터베이스에 저장
+        userService.createUser(userDto);
+
+        // TagDto 초기화
+        tagDto = TagDto.builder()
+                .tagName("TestTag")
+                .build();
     }
 
     @Test
-    public void testCreateTag() {
-        // given
-//        Tag tag = new Tag("Java");
-//        when(tagRepository.save(tag)).thenReturn(tag);
-//
-//        // when
-//        Tag createdTag = tagService.createTag(tag);
-//
-//        // then
-//        assertNotNull(createdTag);
-//        assertEquals("Java", createdTag.getTagName());
-//        verify(tagRepository, times(1)).save(tag);
+    void testCreateTag() {
+        // 태그 생성
+        TagDto createdTag = tagService.createTag(tagDto, userDto);
+
+        // 검증
+        assertThat(createdTag).isNotNull();
+        assertThat(createdTag.getTagName()).isEqualTo(tagDto.getTagName());
+
+        // 데이터베이스에 태그가 저장되었는지 확인
+        Tag savedTag = tagRepository.findById(createdTag.getId()).orElse(null);
+        assertThat(savedTag).isNotNull();
+        assertThat(savedTag.getTagName()).isEqualTo(tagDto.getTagName());
     }
-//
-//    @Test
-//    public void testGetBookmarkByTagname() {
-//        // given
-//        String tagname = "Java";
-//        List<Bookmark> bookmarks = new ArrayList<>();
-//        when(bookmarkRepository.findByTags_Tag_Tagname(tagname)).thenReturn(bookmarks);
-//
-//        // when
-//        List<Bookmark> result = tagService.getBookmarkByTagname(tagname);
-//
-//        // then
-//        assertNotNull(result);
-//        verify(bookmarkRepository, times(1)).findByTags_Tag_Tagname(tagname);
-//    }
+
+    @Test
+    void testCreateTag_DuplicateTagName() {
+        // 태그 생성
+        tagService.createTag(tagDto, userDto);
+
+        // 중복된 태그 이름으로 생성 시 예외 발생 확인
+        assertThrows(IllegalArgumentException.class, () -> tagService.createTag(tagDto, userDto));
+    }
+
+    @Test
+    void testFindAllTags() {
+        // 태그 생성
+        tagService.createTag(tagDto, userDto);
+
+        // 모든 태그 조회
+        List<TagDto> tags = tagService.findAllTags(userDto);
+
+        // 검증
+        assertThat(tags).isNotNull();
+        assertThat(tags.size()).isEqualTo(1);
+        assertThat(tags.get(0).getTagName()).isEqualTo(tagDto.getTagName());
+    }
+
+    @Test
+    void testFindByTagName() {
+        // 태그 생성
+        tagService.createTag(tagDto, userDto);
+
+        // 이름으로 태그 조회
+        TagDto foundTag = tagService.findByTagName(tagDto.getTagName());
+
+        // 검증
+        assertThat(foundTag).isNotNull();
+        assertThat(foundTag.getTagName()).isEqualTo(tagDto.getTagName());
+    }
+
+    @Test
+    void testFindByTagName_NotFound() {
+        // 존재하지 않는 태그 이름 조회 시 예외 발생 확인
+        assertThrows(IllegalArgumentException.class, () -> tagService.findByTagName("NonExistentTag"));
+    }
+
+    @Test
+    void testFindById() {
+        // 태그 생성
+        TagDto createdTag = tagService.createTag(tagDto, userDto);
+
+        // ID로 태그 조회
+        TagDto foundTag = tagService.findById(createdTag.getId());
+
+        // 검증
+        assertThat(foundTag).isNotNull();
+        assertThat(foundTag.getTagName()).isEqualTo(tagDto.getTagName());
+    }
+
+    @Test
+    void testFindById_NotFound() {
+        // 존재하지 않는 태그 ID로 조회 시 예외 발생 확인
+        assertThrows(IllegalArgumentException.class, () -> tagService.findById("NonExistentId"));
+    }
 }
