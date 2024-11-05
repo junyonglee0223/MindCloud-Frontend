@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TagDto {
+    private String id;
     private String tagName;
 }

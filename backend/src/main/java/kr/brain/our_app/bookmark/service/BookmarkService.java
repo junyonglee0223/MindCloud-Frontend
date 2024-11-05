@@ -69,6 +69,7 @@ public class BookmarkService {
     public BookmarkDto findByBookmarkName(String bookmarkName) {
         return bookmarkRepository.findByBookmarkName(bookmarkName)
                 .map(bookmark -> new BookmarkDto(
+                        bookmark.getId(),
                         bookmark.getBookmarkName(),
                         bookmark.getUrl()
                 )).orElseThrow(()->new IllegalArgumentException("해당 bookmark가 존재하지 않습니다 " +bookmarkName));
@@ -76,12 +77,21 @@ public class BookmarkService {
 
     // bookmarkname과 UserId로 북마크 조회
     public BookmarkDto findBookmarkByBookmarkNameAndUserId(BookmarkDto bookmarkDto, UserDto userDto){
+//        return bookmarkRepository
+//                .findByBookmarkNameAndUser_Id(bookmarkDto.getBookmarkName(), userDto.getId())
+//                .map(bookmark -> new BookmarkDto(
+//                        bookmark.getBookmarkName(),
+//                        bookmark.getUrl()
+//                )).orElseThrow(()->new IllegalArgumentException("이 userId에 해당 bookmark가 존재하지 않습니다." + bookmarkDto.getBookmarkName()));
+//
         return bookmarkRepository
                 .findByBookmarkNameAndUser_Id(bookmarkDto.getBookmarkName(), userDto.getId())
-                .map(bookmark -> new BookmarkDto(
-                        bookmark.getBookmarkName(),
-                        bookmark.getUrl()
-                )).orElseThrow(()->new IllegalArgumentException("이 userId에 해당 bookmark가 존재하지 않습니다." + bookmarkDto.getBookmarkName()));
+                .map(bookmark -> BookmarkDto.builder()
+                        .bookmarkName(bookmark.getBookmarkName())
+                        .url(bookmark.getUrl())
+                        .build()
+                ).orElseThrow(()->new IllegalArgumentException("이 userId에 해당 bookmark가 존재하지 않습니다." + bookmarkDto.getBookmarkName()));
+
     } //bookmarkDto.getBookmarkName()이 제대로 출력되는지 살펴봐야한다.
 
 
@@ -100,6 +110,7 @@ public class BookmarkService {
         return bookmarkRepository.findById(bookmarkId) // Optional<Bookmark>를 반환하는 메서드 사용
                 .map(bookmark -> new BookmarkDto(
                         bookmark.getId(),
+                        bookmark.getBookmarkName(),
                         bookmark.getUrl()
                 )).orElseThrow(()-> new IllegalArgumentException("해당 ID를 가진 Bookmark를 찾을 수 없습니다."));
     }
