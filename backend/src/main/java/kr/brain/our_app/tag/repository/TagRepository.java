@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface TagRepository extends JpaRepository<Tag, String> {
 
     Optional<Tag> findByTagName(String tagName);
-    List<TagDto> findAllTags(UserDto userDto);
     //해당 메서드는 findAllByUser_Id에 의해 정의되기에, 리포지토리에서 굳이 재정의할필요x그래도 일단 만들어놓음
     List<Tag> findAllByUser_Id(String userId);
     boolean existsByTagName(String tagName);

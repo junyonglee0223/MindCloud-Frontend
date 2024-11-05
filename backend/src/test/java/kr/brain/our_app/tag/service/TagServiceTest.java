@@ -57,8 +57,11 @@ class TagServiceTest {
 
         // TagDto 초기화
         tagDto = TagDto.builder()
-                .tagName("TestTag")
+                .tagName("TestTag1")
                 .build();
+
+
+
     }
 
     @Test
@@ -74,6 +77,10 @@ class TagServiceTest {
         Tag savedTag = tagRepository.findById(createdTag.getId()).orElse(null);
         assertThat(savedTag).isNotNull();
         assertThat(savedTag.getTagName()).isEqualTo(tagDto.getTagName());
+
+
+        //로그 찍어서 확인해보기
+        System.out.println("!!!!!!!!!!!!!" + savedTag.getTagName());
     }
 
     @Test
@@ -97,6 +104,12 @@ class TagServiceTest {
         assertThat(tags).isNotNull();
         assertThat(tags.size()).isEqualTo(1);
         assertThat(tags.get(0).getTagName()).isEqualTo(tagDto.getTagName());
+
+        System.out.println("All Tags 출력:");
+        for (TagDto tag : tags) {
+            System.out.println("Tag: " + tag.getTagName());
+        }
+
     }
 
     @Test
