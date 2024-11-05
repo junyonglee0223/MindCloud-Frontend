@@ -138,5 +138,29 @@ class UserServiceTest {
         // then
         assertThat(exists).isFalse();
     }
+    @Test
+    void testDeleteUser_UserExists() {
+        UserDto createdUserDto = userService.createUser(userDto);
+        // given: 사용자가 존재하는 상태
+        assertThat(userRepository.existsById(createdUserDto.getId())).isTrue();
+
+        // when: 사용자 삭제
+        userService.deleteUser(createdUserDto);
+
+        // then: 사용자가 삭제되었는지 확인
+        assertThat(userRepository.existsById(createdUserDto.getId())).isFalse();
+    }
+    @Test
+    void testDeleteUser_UserDoesNotExist() {
+        // given: 존재하지 않는 사용자 ID 설정
+        UserDto nonExistentUserDto = UserDto.builder()
+                .id("nonexistentUser")
+                .userName("NonExistentUser")
+                .email("nonexistent@example.com")
+                .build();
+
+        // when & then: 예외가 발생하는지 확인
+        assertThrows(IllegalArgumentException.class, () -> userService.deleteUser(nonExistentUserDto));
+    }
 
 }
