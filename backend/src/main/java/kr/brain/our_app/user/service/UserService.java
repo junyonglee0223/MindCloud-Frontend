@@ -72,5 +72,8 @@ public class UserService {
     public boolean existsByEmail(String email){
         return userRepository.existsByEmail(email);
     }
+    public boolean existsById(String id){
+        return userRepository.existsById(id);
+    }
     /**************************************************/
 }
