@@ -51,7 +51,6 @@ class TagServiceTest {
                 .userName("testUser")
                 .email("user1@example.com")
                 .build();
-
         // User를 데이터베이스에 저장
         userService.createUser(userDto);
 
@@ -59,9 +58,6 @@ class TagServiceTest {
         tagDto = TagDto.builder()
                 .tagName("TestTag1")
                 .build();
-
-
-
     }
 
     @Test
@@ -94,23 +90,36 @@ class TagServiceTest {
 
     @Test
     void testFindAllTags() {
-        // 태그 생성
-        tagService.createTag(tagDto, userDto);
+        // 여러 개의 태그 생성
+        List<TagDto> tagDtos = List.of(
+                TagDto.builder().tagName("TestTag1").build(),
+                TagDto.builder().tagName("TestTag2").build(),
+                TagDto.builder().tagName("TestTag3").build()
+        );
+
+        // 각각의 태그를 생성하여 저장
+        for (TagDto tagDto : tagDtos) {
+            tagService.createTag(tagDto, userDto);
+        }
 
         // 모든 태그 조회
         List<TagDto> tags = tagService.findAllTags(userDto);
 
         // 검증
         assertThat(tags).isNotNull();
-        assertThat(tags.size()).isEqualTo(1);
-        assertThat(tags.get(0).getTagName()).isEqualTo(tagDto.getTagName());
+        assertThat(tags.size()).isEqualTo(tagDtos.size());
 
         System.out.println("All Tags 출력:");
         for (TagDto tag : tags) {
             System.out.println("Tag: " + tag.getTagName());
         }
 
+        // 개별 태그 이름이 올바르게 저장되었는지 검증
+        for (int i = 0; i < tagDtos.size(); i++) {
+            assertThat(tags.get(i).getTagName()).isEqualTo(tagDtos.get(i).getTagName());
+        }
     }
+
 
     @Test
     void testFindByTagName() {
