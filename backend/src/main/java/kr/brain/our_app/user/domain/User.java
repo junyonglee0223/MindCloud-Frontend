@@ -12,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 public class User {
     @Id
+    @Column(name = "id")
     private String id;
 
     @Column(name = "username")

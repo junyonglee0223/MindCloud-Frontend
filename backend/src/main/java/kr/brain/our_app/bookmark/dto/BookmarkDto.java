@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookmarkDto {
+    private String id;
     private String bookmarkName;
     private String url;
 }

@@ -36,6 +36,12 @@ public class UserService {
                 .email(createdUser.getEmail())
                 .build();
     }
+    //TODO 추후 모든 tag, bookmark 정보를 삭제하는 부분도 필요함
+    public void deleteUser(UserDto userDto){
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User with this ID does not exist."));
+        userRepository.delete(user);
+    }
     public List<UserDto> findAll(){
         List<User> userList = userRepository.findAll();
         return userList.stream()
@@ -67,6 +73,13 @@ public class UserService {
                 .userName(findUser.getUserName())
                 .email(findUser.getEmail())
                 .build();
+    }
+
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
+    public boolean existsById(String id){
+        return userRepository.existsById(id);
     }
     /**************************************************/
 }
