@@ -5,19 +5,18 @@ package kr.brain.our_app.bookmark.domain;
 
 import jakarta.persistence.*;
 import kr.brain.our_app.tag.domain.Tag;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor
 @Entity
 @Table(name = "tag_bookmark")
 @Getter
 @Setter
+@Builder
 public class TagBookmark implements Serializable {
 
     @Id

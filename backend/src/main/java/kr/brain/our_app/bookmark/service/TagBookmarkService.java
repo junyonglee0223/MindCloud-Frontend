@@ -7,6 +7,7 @@ import kr.brain.our_app.bookmark.dto.RequestFrontDto;
 import kr.brain.our_app.bookmark.dto.TagBookmarkDto;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
 import kr.brain.our_app.bookmark.repository.TagBookmarkRepository;
+import kr.brain.our_app.idsha.IDGenerator;
 import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.dto.TagDto;
 import kr.brain.our_app.tag.repository.TagRepository;
@@ -24,8 +25,8 @@ import java.util.stream.Collectors;
 public class TagBookmarkService {
 
     private final TagBookmarkRepository tagBookmarkRepository;
-    private final TagRepository tagRepository;
-    private final BookmarkRepository bookmarkRepository;
+//    private final TagRepository tagRepository;
+//    private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkService bookmarkService;
     private final TagService tagService;
@@ -47,14 +48,14 @@ public class TagBookmarkService {
 
         this.userService = userService;
 
-        this.tagRepository = tagRepository;
-        this.bookmarkRepository = bookmarkRepository;
+//        this.tagRepository = tagRepository;
+//        this.bookmarkRepository = bookmarkRepository;
     }
 
     public List<TagBookmarkDto> requestTagBookmark(RequestFrontDto requestFrontDto){
         System.out.println(requestFrontDto);    //TEST
 
-        //WARN 해당 코드 처리하는 방식 수정 필요함
+        //WARN 해당 코드 처리하는 방식 나중에 user에서 처리하는 과정 필요함
         if(!userService.existsByEmail(requestFrontDto.getEmail())){
             UserDto createUserDto = UserDto.builder()
                     .id("makeKey")
@@ -66,23 +67,27 @@ public class TagBookmarkService {
 
         UserDto userDto = userService.findByEmail(requestFrontDto.getEmail());
 
-        BookmarkDto bookmarkDto = new BookmarkDto();
-        bookmarkDto.setBookmarkName(requestFrontDto.getTitle());
-        bookmarkDto.setUrl(requestFrontDto.getUrl());
-
-        List<TagBookmarkDto>tagBookmarkDtoList = new ArrayList<>();
-
+        BookmarkDto bookmarkDto = BookmarkDto.builder()
+                .bookmarkName(requestFrontDto.getTitle())
+                .url(requestFrontDto.getUrl())
+                .build();
+        
+        //TODO 해당 bookmarkDto 있는지 판단 없으면 생성
+        //TODO name으로 찾는게 과연 적절할까? -> id로 찾는거 해야 함
+        //TODO bookmark exists 만들어야 함
         BookmarkDto checkedBookmarkDto
                 = bookmarkService
                 .findByBookmarkName(bookmarkDto.getBookmarkName());
 
+        List<TagBookmarkDto>tagBookmarkDtoList = new ArrayList<>();
+        
         for(String tag : requestFrontDto.getTags()){
+            //TODO 해당 tagDto 있는지 판단 없으면 생성
+            //TODO id로 찾는 방식으로 수정해야 함
+            //TODO tag exists 만들어야 함
             TagDto checkedTagDto
                     = tagService.findByTagName(tag);
-//                    .orElseThrow(IllegalArgumentException::new);
-            //service 내에서 예외처리하면서 삭제함
-            //entity check -> create dto
-            //check logic is impied in other method
+            
             TagBookmarkDto checkedTagBookmarkDto =
                     findTagBookmarkByTagAndBookmark(checkedTagDto, checkedBookmarkDto);
             if(checkedTagBookmarkDto == null){
@@ -107,27 +112,31 @@ public class TagBookmarkService {
     public TagBookmarkDto findTagBookmarkByTagAndBookmark(
             TagDto tagDto, BookmarkDto bookmarkDto
     ){
-       Tag tag = tagRepository
-               .findByTagName(tagDto.getTagName())
-               .orElseThrow(IllegalArgumentException::new);
+        //TODO 받은 tagDto, bookmarkDto가 실제 존재하는지 확인하는 로직 필요
 
-       Bookmark bookmark = bookmarkRepository
-               .findByBookmarkName(bookmarkDto.getBookmarkName())
-               .orElseThrow(IllegalArgumentException::new);
-
-
-         return TagBookmarkDto.builder()
-                .tagName(tag.getTagName())
-                .bookmarkName(bookmark.getBookmarkName())
-                .build();
+        return tagBookmarkRepository
+                .findByTagIdAndBookmarkId(tagDto.getId(), bookmarkDto.getId())
+                .map(tagBookmark -> TagBookmarkDto.builder()
+                        .tagId(tagDto.getId())
+                        .bookmarkId(bookmarkDto.getId())
+                        .build())
+                .orElseThrow();
     }
 
-    public TagBookmarkDto createTagBookmark(TagBookmarkDto tagBookmarkDto){
-        Tag tag = tagRepository.findByTagName(tagBookmarkDto.getTagName())
-                .orElseThrow(IllegalArgumentException::new);
-        Bookmark bookmark = bookmarkRepository.findByBookmarkName(tagBookmarkDto.getBookmarkName())
-                .orElseThrow(IllegalAccessError::new);
+    public TagBookmarkDto createTagBookmark(String tagId, String bookmarkId){
+        //TODO 이미 존재하면 예외처리
+        String createTagBookmarkId
+                = IDGenerator.generateId(tagId + bookmarkId);
+        //TODO 새로 생성해야 함
+        Tag tag = tagService.findById(tagId)
+                .map(tagDto ->
+                        Tag.builder()
+                                .tagName().build());
+        Bookmark bookmark = bookmarkService.findBookmarkById(bookmarkId)
 
+        TagBookmark tagBookmark = TagBookmark.builder()
+                .id(createTagBookmarkId)
+                .tag(tag).build();
 
         TagBookmark tagBookmark = new TagBookmark();
         tagBookmark.setTag(tag);
