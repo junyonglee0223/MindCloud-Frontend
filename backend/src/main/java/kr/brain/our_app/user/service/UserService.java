@@ -68,5 +68,9 @@ public class UserService {
                 .email(findUser.getEmail())
                 .build();
     }
+
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
     /**************************************************/
 }
