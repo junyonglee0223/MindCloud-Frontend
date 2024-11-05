@@ -13,6 +13,7 @@ import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.dto.TagDto;
 import kr.brain.our_app.tag.repository.TagRepository;
 import kr.brain.our_app.tag.service.TagService;
+import kr.brain.our_app.user.dto.UserDto;
 import kr.brain.our_app.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -58,8 +59,9 @@ public class TagBookmarkController {
 
     // 2. 특정 Bookmark에 연결된 모든 Tag 조회
     @GetMapping("/by-bookmark/{bookmarkName}")
-    public ResponseEntity<List<TagBookmarkDto>> getTagsByBookmark(@PathVariable String bookmarkName) {
-        BookmarkDto bookmarkDto = bookmarkService.findByBookmarkName(bookmarkName);
+    public ResponseEntity<List<TagBookmarkDto>> getTagsByBookmark(@PathVariable String bookmarkName ,
+                                                                  @RequestBody UserDto userDto) {
+        BookmarkDto bookmarkDto = bookmarkService.findByBookmarkName(bookmarkName, userDto);
         List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.findAllByBookmark(bookmarkDto);
         return ResponseEntity.ok(tagBookmarkDtos);
     }
@@ -67,13 +69,16 @@ public class TagBookmarkController {
     // 3. 특정 Tag에 연결된 모
     // 든 Bookmark 조회
     @GetMapping("/by-tag/{tagName}")
-    public ResponseEntity<List<TagBookmarkDto>> getBookmarksByTag(@PathVariable String tagName) {
-        TagDto tagDto = tagService.findByTagName(tagName);
+    public ResponseEntity<List<TagBookmarkDto>> getBookmarksByTag(@PathVariable String tagName ,
+                                                                  @RequestBody UserDto userdto) {
+        TagDto tagDto = tagService.findByTagName(tagName , userdto);
 //                .orElseThrow(() -> new IllegalArgumentException("Tag not found"));
 //                  tag서비스 내부에서 예외처리를 하면서, 컨트롤러에서 예외처리할 필요가 없어짐
         List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.findAllByTag(tagDto);
         return ResponseEntity.ok(tagBookmarkDtos);
     }
+
+    //TODO 지금 userdto추가하면서 @RequestBody로 받는다고 가정하고, findByTagName으로 만들었다.
 
  /*************************************************************************************/
 //    private final TagRepository tagRepository;

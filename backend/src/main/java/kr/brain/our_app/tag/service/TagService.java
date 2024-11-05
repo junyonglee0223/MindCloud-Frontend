@@ -60,13 +60,14 @@ public class TagService {
                 .collect(Collectors.toList());
     } // tag가 없을 경우... 빈 리스트가 출력되는지 확인해봐야함
 
-    // 3. tagName 으로 태그 조회 -> tagdto에 tagname이 담겨서 전달
-    public TagDto findByTagName(String tagName) {
-        return tagRepository.findByTagName(tagName)
+    // 3. tagName 으로 태그 조회 (userdto에 담긴 id로 사용자 식별)
+    public TagDto findByTagName(String tagName, UserDto userDto) {
+        return tagRepository.findByTagNameAndUser_Id(tagName, userDto.getId())
                 .map(tag -> TagDto.builder()
+                        .id(tag.getId())
                         .tagName(tag.getTagName())
                         .build())
-                .orElseThrow(()->new IllegalArgumentException("TagName을 가진 Tag가 존재하지 않습니다." + tagName));
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 TagName을 가진 Tag가 존재하지 않습니다: " + tagName));
     }// Optional 제거하고, 그냥 TagDto로 수정.
 
     // 4. TagId로 태그 조회 -> tagdto에 tagname이 담겨서 전달
@@ -77,5 +78,4 @@ public class TagService {
                         .build())
                 .orElseThrow(()->new IllegalArgumentException("해당 TagId를 가진 Tag가 존재하지 않습니다" + id));
     }
-    //
 }
