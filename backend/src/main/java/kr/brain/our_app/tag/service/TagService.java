@@ -1,6 +1,7 @@
 package kr.brain.our_app.tag.service;
 
 import kr.brain.our_app.bookmark.dto.BookmarkDto;
+import kr.brain.our_app.idsha.IDGenerator;
 import kr.brain.our_app.tag.domain.Tag;
 import kr.brain.our_app.tag.dto.TagDto;
 import kr.brain.our_app.tag.repository.TagRepository;
@@ -27,22 +28,24 @@ public class TagService {
     }
     // 1. tag 생성
     public TagDto createTag(TagDto tagDto, UserDto userDto) {
-        // 유저 ID로 User 객체 조회
+        if(tagRepository.existsByTagName(tagDto.getTagName())){
+            throw new IllegalArgumentException("This TagName already exists.");
+        }
+
+
         UserDto findUserDto = userService.findById(userDto.getId());
+        User user = findUserDto.toEntity();
 
-        //FIXME entity 변경 로직 추가 toEntity 메서드 추가 고려하는게 좋을 듯...
-        User user = User.builder()
-                .id(findUserDto.getId())
-                .userName(findUserDto.getUserName())
-                .email(findUserDto.getEmail())
-                .build();
-
+        //tag는 그냥 toentity() 안쓰고 만들어봄 field 를 알기 쉬우라고
+        String createId = IDGenerator.generateId(tagDto.getTagName());
         Tag tag = new Tag();
+        tag.setId(createId);
         tag.setTagName(tagDto.getTagName());
         tag.setUser(user);
-
         Tag savedTag = tagRepository.save(tag);
+
         return TagDto.builder()
+                .id(savedTag.getId())
                 .tagName(savedTag.getTagName())
                 .build();
     }
@@ -74,4 +77,5 @@ public class TagService {
                         .build())
                 .orElseThrow(()->new IllegalArgumentException("해당 TagId를 가진 Tag가 존재하지 않습니다" + id));
     }
+    //
 }
