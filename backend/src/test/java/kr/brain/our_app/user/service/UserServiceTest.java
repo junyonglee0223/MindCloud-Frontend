@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
@@ -113,6 +114,26 @@ class UserServiceTest {
     void testExistsByEmail_NotFound() {
         // when
         boolean exists = userService.existsByEmail("nonexistent@example.com");
+
+        // then
+        assertThat(exists).isFalse();
+    }
+
+    @Test
+    void testExistsById_UserExists() {
+        UserDto createUser = userService.createUser(userDto);
+
+        // when
+        boolean exists = userService.existsById(createUser.getId());
+
+        // then
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    void testExistsById_UserDoesNotExist() {
+        // when
+        boolean exists = userService.existsById("notExistsUser");
 
         // then
         assertThat(exists).isFalse();
