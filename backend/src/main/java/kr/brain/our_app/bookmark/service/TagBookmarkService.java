@@ -52,6 +52,17 @@ public class TagBookmarkService {
     }
 
     public List<TagBookmarkDto> requestTagBookmark(RequestFrontDto requestFrontDto){
+        System.out.println(requestFrontDto);    //TEST
+
+        //WARN 해당 코드 처리하는 방식 수정 필요함
+        if(!userService.existsByEmail(requestFrontDto.getEmail())){
+            UserDto createUserDto = UserDto.builder()
+                    .id("makeKey")
+                    .userName(requestFrontDto.getUserName())
+                    .email(requestFrontDto.getEmail())
+                    .build();
+            userService.createUser(createUserDto);
+        }
 
         UserDto userDto = userService.findByEmail(requestFrontDto.getEmail());
 
