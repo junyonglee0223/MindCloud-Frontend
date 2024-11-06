@@ -4,6 +4,7 @@ import kr.brain.our_app.bookmark.domain.Bookmark;
 import kr.brain.our_app.bookmark.dto.BookmarkDto;
 import kr.brain.our_app.bookmark.repository.BookmarkRepository;
 import kr.brain.our_app.idsha.IDGenerator;
+import kr.brain.our_app.tag.dto.TagDto;
 import kr.brain.our_app.user.domain.User;
 import kr.brain.our_app.user.dto.UserDto;
 import kr.brain.our_app.user.service.UserService;
@@ -63,37 +64,16 @@ public class BookmarkService {
 
     }
 
-    // 이걸로 할거야 아니면 findByUser_Id(String user_id) 로 할거야?
-
     // 3. 이름으로 북마크 찾기
-    public BookmarkDto findByBookmarkName(String bookmarkName) {
-        return bookmarkRepository.findByBookmarkName(bookmarkName)
-                .map(bookmark -> new BookmarkDto(
-                        bookmark.getId(),
-                        bookmark.getBookmarkName(),
-                        bookmark.getUrl()
-                )).orElseThrow(()->new IllegalArgumentException("해당 bookmark가 존재하지 않습니다 " +bookmarkName));
-    }
-
-    // bookmarkname과 UserId로 북마크 조회
-    public BookmarkDto findBookmarkByBookmarkNameAndUserId(BookmarkDto bookmarkDto, UserDto userDto){
-//        return bookmarkRepository
-//                .findByBookmarkNameAndUser_Id(bookmarkDto.getBookmarkName(), userDto.getId())
-//                .map(bookmark -> new BookmarkDto(
-//                        bookmark.getBookmarkName(),
-//                        bookmark.getUrl()
-//                )).orElseThrow(()->new IllegalArgumentException("이 userId에 해당 bookmark가 존재하지 않습니다." + bookmarkDto.getBookmarkName()));
-//
-        return bookmarkRepository
-                .findByBookmarkNameAndUser_Id(bookmarkDto.getBookmarkName(), userDto.getId())
+    public BookmarkDto findByBookmarkName(String bookmarkName, UserDto userDto) {
+        return bookmarkRepository.findByBookmarkNameAndUser_Id(bookmarkName, userDto.getId())
                 .map(bookmark -> BookmarkDto.builder()
+                        .id(bookmark.getId())
                         .bookmarkName(bookmark.getBookmarkName())
                         .url(bookmark.getUrl())
-                        .build()
-                ).orElseThrow(()->new IllegalArgumentException("이 userId에 해당 bookmark가 존재하지 않습니다." + bookmarkDto.getBookmarkName()));
-
-    } //bookmarkDto.getBookmarkName()이 제대로 출력되는지 살펴봐야한다.
-
+                        .build())
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 bookmarkName을 가진 bookmark가 존재하지 않습니다: " + bookmarkName));
+    }
 
     //  북마크 삭제
     public void deleteBookmark(String bookmarkId) {

@@ -77,7 +77,7 @@ public class TagBookmarkService {
         //TODO bookmark exists 만들어야 함
         BookmarkDto checkedBookmarkDto
                 = bookmarkService
-                .findByBookmarkName(bookmarkDto.getBookmarkName());
+                .findByBookmarkName(bookmarkDto.getBookmarkName(),userDto);
 
         List<TagBookmarkDto>tagBookmarkDtoList = new ArrayList<>();
         
@@ -86,8 +86,12 @@ public class TagBookmarkService {
             //TODO id로 찾는 방식으로 수정해야 함
             //TODO tag exists 만들어야 함
             TagDto checkedTagDto
-                    = tagService.findByTagName(tag);
-            
+
+                    = tagService.findByTagName(tag,userDto);
+//                    .orElseThrow(IllegalArgumentException::new);
+            //service 내에서 예외처리하면서 삭제함
+            //entity check -> create dto
+            //check logic is impied in other method
             TagBookmarkDto checkedTagBookmarkDto =
                     findTagBookmarkByTagAndBookmark(checkedTagDto, checkedBookmarkDto);
             if(checkedTagBookmarkDto == null){
