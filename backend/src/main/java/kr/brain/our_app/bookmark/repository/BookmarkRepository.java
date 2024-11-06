@@ -12,7 +12,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, String> {
 
     // 북마크 이름(name)으로 찾기, BOOKMARK는 LIST
     Optional<Bookmark> findByBookmarkName(String bookmarkName);
-    List<Bookmark>findAllByUser(User user);
     List<Bookmark> findAllByUser_Id(String user_id);
     Optional<Bookmark> findByBookmarkNameAndUser_Id(String bookmarkName, String user_id);
 }

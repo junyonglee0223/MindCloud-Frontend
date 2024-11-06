@@ -74,11 +74,11 @@ public class TagBookmarkService {
 
         BookmarkDto checkedBookmarkDto
                 = bookmarkService
-                .findByBookmarkName(bookmarkDto.getBookmarkName());
+                .findByBookmarkName(bookmarkDto.getBookmarkName(),userDto);
 
         for(String tag : requestFrontDto.getTags()){
             TagDto checkedTagDto
-                    = tagService.findByTagName(tag);
+                    = tagService.findByTagName(tag,userDto);
 //                    .orElseThrow(IllegalArgumentException::new);
             //service 내에서 예외처리하면서 삭제함
             //entity check -> create dto
