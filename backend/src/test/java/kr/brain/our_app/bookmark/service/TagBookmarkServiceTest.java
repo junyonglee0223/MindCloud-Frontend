@@ -1,104 +1,88 @@
-//package kr.brain.our_app.bookmark.service;
-//
-//import kr.brain.our_app.bookmark.domain.Bookmark;
-//import kr.brain.our_app.bookmark.domain.TagBookmark;
-//import kr.brain.our_app.bookmark.dto.TagBookmarkDto;
-//import kr.brain.our_app.bookmark.repository.TagBookmarkRepository;
-//import kr.brain.our_app.tag.domain.Tag;
-//import kr.brain.our_app.tag.repository.TagRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageImpl;
-//import org.springframework.data.domain.PageRequest;
-//import org.springframework.data.domain.Pageable;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.Mockito.*;
-//
-//public class TagBookmarkServiceTest {
-//
-//    @Mock
-//    private TagBookmarkRepository tagBookmarkRepository;
-//
-//    @Mock
-//    private TagRepository tagRepository;
-//
-//    @InjectMocks
-//    private TagBookmarkService tagBookmarkService;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//    }
-//
-//    @Test
-//    public void testCreateTagBookmark() {
-//        Tag tag = new Tag("Java");
-//        Bookmark bookmark = new Bookmark();
-//        bookmark.setUrl("http://example.com");
-//
-//        TagBookmark tagBookmark = new TagBookmark(tag, bookmark);
-//
-//        when(tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)).thenReturn(Optional.empty());
-//        when(tagBookmarkRepository.save(any(TagBookmark.class))).thenReturn(tagBookmark);
-//
-//        TagBookmarkDto tagBookmarkDto = new TagBookmarkDto(tag.getTagName(), bookmark.getBookmarkName());
-//        TagBookmarkDto result = tagBookmarkService.createTagBookmark(tagBookmarkDto);
-//
-//        assertNotNull(result);
-//        assertEquals("Java", result.getTagName());
-//        //assertEquals("http://example.com", result.getUrl());
-//    }
-//
-////    @Test
-////    public void testGetBookmarksByTag() {
-////        Tag tag = new Tag("Java");
-////        Bookmark bookmark = new Bookmark();
-////        bookmark.setUrl("http://example.com");
-////
-////        TagBookmark tagBookmark = new TagBookmark(tag, bookmark);
-////        List<TagBookmark> tagBookmarks = List.of(tagBookmark);
-////        Pageable pageable = PageRequest.of(0, 1);
-////        Page<TagBookmark> page = new PageImpl<>(tagBookmarks);
-////
-////        when(tagBookmarkRepository.findAllByTag(tag, pageable)).thenReturn(page);
-////
-////        Page<TagBookmark> result = tagBookmarkService.getBookmarksByTag(tag, pageable);
-////
-////        assertNotNull(result);
-////        assertEquals(1, result.getTotalElements());
-////    }
-////
-////    @Test
-////    public void testRemoveTagBookmark() {
-////        Tag tag = new Tag("Java");
-////        Bookmark bookmark = new Bookmark();
-////
-////        TagBookmark tagBookmark = new TagBookmark(tag, bookmark);
-////
-////        when(tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)).thenReturn(Optional.of(tagBookmark));
-////
-////        tagBookmarkService.removeTagBookmark(tag, bookmark);
-////
-////        verify(tagBookmarkRepository, times(1)).delete(tagBookmark);
-////    }
-////
-////    @Test
-////    public void testDeleteAllByTagId() {
-////        Long tagId = 1L;
-////
-////        doNothing().when(tagBookmarkRepository).deleteAllByTagId(tagId);
-////
-////        tagBookmarkService.deleteAllByTagId(tagId);
-////
-////        verify(tagBookmarkRepository, times(1)).deleteAllByTagId(tagId);
-////    }
-//}
+package kr.brain.our_app.bookmark.service;
+
+import kr.brain.our_app.bookmark.domain.Bookmark;
+import kr.brain.our_app.bookmark.dto.BookmarkDto;
+import kr.brain.our_app.bookmark.repository.BookmarkRepository;
+import kr.brain.our_app.bookmark.service.BookmarkService;
+import kr.brain.our_app.tag.domain.Tag;
+import kr.brain.our_app.tag.dto.TagDto;
+import kr.brain.our_app.tag.service.TagService;
+import kr.brain.our_app.bookmark.domain.TagBookmark;
+import kr.brain.our_app.bookmark.dto.TagBookmarkDto;
+import kr.brain.our_app.bookmark.repository.TagBookmarkRepository;
+import kr.brain.our_app.bookmark.service.TagBookmarkService;
+import kr.brain.our_app.user.dto.UserDto;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@SpringBootTest
+@Transactional
+public class TagBookmarkServiceTest {
+
+    @Autowired
+    private TagBookmarkService tagBookmarkService;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private BookmarkService bookmarkService;
+
+    @Autowired
+    private TagBookmarkRepository tagBookmarkRepository;
+
+    private String tagId;
+    private String bookmarkId;
+
+    @BeforeEach
+    void setUp() {
+        // 필요한 데이터 준비
+        UserDto userDto = UserDto.builder()
+                .id("123")
+                .userName("test1")
+                .email("ljyong3339@gmail.com")
+                .build();
+
+        TagDto tagDto = TagDto.builder()
+                .id("tag1")
+                .tagName("SampleTag")
+                .build();
+        tagId = tagService.createTag(tagDto, userDto).getId();
+
+        BookmarkDto bookmarkDto = BookmarkDto.builder()
+                .id("bookmark1")
+                .bookmarkName("SampleBookmark")
+                .url("http://sample.com")
+                .build();
+        bookmarkId = bookmarkService.createBookmark(bookmarkDto, userDto).getId();
+    }
+
+    @Test
+    void testCreateTagBookmark_Success() {
+        // given
+        TagBookmarkDto tagBookmarkDto = tagBookmarkService.createTagBookmark(tagId, bookmarkId);
+
+        // when
+        TagBookmark retrievedTagBookmark = tagBookmarkRepository.findById(tagBookmarkDto.getId()).orElse(null);
+
+        // then
+        assertThat(retrievedTagBookmark).isNotNull();
+        assertThat(retrievedTagBookmark.getTag().getId()).isEqualTo(tagId);
+        assertThat(retrievedTagBookmark.getBookmark().getId()).isEqualTo(bookmarkId);
+    }
+
+    @Test
+    void testCreateTagBookmark_AlreadyExists() {
+        // given: 첫 번째 TagBookmark 생성
+        tagBookmarkService.createTagBookmark(tagId, bookmarkId);
+
+        // when & then: 동일한 TagBookmark를 생성하려고 하면 예외가 발생
+        assertThrows(IllegalArgumentException.class, () -> tagBookmarkService.createTagBookmark(tagId, bookmarkId));
+    }
+}
