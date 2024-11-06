@@ -53,7 +53,7 @@ public class TagBookmarkController {
     // 1. TagBookmark 생성
     @PostMapping
     public ResponseEntity<TagBookmarkDto> createTagBookmark(@RequestBody TagBookmarkDto tagBookmarkDto) {
-        TagBookmarkDto createdTagBookmark = tagBookmarkService.createTagBookmark(tagBookmarkDto);
+        TagBookmarkDto createdTagBookmark = tagBookmarkService.createTagBookmark(tagBookmarkDto.getTagId(), tagBookmarkDto.getBookmarkId());
         return ResponseEntity.ok(createdTagBookmark);
     }
 

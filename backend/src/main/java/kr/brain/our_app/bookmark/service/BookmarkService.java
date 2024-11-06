@@ -40,11 +40,13 @@ public class BookmarkService {
         String createbookmarkId = IDGenerator.generateId(bookmarkDto.getBookmarkName());
         //user 객체를 전달해서 setUser(user) 전달x
 
-        Bookmark bookmark = new Bookmark();
-        bookmark.setId(createbookmarkId);
-        bookmark.setBookmarkName(bookmarkDto.getBookmarkName());
-        bookmark.setUrl(bookmarkDto.getUrl());
-        bookmark.setUser(user);
+        Bookmark bookmark = Bookmark.builder()
+                .id(createbookmarkId)
+                .bookmarkName(bookmarkDto.getBookmarkName())
+                .url(bookmarkDto.getUrl())
+                .user(user)
+                .build();
+
         Bookmark savedBookmark = bookmarkRepository.save(bookmark);
 
         return BookmarkDto.builder()

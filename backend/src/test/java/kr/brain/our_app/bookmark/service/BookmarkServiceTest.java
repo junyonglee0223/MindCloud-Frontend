@@ -106,20 +106,20 @@ class BookmarkServiceTest {
         });
     }
 
-//    @Test
-//    void testDeleteBookmark() {
-//        BookmarkDto bookmarkDto = bookmarkService.createBookmark(bookmarkDtos.get(0), userDto);
-//        assertThat(bookmarkDto.getId()).isNotNull();  // 생성된 북마크의 ID가 null이 아님을 확인
-//
-//        System.out.println("Deleting Bookmark with ID: " + bookmarkDto.getId());
-//
-//        bookmarkService.deleteBookmark(bookmarkDto.getId());
-//
-//        assertThrows(IllegalArgumentException.class, () -> {
-//            BookmarkDto deletedBookmark = bookmarkService.findBookmarkById(bookmarkDto.getId());
-//            System.out.println("This bookmark should have been deleted: " + deletedBookmark);
-//        });
-//    }
+    @Test
+    void testDeleteBookmark() {
+        BookmarkDto bookmarkDto = bookmarkService.createBookmark(bookmarkDtos.get(0), userDto);
+        assertThat(bookmarkDto.getId()).isNotNull();  // 생성된 북마크의 ID가 null이 아님을 확인
+
+        System.out.println("Deleting Bookmark with ID: " + bookmarkDto.getId());
+
+        bookmarkService.deleteBookmark(bookmarkDto.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            BookmarkDto deletedBookmark = bookmarkService.findBookmarkById(bookmarkDto.getId());
+            System.out.println("This bookmark should have been deleted: " + deletedBookmark);
+        });
+    }
 
     @Test
     void testFindBookmarkById() {

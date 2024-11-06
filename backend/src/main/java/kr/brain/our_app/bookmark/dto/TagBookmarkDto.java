@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagBookmarkDto {
-    private String tagName;
-    private String bookmarkName;
+    private String tagId;
+    private String bookmarkId;
 }
 
 
