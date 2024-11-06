@@ -98,5 +98,11 @@ public class BookmarkService {
                         bookmark.getUrl()
                 )).orElseThrow(()-> new IllegalArgumentException("해당 ID를 가진 Bookmark를 찾을 수 없습니다."));
     }
+    public boolean existsById(String bookmarkId){
+        return bookmarkRepository.existsById(bookmarkId);
+    }
+    public boolean existsByBookmarkName(String bookmarkName, String userId){
+        return bookmarkRepository.existsByBookmarkNameAndUser_Id(bookmarkName, userId);
+    }
 }
 

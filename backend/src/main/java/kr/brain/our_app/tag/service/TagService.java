@@ -82,4 +82,10 @@ public class TagService {
                         .build())
                 .orElseThrow(()->new IllegalArgumentException("해당 TagId를 가진 Tag가 존재하지 않습니다" + id));
     }
+    public boolean existsById(String id){
+        return tagRepository.existsById(id);
+    }
+    public boolean existsByTagName(String tagName, String userId){
+        return tagRepository.existsByTagNameAndUser_Id(tagName, userId);
+    }
 }
