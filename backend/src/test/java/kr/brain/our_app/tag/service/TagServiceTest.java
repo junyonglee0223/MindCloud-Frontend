@@ -76,7 +76,7 @@ class TagServiceTest {
 
 
         //로그 찍어서 확인해보기
-        System.out.println("!!!!!!!!!!!!!" + savedTag.getTagName());
+        System.out.println("!!TTTTsavedtag로 데이터베이스에 태그가 저장됐는지 확인용" + savedTag.getTagName());
     }
 
     @Test

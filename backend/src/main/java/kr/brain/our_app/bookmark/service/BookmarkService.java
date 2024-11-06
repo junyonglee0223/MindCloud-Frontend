@@ -41,6 +41,7 @@ public class BookmarkService {
         //user 객체를 전달해서 setUser(user) 전달x
 
         Bookmark bookmark = new Bookmark();
+        bookmark.setId(createbookmarkId);
         bookmark.setBookmarkName(bookmarkDto.getBookmarkName());
         bookmark.setUrl(bookmarkDto.getUrl());
         bookmark.setUser(user);
