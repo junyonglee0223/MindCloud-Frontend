@@ -37,11 +37,14 @@ public class TagService {
         User user = findUserDto.toEntity();
 
         //tag는 그냥 toentity() 안쓰고 만들어봄 field 를 알기 쉬우라고
+        //TODO id 생성 시 tagName + user 속성 추가해서 생성해야 함
         String createId = IDGenerator.generateId(tagDto.getTagName());
-        Tag tag = new Tag();
-        tag.setId(createId);
-        tag.setTagName(tagDto.getTagName());
-        tag.setUser(user);
+
+        Tag tag = Tag.builder()
+                .id(createId)
+                .tagName(tagDto.getTagName())
+                .user(user)
+                .build();
         Tag savedTag = tagRepository.save(tag);
 
         return TagDto.builder()
@@ -74,6 +77,7 @@ public class TagService {
     public TagDto findById(String id) {
         return tagRepository.findById(id)
                 .map(tag -> TagDto.builder()
+                        .id(tag.getId())
                         .tagName(tag.getTagName())
                         .build())
                 .orElseThrow(()->new IllegalArgumentException("해당 TagId를 가진 Tag가 존재하지 않습니다" + id));
