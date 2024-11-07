@@ -15,5 +15,6 @@ public interface TagRepository extends JpaRepository<Tag, String> {
     List<Tag> findAllByUser_Id(String userId);
     Optional<Tag> findByTagNameAndUser_Id(String tagName, String userId);
     boolean existsByTagName(String tagName);
+    boolean existsByTagNameAndUser_Id(String tagName, String userId);
 
 }

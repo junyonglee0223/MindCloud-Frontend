@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 public class TagBookmarkService {
 
     private final TagBookmarkRepository tagBookmarkRepository;
-//    private final TagRepository tagRepository;
-//    private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkService bookmarkService;
     private final TagService tagService;
@@ -48,9 +46,6 @@ public class TagBookmarkService {
         this.tagService = tagService;
 
         this.userService = userService;
-
-//        this.tagRepository = tagRepository;
-//        this.bookmarkRepository = bookmarkRepository;
     }
 
 
@@ -72,13 +67,16 @@ public class TagBookmarkService {
         String title = requestFrontDto.getTitle();
         String url = requestFrontDto.getUrl();
 
+        //no id bookmarkdto
         BookmarkDto bookmarkDto = BookmarkDto.builder()
                 .bookmarkName(requestFrontDto.getTitle())
                 .url(requestFrontDto.getUrl())
                 .build();
 
-        //TODO 해당 bookmarkDto 있는지 판단 없으면 생성
-        //TODO bookmark exists 만들어야 함
+        if(!bookmarkService.existsByBookmarkName(title, userDto.getId())){
+            bookmarkService.createBookmark(bookmarkDto, userDto);
+        }
+
         BookmarkDto checkedBookmarkDto
                 = bookmarkService
                 .findByBookmarkName(bookmarkDto.getBookmarkName(),userDto);
@@ -86,23 +84,26 @@ public class TagBookmarkService {
         List<TagBookmarkDto>tagBookmarkDtoList = new ArrayList<>();
 
         for(String tagName : requestFrontDto.getTags()){
-            //TODO 해당 tagDto 있는지 판단 없으면 생성
-            //TODO tag exists 만들어야 함
+            TagDto tagDto = TagDto.builder()
+                    .tagName(tagName)
+                    .build();
+            if(!tagService.existsByTagName(tagName, userDto.getId())){
+                tagService.createTag(tagDto, userDto);
+            }
             TagDto checkedTagDto
                     = tagService.findByTagName(tagName, userDto);
 //                    .orElseThrow(IllegalArgumentException::new);
             //service 내에서 예외처리하면서 삭제함
             //entity check -> create dto
             //check logic is impied in other method
+            if(!existsByTagIdAndBookmarkId(checkedTagDto.getId(), checkedBookmarkDto.getId())){
+                createTagBookmark(checkedTagDto.getId(), checkedBookmarkDto.getId(), userDto.getId());
+            }
 
             TagBookmarkDto checkedTagBookmarkDto =
                     findTagBookmarkByTagAndBookmark(checkedTagDto, checkedBookmarkDto);
-            if(checkedTagBookmarkDto == null){
-                tagBookmarkDtoList.add(createTagBookmark(checkedTagDto.getId(), checkedBookmarkDto.getId(), userDto.getId()));
-            }
-            else{
-                tagBookmarkDtoList.add(checkedTagBookmarkDto);
-            }
+
+            tagBookmarkDtoList.add(checkedTagBookmarkDto);
         }
         return tagBookmarkDtoList;
     }
@@ -114,6 +115,9 @@ public class TagBookmarkService {
             TagDto tagDto, BookmarkDto bookmarkDto
     ){
         //TODO 받은 tagDto, bookmarkDto가 실제 존재하는지 확인하는 로직 필요
+        if(!tagService.existsById(tagDto.getId()) || !bookmarkService.existsById(bookmarkDto.getId())){
+            throw new IllegalArgumentException("Tag or Bookmark does not exist");
+        }
 
         return tagBookmarkRepository
                 .findByTagIdAndBookmarkId(tagDto.getId(), bookmarkDto.getId())
@@ -121,7 +125,7 @@ public class TagBookmarkService {
                         .tagId(tagDto.getId())
                         .bookmarkId(bookmarkDto.getId())
                         .build())
-                .orElseThrow();
+                .orElseThrow(null);
     }
 
     public TagBookmarkDto createTagBookmark(String tagId, String bookmarkId, String userId){
@@ -174,6 +178,10 @@ public class TagBookmarkService {
                 .tagId(savedTagBookmark.getTag().getId())
                 .bookmarkId(savedTagBookmark.getBookmark().getId())
                 .build();
+    }
+
+    public boolean existsByTagIdAndBookmarkId(String tagId, String bookmarkId){
+        return tagBookmarkRepository.existsByTagIdAndBookmarkId(tagId, bookmarkId);
     }
 
 //

@@ -14,6 +14,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, String> {
     Optional<Bookmark> findByBookmarkName(String bookmarkName);
     List<Bookmark> findAllByUser_Id(String user_id);
     Optional<Bookmark> findByBookmarkNameAndUser_Id(String bookmarkName, String user_id);
+    boolean existsByBookmarkNameAndUser_Id(String bookmarkName, String user_id);
 }
 
 // 여기서 Optional<Bookmark>를 받아서 service에서 BookmarkDto로 변환함
