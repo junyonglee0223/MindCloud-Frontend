@@ -25,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tagbookmark")
+@CrossOrigin(origins = "chrome-extension://jdceomhmccgnolblojlknlhopaoikoda")  // Chrome 확장 프로그램의 origin 추가
 public class TagBookmarkController {
 
     private final TagBookmarkService tagBookmarkService;
