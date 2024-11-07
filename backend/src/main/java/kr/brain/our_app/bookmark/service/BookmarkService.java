@@ -61,6 +61,7 @@ public class BookmarkService {
         return bookmarkRepository.findAllByUser_Id(userDto.getId())
                 .stream()
                 .map(bookmark -> BookmarkDto.builder()
+                        .id(bookmark.getId())
                         .bookmarkName(bookmark.getBookmarkName())
                         .url(bookmark.getUrl())
                         .build())

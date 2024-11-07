@@ -109,7 +109,6 @@ public class TagBookmarkServiceTest {
         assertThat(retrievedTagBookmark.getTag().getId()).isEqualTo(tagId);
         assertThat(retrievedTagBookmark.getBookmark().getId()).isEqualTo(bookmarkId);
     }
-
 //    @Test
 //    void testCreateTagBookmark_AlreadyExists() {
 //        // given: 첫 번째 TagBookmark 생성
