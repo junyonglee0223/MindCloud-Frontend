@@ -213,7 +213,7 @@ public class TagBookmarkService {
 
             // tagName에 해당하는 TagBookmarks를 가져옵니다.
             List<TagBookmark> tagBookmarks = tagBookmarkRepository.
-                    findTagBookmarksByTagName(tagDto.getTagName());
+                    findTagBookmarksByTagNameAndUserId(tagDto.getTagName() , userId);
 
             // tag에 속한 bookmark가 없는 경우 빈 리스트 반환
             if (tagBookmarks.isEmpty()) {
