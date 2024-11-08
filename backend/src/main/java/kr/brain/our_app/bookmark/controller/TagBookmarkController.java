@@ -15,6 +15,7 @@ import kr.brain.our_app.tag.repository.TagRepository;
 import kr.brain.our_app.tag.service.TagService;
 import kr.brain.our_app.user.dto.UserDto;
 import kr.brain.our_app.user.service.UserService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +50,19 @@ public class TagBookmarkController {
     public ResponseEntity<List<TagBookmarkDto>> createTagBookmarksFromRequest(@RequestBody RequestFrontDto requestFrontDto){
         List<TagBookmarkDto> tagBookmarkDtos = tagBookmarkService.requestTagBookmark(requestFrontDto);
         return ResponseEntity.ok(tagBookmarkDtos);
+    }
+
+    @GetMapping("/out")
+    public ResponseEntity<StringBuilder> responseTagBookmark(@RequestParam String tagName
+    , @RequestParam String userEmail){
+        StringBuilder ret = new StringBuilder();
+        List<BookmarkDto>bookmarkDtos = tagBookmarkService.responseTagBookmark(tagName, userEmail);
+        for(BookmarkDto bmd : bookmarkDtos){
+            ret.append(bmd.getBookmarkName());
+        }
+        //FIXME string 형식의 entity로 넘겨주는 방식으로 구현
+        //TODO 반환 방식에 대한 회의 필요 tag -> bookmarkName or bookmarkURL or show all of them
+        return ResponseEntity.ok(ret);
     }
 
     // 1. TagBookmark 생성
