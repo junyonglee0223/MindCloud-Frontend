@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -180,25 +181,59 @@ public class TagBookmarkService {
                 .build();
     }
 
-    public boolean existsByTagIdAndBookmarkId(String tagId, String bookmarkId){
+    public boolean existsByTagIdAndBookmarkId(String tagId, String bookmarkId) {
         return tagBookmarkRepository.existsByTagIdAndBookmarkId(tagId, bookmarkId);
     }
 
-//
-//    public List<TagBookmarkDto> findAllByBookmark(BookmarkDto bookmarkDto) {
-//        // BookmarkDto의 정보를 바탕으로 Bookmark 엔티티 조회
-//        Bookmark bookmark = bookmarkRepository.findByBookmarkName(bookmarkDto.getBookmarkName())
-//                .orElseThrow(() -> new IllegalArgumentException("Bookmark not found"));
-//
-//        return tagBookmarkRepository.findAllByBookmark(bookmark)
-//                .stream()
-//                .map(tagBookmark -> TagBookmarkDto.builder()
-//                        .tagName(tagBookmark.getTag().getTagName())
-//                        .bookmarkName(tagBookmark.getBookmark().getBookmarkName())
-//                        .build())
-//                .collect(Collectors.toList());
-//    }
-//
+    // "검색" 창에서, bookmark name이 들어올 경우 해당 bookmark를 찾아서 dto를 반환하는 함수
+    // 이 함수를 굳이 만들 필요가 있을까?? bookmark메서드에 있는걸 쓰면 안되나?? 이생각이 자꾸드네
+    // 일단 bookmarkservice에 있는걸 가져와서 사용하는 걸로 만듦
+
+    //FIXME 리턴 방식 다시 생각해봐야함
+    public BookmarkDto searchBookmarkByBookmarkName(String bookmarkName , String userId) {
+        // 사용자가 검색란에 bookmarkname을 입력, bookmarkdto 반환front에서 userId를 쏴주었다고 가정하고 작성
+        if(bookmarkService.existsByBookmarkName(bookmarkName,userId)){
+            UserDto currentUserDto = userService.findById(userId);
+            BookmarkDto bookmarkDto = bookmarkService.findByBookmarkName(bookmarkName,currentUserDto);
+            return bookmarkDto;
+        }
+        else{
+            //여기서 해당하는 bookmark가 없으면 그냥 빈 칸으로 내보내고 싶은데, null 로 내보내도 되나?
+            //null이 오면 에러처리를 하는 로직이 프론트에 필요한데, 없을 수도 있으니까 빈객체를 반환하게 한다
+            return BookmarkDto.builder().bookmarkName("").url("").build();
+        }
+    }
+
+    // TagName을 입력받고 해당 tag에 속하는 bookmark들을 모두 출력하는 메서드
+    public List<BookmarkDto> findBookmarksByTagName(String tagName, String userId) {
+        if (tagService.existsByTagName(tagName, userId)) { // Tag가 존재하는지 확인
+            // UserDto와 TagDto를 가져옵니다.
+            UserDto userDto = userService.findById(userId);
+            TagDto tagDto = tagService.findByTagName(tagName, userDto);
+
+            // tagName에 해당하는 TagBookmarks를 가져옵니다.
+            List<TagBookmark> tagBookmarks = tagBookmarkRepository.
+                    findTagBookmarksByTagName(tagDto.getTagName());
+
+            // tag에 속한 bookmark가 없는 경우 빈 리스트 반환
+            if (tagBookmarks.isEmpty()) {
+                return Collections.emptyList();
+            }
+
+            // TagBookmark에서 BookmarkDto에 접근해서 찾아오기
+            return tagBookmarks.stream()
+                    .map(tagBookmark -> bookmarkService.findBookmarkById
+                            (tagBookmark.getBookmark().getId()))
+                    .collect(Collectors.toList());
+        }// tagbookmark에서getbookmark()를 가져오는데, 그거의 id를 바다와서 bookmark객체를 return 받음
+        //.collect(Collectors.toList()): 스트림에서 변환된 BookmarkDto 객체들을 리스트로 수집하여 반환합니다.
+        else {
+            // 해당 태그가 존재하지 않는 경우 빈 리스트 반환
+            return Collections.emptyList();
+        }
+    }
+
+
 //    public List<TagBookmarkDto> findAllByTag(TagDto tagDto) {
 //        // TagDto의 정보를 바탕으로 Tag 엔티티 조회
 //        Tag tag = tagRepository.findByTagName(tagDto.getTagName())
