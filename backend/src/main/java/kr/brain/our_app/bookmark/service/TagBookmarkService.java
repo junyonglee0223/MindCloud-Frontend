@@ -114,12 +114,12 @@ public class TagBookmarkService {
         String userID = userService.findByEmail(userEmail).getId();
 
         //FIXME user dto로 받아야 하는지?? -> service가 dto로 받고 있는 상황 
-        // -> 나중에 string 입력받는 방식으로 수정해야 함 
+        // -> 나중에 string 입력받는 방식으로 수정해야 함
         
         UserDto userDto = UserDto.builder()
                 .id(userID).build();
         String tagId = tagService.findByTagName(tagName, userDto).getId();
-        List<TagBookmarkDto> tagBookmarkDtos = findByTagId(tagId, userID);
+        List<TagBookmarkDto> tagBookmarkDtos = findByTagId(tagId);
 
         List<BookmarkDto> bookmarkDtos = new ArrayList<>();
         for(TagBookmarkDto tbd : tagBookmarkDtos){
@@ -199,7 +199,7 @@ public class TagBookmarkService {
     }
 
     //FIXME userId로 처리하는 부분 refactoring 필요
-    List<TagBookmarkDto> findByTagId(String tagId, String userId){
+    List<TagBookmarkDto> findByTagId(String tagId){
         return tagBookmarkRepository.findByTagId(tagId).stream()
                 .map(tagBookmark -> TagBookmarkDto.builder()
                         .tagId(tagBookmark.getTag().getId())
