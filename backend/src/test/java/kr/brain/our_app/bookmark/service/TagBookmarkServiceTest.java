@@ -117,4 +117,32 @@ public class TagBookmarkServiceTest {
 //        // when & then: 동일한 TagBookmark를 생성하려고 하면 예외가 발생
 //        assertThrows(IllegalArgumentException.class, () -> tagBookmarkService.createTagBookmark(tagId, bookmarkId, userId));
 //    }
+    @Test
+    void testResponseTagBookmark_ReturnsCorrectBookmarks() {
+        // Given: RequestFrontDto를 통해 Tag와 Bookmark를 생성
+        RequestFrontDto requestFrontDto = RequestFrontDto.builder()
+                .email("ljyong3339@gmail.com")
+                .userName("test1")
+                .title("Sample Bookmark")
+                .url("http://sample.com")
+                .tags(Arrays.asList("SampleTag"))
+                .build();
+        tagBookmarkService.requestTagBookmark(requestFrontDto);
+
+        // When: 특정 태그와 사용자 이메일로 북마크 목록 조회
+        List<BookmarkDto> bookmarkDtos = tagBookmarkService.responseTagBookmark("SampleTag", "ljyong3339@gmail.com");
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");//test
+        System.out.println(bookmarkDtos);   //TEST
+        bookmarkDtos.forEach(bookmarkDto -> {
+            System.out.println("Bookmark Name: " + bookmarkDto.getBookmarkName());
+            System.out.println("URL: " + bookmarkDto.getUrl());
+            System.out.println("----");
+        });
+
+        // Then: 결과 검증
+        assertThat(bookmarkDtos).isNotEmpty();
+        assertThat(bookmarkDtos.size()).isEqualTo(1); // Sample Bookmark 하나만 존재
+        assertThat(bookmarkDtos.get(0).getBookmarkName()).isEqualTo("Sample Bookmark");
+        assertThat(bookmarkDtos.get(0).getUrl()).isEqualTo("http://sample.com");
+    }
 }
