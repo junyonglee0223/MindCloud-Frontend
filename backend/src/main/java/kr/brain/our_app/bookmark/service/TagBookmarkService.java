@@ -109,13 +109,31 @@ public class TagBookmarkService {
         return tagBookmarkDtoList;
     }
 
-    //TODO check tagBookmark entity
-        //option1 = get tag, bookmark dto -> get tagbookmark
-        //option2 = get entities -> get tagbookmark
+
+    //tag 요청했을 경우 bookmarkDto 반환하는 서비스 로직
+    public List<BookmarkDto> responseTagBookmark(String tagName, String userEmail){
+        String userID = userService.findByEmail(userEmail).getId();
+
+        //FIXME user dto로 받아야 하는지?? -> service가 dto로 받고 있는 상황
+        // -> 나중에 string 입력받는 방식으로 수정해야 함
+
+        UserDto userDto = UserDto.builder()
+                .id(userID).build();
+        String tagId = tagService.findByTagName(tagName, userDto).getId();
+        List<TagBookmarkDto> tagBookmarkDtos = findByTagId(tagId);
+
+        List<BookmarkDto> bookmarkDtos = new ArrayList<>();
+        for(TagBookmarkDto tbd : tagBookmarkDtos){
+            BookmarkDto bookmarkDto = bookmarkService.findBookmarkById(tbd.getBookmarkId());
+            bookmarkDtos.add(bookmarkDto);
+        }
+        return bookmarkDtos;
+    }
+
+
     public TagBookmarkDto findTagBookmarkByTagAndBookmark(
             TagDto tagDto, BookmarkDto bookmarkDto
     ){
-        //TODO 받은 tagDto, bookmarkDto가 실제 존재하는지 확인하는 로직 필요
         if(!tagService.existsById(tagDto.getId()) || !bookmarkService.existsById(bookmarkDto.getId())){
             throw new IllegalArgumentException("Tag or Bookmark does not exist");
         }
@@ -181,7 +199,17 @@ public class TagBookmarkService {
                 .build();
     }
 
-    public boolean existsByTagIdAndBookmarkId(String tagId, String bookmarkId) {
+    //FIXME userId로 처리하는 부분 refactoring 필요
+    List<TagBookmarkDto> findByTagId(String tagId){
+        return tagBookmarkRepository.findByTagId(tagId).stream()
+                .map(tagBookmark -> TagBookmarkDto.builder()
+                        .tagId(tagBookmark.getTag().getId())
+                        .bookmarkId(tagBookmark.getBookmark().getId())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public boolean existsByTagIdAndBookmarkId(String tagId, String bookmarkId){
         return tagBookmarkRepository.existsByTagIdAndBookmarkId(tagId, bookmarkId);
     }
 

@@ -63,8 +63,6 @@ public class UserService {
         User findUser = userRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!findin repo"+findUser);//test
-
         return UserDto.builder()
                 .id(findUser.getId())
                 .userName(findUser.getUserName())
