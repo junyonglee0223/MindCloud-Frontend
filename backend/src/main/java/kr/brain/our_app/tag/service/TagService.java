@@ -28,17 +28,18 @@ public class TagService {
     }
     // 1. tag 생성
     public TagDto createTag(TagDto tagDto, UserDto userDto) {
-        if(tagRepository.existsByTagName(tagDto.getTagName())){
-            throw new IllegalArgumentException("This TagName already exists.");
-        }
+
 
 
         UserDto findUserDto = userService.findById(userDto.getId());
         User user = findUserDto.toEntity();
 
+        if(tagRepository.existsByTagNameAndUser_Id(tagDto.getTagName(), userDto.getId())) {
+            throw new IllegalArgumentException("This TagName already exists.");
+        }
         //tag는 그냥 toentity() 안쓰고 만들어봄 field 를 알기 쉬우라고
         //TODO id 생성 시 tagName + user 속성 추가해서 생성해야 함
-        String createId = IDGenerator.generateId(tagDto.getTagName());
+        String createId = IDGenerator.generateId(tagDto.getTagName()+user.getId());
 
         Tag tag = Tag.builder()
                 .id(createId)

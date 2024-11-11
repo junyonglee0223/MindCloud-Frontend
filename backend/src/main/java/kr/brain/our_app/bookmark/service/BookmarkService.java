@@ -37,7 +37,7 @@ public class BookmarkService {
                 .email(findUserDto.getEmail())
                 .build();
 
-        String createbookmarkId = IDGenerator.generateId(bookmarkDto.getBookmarkName());
+        String createbookmarkId = IDGenerator.generateId(bookmarkDto.getBookmarkName()+user.getId());
         //user 객체를 전달해서 setUser(user) 전달x
 
         Bookmark bookmark = Bookmark.builder()

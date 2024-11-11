@@ -152,6 +152,7 @@ public class TagBookmarkService {
         // 1. dto에 user_id를 추가해서 통일성을 맞춘다.   -> 통일성 맞춤
         // 2. tagbookmark 생성시 userDto를 지속적으로 입력한다. -> 전체 refactoring 필요
         // 3. create 하는 부분에서만 user entity 필요함 find 영역에서는 필요없음
+        // 4. id가 들어오는지 name인지 모르긴 하지만 일단 id로 두는걸로
         UserDto currentUserDto = userService.findById(userId);
 
         User user = User.builder()
@@ -160,11 +161,6 @@ public class TagBookmarkService {
                 .email(currentUserDto.getEmail())
                 .build();
 
-
-        //TODO 이미 존재하면 예외처리
-        String createTagBookmarkId
-                = IDGenerator.generateId(tagId + bookmarkId);
-        //TODO 새로 생성해야 함
         TagDto tagDto = tagService.findById(tagId);
         //TODO user entity를 입력해 줘야 하는 문제 있음
         //FIXME user 임시 추가
@@ -185,11 +181,20 @@ public class TagBookmarkService {
                 .user(user)
                 .build();
 
+        //
+        //TODO 이미 존재하면 예외처리
+        String createTagBookmarkId
+                = IDGenerator.generateId(tagId + bookmarkId);
+
+        // 이미 존재하는지 확인
+        if (tagBookmarkRepository.existsByTagIdAndBookmarkId(tagId, bookmarkId)) {
+            throw new IllegalArgumentException("This TagBookmark already exists with tagId: " + tagId + " and bookmarkId: " + bookmarkId);
+        }
+        // 새로 tagbookmark 객체 생성
         TagBookmark tagBookmark = TagBookmark.builder()
                 .id(createTagBookmarkId)
                 .tag(tag)
                 .bookmark(bookmark).build();
-
 
         TagBookmark savedTagBookmark = tagBookmarkRepository.save(tagBookmark);
 
@@ -212,6 +217,7 @@ public class TagBookmarkService {
     public boolean existsByTagIdAndBookmarkId(String tagId, String bookmarkId){
         return tagBookmarkRepository.existsByTagIdAndBookmarkId(tagId, bookmarkId);
     }
+
 
     // "검색" 창에서, bookmark name이 들어올 경우 해당 bookmark를 찾아서 dto를 반환하는 함수
     // 이 함수를 굳이 만들 필요가 있을까?? bookmark메서드에 있는걸 쓰면 안되나?? 이생각이 자꾸드네
