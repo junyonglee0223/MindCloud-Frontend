@@ -17,6 +17,7 @@ public interface TagBookmarkRepository extends JpaRepository<TagBookmark, String
     boolean existsByTagIdAndBookmarkId(String tagId, String bookmarkId);
     List<TagBookmark> findByTagId(String tagId);
 
+    List<TagBookmark> findTagBookmarksByTagNameAndUserId(String tagName, String userId);
     List<TagBookmark> findAllByBookmark(Bookmark bookmark);
     List<TagBookmark> findAllByTag(Tag tag);
 
