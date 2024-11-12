@@ -29,16 +29,13 @@ public class TagService {
     // 1. tag 생성
     public TagDto createTag(TagDto tagDto, UserDto userDto) {
 
-
-
         UserDto findUserDto = userService.findById(userDto.getId());
         User user = findUserDto.toEntity();
 
         if(tagRepository.existsByTagNameAndUser_Id(tagDto.getTagName(), userDto.getId())) {
             throw new IllegalArgumentException("This TagName already exists.");
         }
-        //tag는 그냥 toentity() 안쓰고 만들어봄 field 를 알기 쉬우라고
-        //TODO id 생성 시 tagName + user 속성 추가해서 생성해야 함
+
         String createId = IDGenerator.generateId(tagDto.getTagName()+user.getId());
 
         Tag tag = Tag.builder()
@@ -56,13 +53,20 @@ public class TagService {
 
     // 2. 유저가 가지고 있는 Tag 모두 출력
     public List<TagDto> findAllTags(UserDto userDto) {
+        List<Tag> tags = tagRepository.findAllByUser_Id(userDto.getId());
+
+        if(tags.isEmpty()) {
+            throw new IllegalArgumentException("해당 사용자에 저장된 태그가 없습니다.");
+        }
+
         return tagRepository.findAllByUser_Id(userDto.getId())
                 .stream()
                 .map(tag -> TagDto.builder()
                         .tagName(tag.getTagName())
                         .build())
                 .collect(Collectors.toList());
-    } // tag가 없을 경우... 빈 리스트가 출력되는지 확인해봐야함
+
+    }
 
     // 3. tagName 으로 태그 조회 (userdto에 담긴 id로 사용자 식별)
     public TagDto findByTagName(String tagName, UserDto userDto) {
@@ -71,8 +75,9 @@ public class TagService {
                         .id(tag.getId())
                         .tagName(tag.getTagName())
                         .build())
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 TagName을 가진 Tag가 존재하지 않습니다: " + tagName));
-    }// Optional 제거하고, 그냥 TagDto로 수정.
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "해당 사용자의 TagName을 가진 Tag가 존재하지 않습니다: " + tagName));
+    }
 
     // 4. TagId로 태그 조회 -> tagdto에 tagname이 담겨서 전달
     public TagDto findById(String id) {
