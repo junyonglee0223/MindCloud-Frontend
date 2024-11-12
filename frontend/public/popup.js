@@ -123,5 +123,3 @@ document.addEventListener('DOMContentLoaded', function() {
     displayBookmarks(data.bookmarks);
   });
 });
-
-// 코파일럿은 바보다
