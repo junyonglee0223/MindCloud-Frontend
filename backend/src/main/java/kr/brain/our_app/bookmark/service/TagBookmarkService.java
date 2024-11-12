@@ -32,7 +32,6 @@ public class TagBookmarkService {
     private final TagService tagService;
     private final UserService userService;
 
-
     @Autowired
     public TagBookmarkService(TagBookmarkRepository tagBookmarkRepository,
                               BookmarkService bookmarkService,
@@ -49,6 +48,8 @@ public class TagBookmarkService {
         this.userService = userService;
     }
 
+    //WARN User 생성되는게 어디서 생성되는지 아직 몰라서 tagbookmark 컨트롤러에서 user 생성하는 걸로 두긴했는데,
+    //WARN 정확하게 어디서 생성되는지, 로직을 수정해야하는지 등을
 
     public List<TagBookmarkDto> requestTagBookmark(RequestFrontDto requestFrontDto){
         System.out.println(requestFrontDto);    //TEST
@@ -234,7 +235,7 @@ public class TagBookmarkService {
 
             // tagName에 해당하는 TagBookmarks를 가져옵니다.
             List<TagBookmark> tagBookmarks = tagBookmarkRepository.
-                    findTagBookmarksByTagNameAndUserId(tagDto.getTagName() , userId);
+                    findTagBookmarksByTag_TagNameAndTag_User_Id(tagDto.getTagName() , userId);
 
             // tag에 속한 bookmark가 없는 경우 빈 리스트 반환
             if (tagBookmarks.isEmpty()) {

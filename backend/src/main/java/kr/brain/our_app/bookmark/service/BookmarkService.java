@@ -90,7 +90,7 @@ public class BookmarkService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 bookmarkName을 가진 bookmark가 존재하지 않습니다: " + bookmarkName));
     }
 
-    //  북마크 삭제
+    // 4. 북마크 삭제
     public void deleteBookmark(String bookmarkId) {
         // 1. Bookmark ID로 객체 조회
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
