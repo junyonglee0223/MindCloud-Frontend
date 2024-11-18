@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const tagContainer = document.getElementById('tagContainer');
   const bookmarkList = document.getElementById('bookmarkList');
 
+    // 검색 버튼 클릭 시 search.html로 이동
+    goToSearchBtn.addEventListener('click', function () {
+      window.location.href = 'search.html';
+    });
+  
   // 북마크 저장 버튼 클릭 시 GPT API 호출 후 북마크 저장
   saveBookmarkBtn.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
