@@ -2,50 +2,34 @@ document.addEventListener('DOMContentLoaded', function() {
   const saveBookmarkBtn = document.getElementById('saveBookmarkBtn');
   const tagContainer = document.getElementById('tagContainer');
   const bookmarkList = document.getElementById('bookmarkList');
+  const goToSearchBtn = document.getElementById('goToSearchBtn');
 
-    // 검색 버튼 클릭 시 search.html로 이동
-    goToSearchBtn.addEventListener('click', function () {
-      window.location.href = 'search.html';
-    });
-  
-  // 북마크 저장 버튼 클릭 시 GPT API 호출 후 북마크 저장
-  saveBookmarkBtn.addEventListener('click', function() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+  // 검색 버튼 클릭 시 search.html로 이동
+  goToSearchBtn.addEventListener('click', function () {
+    window.location.href = 'search.html';
+  });
+
+  // "북마크 저장하기" 버튼 클릭 이벤트
+  saveBookmarkBtn.addEventListener('click', function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const currentTab = tabs[0];
-      const bookmark = {
-        title: currentTab.title,
-        url: currentTab.url
-      };
 
       // GPT API 호출하여 태그 생성
-      fetchGPTTags(bookmark.url, bookmark.title)
+      fetchGPTTags(currentTab.url, currentTab.title)
         .then((tags) => {
-          bookmark.tags = tags.map(tag => tag.trim()); // GPT에서 생성된 태그를 깔끔하게 정리
-
-          // 기존 북마크 불러오기 및 새로운 북마크 저장
-          chrome.storage.sync.get({ bookmarks: [] }, function(data) {
-            const bookmarks = data.bookmarks;
-            bookmarks.push(bookmark);
-
-               // 백엔드로 북마크 데이터 전송
-          sendBookmarkToBackend(bookmark)
-          .then((response) => {
-            console.log('백엔드로 북마크 저장 완료:', response);
-
-            chrome.storage.sync.set({ bookmarks: bookmarks }, function() {
-              displayTags(); // 태그 목록 업데이트
-              displayBookmarks(bookmarks); // 북마크 목록 업데이트
-            });
-          })
-          .catch((error) => {
-              console.error('백엔드 저장 중 오류 발생:', error);
-          });
-          });
+          // 북마크 데이터 생성 및 팝업 열기
+          const bookmark = {
+            title: currentTab.title,
+            url: currentTab.url,
+            tags: tags, // GPT로 생성된 태그 추가
+          };
+          openEditPopup(bookmark); // edit-popup.js의 함수 호출
         })
         .catch((error) => {
-          console.error('GPT API 호출 중 오류 발생:', error);
+          console.error('태그 생성 중 오류 발생:', error);
+          alert('태그를 생성하는 데 문제가 발생했습니다. 다시 시도해주세요.');
         });
-    });
+      });
   });
 
 
@@ -139,24 +123,28 @@ document.addEventListener('DOMContentLoaded', function() {
   //   displayBookmarks(data.bookmarks);
   // });
 
+  
     // 초기화 함수
-  function initialize() {
+  function initializeData() {
     const userEmail = "test1@gmail.com";
-    // 1. 백엔드에서 모든 북마크 가져오기
-    getAllBookmarksFromBackend(userEmail)
-      .then((bookmarks) => {
-        // 2. chrome.storage.sync에 북마크 저장
-        chrome.storage.sync.set({ bookmarks: bookmarks }, function () {
-          console.log("북마크가 chrome.storage.sync에 저장되었습니다:", bookmarks);
-
-          // 3. 태그와 북마크 목록 표시
-          displayTags();
-          displayBookmarks(bookmarks);
-        });
-      })
-      .catch((error) => {
-        console.error("초기화 중 오류 발생:", error);
-      });
+    chrome.storage.sync.clear(function(){
+        // 1. 백엔드에서 모든 북마크 가져오기
+        getAllBookmarksFromBackend(userEmail)
+          .then((bookmarks) => {
+            // 2. chrome.storage.sync에 북마크 저장
+            chrome.storage.sync.set({ bookmarks: bookmarks }, function () {
+              console.log("북마크가 chrome.storage.sync에 저장되었습니다:", bookmarks);
+    
+              // 3. 태그와 북마크 목록 표시
+              displayTags();
+              displayBookmarks(bookmarks);
+            });
+          })
+          .catch((error) => {
+            console.error("초기화 중 오류 발생:", error);
+          });
+    });
   }
-  initialize();
+  window.initializeData = initializeData;
+  initializeData();
 });
