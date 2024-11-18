@@ -81,19 +81,25 @@ document.addEventListener('DOMContentLoaded', function() {
       tagContainer.innerHTML = ''; // 기존 태그 목록 초기화
       const colors = ['#FF6666', '#FFB266', '#FFFF66', '#B2FF66', '#66FF66', '#66FFB2']; // 버튼 색상 배열
       let colorIndex = 0; // 색상 인덱스 초기화
+      
+      const uniqueTags = new Set(); //중복 태그 방지
 
       bookmarks.forEach(bookmark => {
         bookmark.tags.forEach(tag => {
-          const tagElement = document.createElement('button'); // 버튼으로 변경
-          tagElement.className = 'tag';
-          tagElement.textContent = tag; // 태그 표시
-          tagElement.style.backgroundColor = colors[colorIndex]; // 버튼 색상 지정
-          tagElement.style.margin = '5px'; // 버튼 간격 지정
-          tagElement.addEventListener('click', function() {
-            filterBookmarksByTag(tag); // 태그 클릭 시 해당 북마크 필터링
-          });
-          tagContainer.appendChild(tagElement);
-          colorIndex = (colorIndex + 1) % colors.length; // 색상 인덱스 순환
+          if(!uniqueTags.has(tag)){
+            uniqueTags.add(tag);
+            
+            const tagElement = document.createElement('button'); // 버튼으로 변경
+            tagElement.className = 'tag';
+            tagElement.textContent = tag; // 태그 표시
+            tagElement.style.backgroundColor = colors[colorIndex]; // 버튼 색상 지정
+            tagElement.style.margin = '5px'; // 버튼 간격 지정
+            tagElement.addEventListener('click', function() {
+              filterBookmarksByTag(tag); // 태그 클릭 시 해당 북마크 필터링
+            });
+            tagContainer.appendChild(tagElement);
+            colorIndex = (colorIndex + 1) % colors.length; // 색상 인덱스 순환
+          }
         });
       });
     });
