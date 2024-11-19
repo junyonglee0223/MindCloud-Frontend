@@ -89,3 +89,27 @@ function getAllBookmarksFromBackend(userEmail){
         console.error('백엔드에서 데이터 불러오는 중 오류 발생:', error);
     });
 }
+
+
+// 검색 결과를 백엔드에서 가져오는 함수
+function fetchSearchResults(word, email) {
+    const apiUrl = `http://localhost:8080/api/search?word=${encodeURIComponent(word)}&email=${encodeURIComponent(email)}`;
+  
+    return fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('백엔드 검색 API 호출 중 오류 발생:', error);
+        throw error; // 오류를 상위로 전달
+      });
+  }
+  

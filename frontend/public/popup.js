@@ -133,8 +133,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // 초기화 함수
   function initializeData() {
     const userEmail = "test1@gmail.com";
-    ///clear start-----------------
-    chrome.storage.sync.clear(function(){             
+    /////////clear start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    chrome.storage.sync.clear(function(){
+    /////////clear start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
         // 1. 백엔드에서 모든 북마크 가져오기
         getAllBookmarksFromBackend(userEmail)
           .then((bookmarks) => {
@@ -150,8 +152,10 @@ document.addEventListener('DOMContentLoaded', function() {
           .catch((error) => {
             console.error("초기화 중 오류 발생:", error);
           });
+
+    /////////clear end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     });
-    ///clear end-----------------------
+    /////////clear end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   }
   window.initializeData = initializeData;
   initializeData();

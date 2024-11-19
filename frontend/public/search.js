@@ -11,21 +11,19 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('검색어를 입력하세요.');
         return;
       }
-  
-      // chrome.storage.sync에서 검색어 기반 북마크 및 태그 필터링
-      chrome.storage.sync.get({ bookmarks: [] }, function (data) {
-        const bookmarks = data.bookmarks;
-  
-        // 태그와 북마크 이름으로 각각 필터링
-        const tagResults = bookmarks.filter(bookmark =>
-          bookmark.tags.some(tag => tag.includes(query))
-        );
-        const bookmarkResults = bookmarks.filter(bookmark =>
-          bookmark.title.includes(query)
-        );
-  
-        // 결과 출력
-        displaySearchResults(tagResults, bookmarkResults, query);
+
+      // 백엔드 API 호출
+      const tmpEmail = "test1@gmail.com"//FIXME
+      fetchSearchResults(query, tmpEmail)
+        .then((data) => {
+          // 검색 결과 출력
+          console.log(data.tagResults);//test
+          console.log(data.bookmarkResults);//test
+          displaySearchResults(data.tagResults, data.bookmarkResults, query);
+        })
+        .catch((error) => {
+          console.error('검색 중 오류 발생:', error);
+          alert('검색 중 문제가 발생했습니다. 다시 시도해주세요.');
       });
     });
   
@@ -51,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
         tagResults.forEach(function (bookmark) {
           const listItem = document.createElement('li');
-          listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.title}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
+          listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.bookmarkName}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
           searchResults.appendChild(listItem);
         });
       }
@@ -64,10 +62,11 @@ document.addEventListener('DOMContentLoaded', function () {
   
         bookmarkResults.forEach(function (bookmark) {
           const listItem = document.createElement('li');
-          listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.title}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
+          listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.bookmarkName}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
           searchResults.appendChild(listItem);
         });
       }
     }
+    
   });
   
