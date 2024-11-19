@@ -111,5 +111,29 @@ function fetchSearchResults(word, email) {
         console.error('백엔드 검색 API 호출 중 오류 발생:', error);
         throw error; // 오류를 상위로 전달
       });
+}
+
+// 백엔드에서 북마크 삭제 요청
+function deleteBookmarkFromBackend(title, email) {
+    // title과 email을 쿼리 파라미터로 전달
+    const apiUrl = `http://localhost:8080/api/search/bookmarks?title=${encodeURIComponent(title)}&email=${encodeURIComponent(email)}`;
+  
+    return fetch(apiUrl, {
+      method: 'DELETE', // HTTP DELETE 메서드 사용
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('백엔드 삭제 API 호출 중 오류 발생:', error);
+        throw error; // 상위로 오류 전달
+      });
   }
+  
   

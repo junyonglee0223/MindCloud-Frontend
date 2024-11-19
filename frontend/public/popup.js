@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function initializeData() {
     const userEmail = "test1@gmail.com";
     /////////clear start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    chrome.storage.sync.clear(function(){
+    //chrome.storage.sync.clear(function(){
     /////////clear start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // 1. 백엔드에서 모든 북마크 가져오기
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
           });
 
     /////////clear end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    });
+    //});
     /////////clear end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   }
   window.initializeData = initializeData;

@@ -1,0 +1,52 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.4'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'kr.brain'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//implementation 'com.h2database:h2:1.4.200'  // H2 데이터베이스
+	implementation 'mysql:mysql-connector-java:8.0.32'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'  // MyBatis
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'  // Thymeleaf
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Hibernate Validator는 Java Bean Validation API를 구현한 라이브러리로, @URL 어노테이션을 제공하는 역할을 합니다.
+	implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'  // Java Bean Validation 표준 스펙
+	implementation 'javax.validation:validation-api:2.0.1.Final'  // Java Validation API
+
+}
+
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

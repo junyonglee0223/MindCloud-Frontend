@@ -3,7 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchBtn = document.getElementById('searchBtn');
     const goBackBtn = document.getElementById('goBackBtn');
     const searchResults = document.getElementById('searchResults');
+    const tmpEmail = "test1@gmail.com"; // FIXME: 사용자 이메일 설정
   
+    // 페이지 로드 시 기본 북마크 출력
+     displayAllBookmarks();
+
+     
     // 검색 버튼 클릭 이벤트
     searchBtn.addEventListener('click', function () {
       const query = searchInput.value.trim();
@@ -67,6 +72,32 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       }
     }
+
+
+  // 모든 북마크 출력 함수
+  function displayAllBookmarks() {
+    getAllBookmarksFromBackend(tmpEmail) // backend.js의 함수 호출
+      .then((bookmarks) => {
+        searchResults.innerHTML = ''; // 기존 결과 초기화
+
+        if (bookmarks.length === 0) {
+          searchResults.innerHTML = '<li>저장된 북마크가 없습니다.</li>';
+          return;
+        }
+
+        // 모든 북마크 출력
+        bookmarks.forEach((bookmark) => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.title}</a>
+            <p>Tags: ${bookmark.tags.join(', ')}</p>`;
+          searchResults.appendChild(listItem);
+        });
+      })
+      .catch((error) => {
+        console.error('북마크 불러오기 중 오류 발생:', error);
+        alert('북마크를 불러오는 데 실패했습니다.');
+      });
+  }
     
   });
   
