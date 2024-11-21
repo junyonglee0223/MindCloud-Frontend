@@ -1,5 +1,5 @@
-//const baseUrl = "http://localhost:8080";
-const baseUrl = "http://43.201.62.22";
+const baseUrl = "http://localhost:8080";
+//const baseUrl = "http://43.201.62.22:8080";
 
 function createApiUrl(endpoint){
   return `${baseUrl}${endpoint}`;
