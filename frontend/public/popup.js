@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 검색 버튼 클릭 시 search.html로 이동
   goToSearchBtn.addEventListener('click', function () {
-    window.location.href = 'search.html';
+    chrome.tabs.create({
+      url: chrome.runtime.getURL('search_page.html') // 열고자 하는 HTML 파일 경로
+    });  
   });
 
   // "북마크 저장하기" 버튼 클릭 이벤트
@@ -134,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function initializeData() {
     const userEmail = "test1@gmail.com";
     /////////clear start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    chrome.storage.sync.clear(function(){
+    //chrome.storage.sync.clear(function(){
     /////////clear start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // 1. 백엔드에서 모든 북마크 가져오기
@@ -154,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
           });
 
     /////////clear end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    });
+    //});
     /////////clear end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   }
   window.initializeData = initializeData;
