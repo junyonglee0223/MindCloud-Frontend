@@ -121,8 +121,9 @@ function fetchSearchResults(word, userEmail) {
 
 // 백엔드에서 북마크 삭제 요청
 function deleteBookmarkFromBackend(title, userEmail) {
-    const apiUrl = createApiUrl(`/api/search/bookmarks?title=${encodeURIComponent(title)}&email=${encodeURIComponent(userEmail)}`);
- 
+    const apiUrl = createApiUrl(`/api/search/bookmarks?bookmarkName=${encodeURIComponent(title)}&email=${encodeURIComponent(userEmail)}`);
+
+    console.log(title, userEmail);//test
     return fetch(apiUrl, {
       method: 'DELETE', // HTTP DELETE 메서드 사용
       headers: {
@@ -133,7 +134,11 @@ function deleteBookmarkFromBackend(title, userEmail) {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
+        return response.text();
+      })
+      .then((data) => {
+        console.log('백엔드 삭제 API 응답:', data);
+        alert(data); // '북마크가 삭제되었습니다.' 메시지를 출력
       })
       .catch((error) => {
         console.error('백엔드 삭제 API 호출 중 오류 발생:', error);

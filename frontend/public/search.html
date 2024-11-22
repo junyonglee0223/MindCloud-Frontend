@@ -73,6 +73,9 @@
       padding: 10px;
       border-radius: 4px;
       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     #searchResults li a {
@@ -84,6 +87,20 @@
     #searchResults li p {
       margin: 5px 0 0;
       color: #555;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
     }
 
     #goBackBtn {
@@ -112,5 +129,6 @@
     <button id="goBackBtn">뒤로가기</button>
   </div>
   <script src="./search.js"></script>
+  <script src="./backend.js"></script>
 </body>
 </html>

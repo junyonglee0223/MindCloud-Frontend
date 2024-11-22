@@ -34,6 +34,88 @@ document.addEventListener('DOMContentLoaded', function () {
     goBackBtn.addEventListener('click', function () {
       window.location.href = 'popup.html'; // popup.html로 이동
     });
+
+
+    function addContextMenuForBookmark(listItem, title, userEmail) {
+      listItem.addEventListener('contextmenu', function (event) {
+        event.preventDefault(); // 기본 컨텍스트 메뉴 방지
+    
+        // 기존 메뉴가 있으면 제거
+        const existingMenu = document.getElementById('context-menu');
+        if (existingMenu) existingMenu.remove();
+    
+        // 커스텀 컨텍스트 메뉴 생성
+        const menu = document.createElement('div');
+        menu.id = 'context-menu';
+        menu.style.position = 'absolute';
+        menu.style.top = `${event.pageY}px`;
+        menu.style.left = `${event.pageX}px`;
+        menu.style.backgroundColor = '#fff';
+        menu.style.border = '1px solid #ccc';
+        menu.style.padding = '10px';
+        menu.style.boxShadow = '0px 2px 4px rgba(0, 0, 0, 0.1)';
+        menu.style.zIndex = '1000';
+    
+        // 삭제 메뉴 추가
+        const deleteOption = document.createElement('div');
+        deleteOption.textContent = '삭제';
+        deleteOption.style.cursor = 'pointer';
+        deleteOption.style.padding = '5px';
+        deleteOption.style.color = 'red';
+    
+        deleteOption.addEventListener('click', function () {
+          menu.remove(); // 컨텍스트 메뉴 제거
+          deleteBookmark(title, userEmail); // 삭제 동작 실행
+        });
+    
+        menu.appendChild(deleteOption);
+    
+        // 컨텍스트 메뉴 닫기
+        document.addEventListener('click', function closeMenu() {
+          menu.remove();
+          document.removeEventListener('click', closeMenu);
+        });
+    
+        document.body.appendChild(menu);
+      });
+    }
+    
+
+    // 삭제 동작에 확인 팝업 추가
+    function deleteBookmark(title, userEmail) {
+      if (!confirm(`정말로 "${title}" 북마크를 삭제하시겠습니까?`)) {
+        return; // 사용자가 취소하면 삭제하지 않음
+      }
+
+      // 삭제 실행
+      deleteBookmarkFromBackend(title, userEmail)
+        .then(() => {
+          displayAllBookmarks(); // 삭제 후 북마크 목록 갱신
+        })
+        .catch((error) => {
+          console.error('북마크 삭제 중 오류 발생:', error);
+          alert('북마크 삭제에 실패했습니다.');
+        });
+    }
+
+
+
+    // 북마크 리스트 아이템 생성 함수
+    function createBookmarkListItem(bookmark) {
+      const listItem = document.createElement("li");
+      listItem.innerHTML = `
+        <a href="${bookmark.url}" target="_blank">${bookmark.title}</a>
+        <p>Tags: ${bookmark.tags.join(", ")}</p>
+      `;
+      // 컨텍스트 메뉴 추가
+      addContextMenuForBookmark(listItem, bookmark.title, userEmail);
+      return listItem;
+    }
+  
+  
+  
+
+
   
     // 검색 결과 표시 함수
     function displaySearchResults(tagResults, bookmarkResults, query) {
@@ -53,6 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
         tagResults.forEach(function (bookmark) {
           const listItem = document.createElement('li');
           listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.bookmarkName}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
+          // 컨텍스트 메뉴 추가
+          addContextMenuForBookmark(listItem, bookmark.bookmarkName, userEmail);
           searchResults.appendChild(listItem);
         });
       }
@@ -66,6 +150,8 @@ document.addEventListener('DOMContentLoaded', function () {
         bookmarkResults.forEach(function (bookmark) {
           const listItem = document.createElement('li');
           listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.bookmarkName}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
+          // 컨텍스트 메뉴 추가
+          addContextMenuForBookmark(listItem, bookmark.bookmarkName, userEmail);
           searchResults.appendChild(listItem);
         });
       }
@@ -85,9 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 모든 북마크 출력
         bookmarks.forEach((bookmark) => {
-          const listItem = document.createElement('li');
-          listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.title}</a>
-            <p>Tags: ${bookmark.tags.join(', ')}</p>`;
+          const listItem = createBookmarkListItem(bookmark);
           searchResults.appendChild(listItem);
         });
       })
