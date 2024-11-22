@@ -6,63 +6,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./search_vars.css">
   <link rel="stylesheet" href="./search_style.css">
-
+  <title>MindCloud Bookmark Search</title>
   <style>
-    a, button, input, select, h1, h2, h3, h4, h5, * {
-      box-sizing: border-box;
+    body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      border: none;
-      text-decoration: none;
-      background: none;
-      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
     }
-    menu, ol, ul {
+
+    .ui {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    #searchBtn {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #searchBtn:hover {
+      background-color: #0056b3;
+    }
+
+    #searchResults {
       list-style-type: none;
-      margin: 0;
       padding: 0;
+      margin: 0;
+      width: 100%;
+    }
+
+    #searchResults li {
+      background: #f9f9f9;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #searchResults li a {
+      color: #007BFF;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    #searchResults li p {
+      margin: 5px 0 0;
+      color: #555;
+    }
+
+    #goBackBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #goBackBtn:hover {
+      background-color: #5a6268;
     }
   </style>
-  <title>MindCloud Bookmark Search</title>
 </head>
 <body>
   <div class="ui">
-    <div class="depth-0-frame-0">
-      <div class="depth-1-frame-0">
-        <div class="depth-2-frame-0">
-          <div class="depth-3-frame-0">
-            <div class="depth-4-frame-0">
-              <div class="depth-5-frame-0">
-                <div class="depth-6-frame-0">
-                  <img class="mindcloud-icon-1" src="mindcloud-icon-10.png" />
-                </div>
-              </div>
-              <div class="depth-5-frame-1">
-                <div class="mind-cloud">MindCloud</div>
-              </div>
-            </div>
-          </div>
-          <div class="depth-3-frame-1">
-            <div class="depth-4-frame-12">
-              <div class="depth-5-frame-03">
-                <div class="depth-6-frame-03">
-                  <div class="depth-7-frame-02">
-                    <div class="depth-8-frame-0">
-                      <img class="vector-02" src="vector-01.svg" />
-                      <div class="depth-9-frame-0"></div>
-                    </div>
-                  </div>
-                  <div class="depth-7-frame-1">
-                    <div class="div">북마크 검색하기</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- 아래 부분 잠시 지워둠 -->
-          </div>
-        </div>
-      </div>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="북마크 검색하기">
+      <button id="searchBtn">검색</button>
     </div>
+    <ul id="searchResults"></ul>
+    <button id="goBackBtn">뒤로가기</button>
   </div>
+  <script src="./search-page.js"></script>
 </body>
 </html>

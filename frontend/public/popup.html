@@ -8,10 +8,15 @@
       width: 300px;
       height: 400px;
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: #f9f9f9;
     }
+
     .hidden {
       display: none !important;
     }
+
     #popupOverlay {
       position: fixed;
       top: 0;
@@ -24,40 +29,122 @@
       align-items: center;
       z-index: 1000;
     }
+
     #editPopup {
       background: white;
       padding: 20px;
       border-radius: 10px;
-      width: 300px;
+      width: 90%;
+      max-width: 320px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
+
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    input {
+      width: calc(100% - 10px);
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    #addTagInput {
+      margin-right: 5px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #saveBookmarkBtn, #goToSearchBtn {
+      width: calc(100% - 20px);
+      margin: 5px 0;
+    }
+
     .tag {
       cursor: pointer;
-      padding: 5px;
-      background-color: #4CAF50;
+      padding: 5px 8px;
+      background-color: #0066cc; /* 태그 색상 통일 (더 어두운 파란색) */
       color: white;
-      margin-right: 5px;
+      margin: 5px 5px 0 0;
       border-radius: 5px;
+      font-size: 12px;
       display: inline-block;
     }
+
+    .tag:hover {
+      background-color: #004d99; /* hover 상태에서 더 어두운 파란색 */
+    }
+
     .tag .remove {
       margin-left: 5px;
-      color: red;
+      color: white;
+      font-weight: bold;
       cursor: pointer;
     }
-    #addTagInput {
-      width: calc(100% - 50px);
-      margin-right: 5px;
-    }
-    .tag:hover {
-      background-color: #45a049;
-    }
-    #bookmarkList {
+
+    #tagList, #tagContainer {
       margin-top: 10px;
+    }
+
+    #bookmarkList {
+      margin-top: 20px;
       max-height: 200px;
       overflow-y: auto;
+      list-style-type: none;
+      padding: 0;
     }
-    li {
-      margin-bottom: 8px;
+
+    #bookmarkList li {
+      background: #ffffff;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #bookmarkList li a {
+      color: #007BFF;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    #bookmarkList li a:hover {
+      text-decoration: underline;
+    }
+
+    #bookmarkList li p {
+      margin-top: 5px;
+      color: #555;
+      font-size: 12px;
+    }
+
+    #cancelBtn {
+      background-color: #6c757d;
+    }
+
+    #cancelBtn:hover {
+      background-color: #5a6268;
     }
   </style>
 </head>
@@ -65,34 +152,34 @@
   <button id="saveBookmarkBtn">북마크 저장</button>
   <button id="goToSearchBtn">북마크 검색</button>
 
-    <!-- 팝업 오버레이 -->
-    <div id="popupOverlay" class="hidden">
-      <div id="editPopup">
-        <h3>북마크 수정</h3>
-        <label for="bookmarkName">북마크 이름</label>
-        <input type="text" id="bookmarkName" />
-        <label for="bookmarkUrl">북마크 URL</label>
-        <input type="text" id="bookmarkUrl" />
-        
-        <h4>태그 관리</h4>
-        <div id="tagList"></div>
-        <input type="text" id="addTagInput" placeholder="태그 추가" />
-        <button id="addTagBtn">추가</button>
-  
-        <button id="saveBtn">저장</button>
-        <button id="cancelBtn">취소</button>
-      </div>
+  <!-- 팝업 오버레이 -->
+  <div id="popupOverlay" class="hidden">
+    <div id="editPopup">
+      <h3>북마크 수정</h3>
+      <label for="bookmarkName">북마크 이름</label>
+      <input type="text" id="bookmarkName" />
+      <label for="bookmarkUrl">북마크 URL</label>
+      <input type="text" id="bookmarkUrl" />
+      
+      <h4>태그 관리</h4>
+      <div id="tagList"></div>
+      <input type="text" id="addTagInput" placeholder="태그 추가" />
+      <button id="addTagBtn">추가</button>
+
+      <button id="saveBtn">저장</button>
+      <button id="cancelBtn">취소</button>
     </div>
-  
+  </div>
+
   <!-- 태그 목록을 표시할 영역 -->
   <div id="tagContainer"></div>
 
   <!-- 북마크 목록을 표시할 영역 -->
   <ul id="bookmarkList"></ul>
+
   <script src="config.js"></script>
   <script src="auth.js"></script>
   <script src="backend.js"></script>
-
   <script src="popup.js"></script>
   <script src="edit-popup.js"></script>
 </body>
