@@ -142,38 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-  
-    // // 저장 버튼 클릭 이벤트
-    // saveBtn.addEventListener('click', function () {
-    //   currentBookmark.title = bookmarkNameInput.value.trim();
-    //   currentBookmark.url = bookmarkUrlInput.value.trim();
-  
-    //   // 1. 백엔드에 데이터 저장
-    //   sendBookmarkToBackend(currentBookmark, userEmail)
-    //     .then(() => {
-    //       // 2. chrome.storage.sync에 데이터 저장
-    //       chrome.storage.sync.get({ bookmarks: [] }, function (data) {
-    //         // 중복 URL 확인
-    //         const updatedBookmarks = data.bookmarks.filter(
-    //           (bookmark) => bookmark.url !== currentBookmark.url
-    //         );
-    //         updatedBookmarks.push(currentBookmark);
-    //         chrome.storage.sync.set({ bookmarks: updatedBookmarks }, function () {
-    //           alert('북마크가 저장되었습니다.');
-    //           // 3. 동기화 후 화면 업데이트
-    //           initializeData();
-              
-    //           popupOverlay.classList.add('hidden'); // 팝업창 닫기
-    //           console.log('6. 팝업 닫기 완료');//test!!!!!!!!!!!!!!!!!!
-    //         });
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.error('북마크 저장 중 오류 발생:', error);
-    //       alert('북마크 저장에 실패했습니다.');
-    //     });
-    // });
-  
+
     // 취소 버튼 클릭 이벤트
     cancelBtn.addEventListener('click', function () {
       popupOverlay.classList.add('hidden'); // 팝업창 닫기
