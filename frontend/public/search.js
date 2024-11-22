@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchResults = document.getElementById('searchResults');
     const tmpEmail = "test1@gmail.com"; // FIXME: 사용자 이메일 설정
   
-    // 페이지 로드 시 기본 북마크 출력
-     displayAllBookmarks();
 
      
     // 검색 버튼 클릭 이벤트
@@ -14,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const query = searchInput.value.trim();
       if (!query) {
         alert('검색어를 입력하세요.');
+        displayAllBookmarks();      //빈 문자 입력 시 
         return;
       }
 
@@ -97,7 +96,10 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('북마크 불러오기 중 오류 발생:', error);
         alert('북마크를 불러오는 데 실패했습니다.');
       });
-  }
-    
-  });
+    }
+      
+    // 페이지 로드 시 기본 북마크 출력
+    displayAllBookmarks();
+
+});
   

@@ -6,9 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 검색 버튼 클릭 시 search.html로 이동
   goToSearchBtn.addEventListener('click', function () {
-    chrome.tabs.create({
-      url: chrome.runtime.getURL('search_page.html') // 열고자 하는 HTML 파일 경로
-    });  
+    window.location.href = 'search.html';
+    // chrome.tabs.create({
+    //   url: chrome.runtime.getURL('search_page.html') // 열고자 하는 HTML 파일 경로
+    // });  
   });
 
   // "북마크 저장하기" 버튼 클릭 이벤트
