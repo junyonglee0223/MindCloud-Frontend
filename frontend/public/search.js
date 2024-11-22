@@ -1,9 +1,9 @@
+const userEmail = "test1@gmail.com";
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
     const goBackBtn = document.getElementById('goBackBtn');
     const searchResults = document.getElementById('searchResults');
-    const tmpEmail = "test1@gmail.com"; // FIXME: 사용자 이메일 설정
   
 
      
@@ -16,11 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // 백엔드 API 호출
-      const tmpEmail = "test1@gmail.com"//FIXME
-      fetchSearchResults(query, tmpEmail)
+      fetchSearchResults(query, userEmail)
         .then((data) => {
           // 검색 결과 출력
+          console.log(data);
           console.log(data.tagResults);//test
           console.log(data.bookmarkResults);//test
           displaySearchResults(data.tagResults, data.bookmarkResults, query);
@@ -75,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 모든 북마크 출력 함수
   function displayAllBookmarks() {
-    getAllBookmarksFromBackend(tmpEmail) // backend.js의 함수 호출
+    getAllBookmarksFromBackend(userEmail) // backend.js의 함수 호출
       .then((bookmarks) => {
         searchResults.innerHTML = ''; // 기존 결과 초기화
 

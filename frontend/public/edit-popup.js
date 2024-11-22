@@ -1,3 +1,4 @@
+//const userEmail = "test1@gmail.com";
 // 팝업 오버레이 관리 로직
 document.addEventListener('DOMContentLoaded', function () {
     const popupOverlay = document.getElementById('popupOverlay');
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
       currentBookmark.url = bookmarkUrlInput.value.trim();
   
       // 1. 백엔드에 데이터 저장
-      sendBookmarkToBackend(currentBookmark)
+      sendBookmarkToBackend(currentBookmark, userEmail)
         .then(() => {
           // 2. chrome.storage.sync에 데이터 저장
           chrome.storage.sync.get({ bookmarks: [] }, function (data) {

@@ -6,30 +6,28 @@ function createApiUrl(endpoint){
 }
 
 // 백엔드로 북마크 데이터를 보내는 함수
-function sendBookmarkToBackend(bookmark) {
-    //const backendUrl = "http://localhost:8080/api/tagbookmark/in"; // 백엔드 API URL
+function sendBookmarkToBackend(bookmark, userEmail) {
     const backendUrl = createApiUrl("/api/tagbookmark/in");
     const userName = "test1";
-    const email = "test1@gmail.com";
 
-// RequestFrontDto 형식에 맞게 데이터 구성
-const requestFrontDto = {
-    title: bookmark.title,
-    url: bookmark.url,
-    tags: bookmark.tags,
-    userName: userName,   
-    email: email  
-};
-  // 요청 전 로그 출력
-  console.log('백엔드로 보낼 데이터:', requestFrontDto);
+    // RequestFrontDto 형식에 맞게 데이터 구성
+    const requestFrontDto = {
+        title: bookmark.title,
+        url: bookmark.url,
+        tags: bookmark.tags,
+        userName: userName,   
+        email: userEmail  
+    };
+    // 요청 전 로그 출력
+    console.log('백엔드로 보낼 데이터:', requestFrontDto);
 
-  return fetch(backendUrl, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestFrontDto),
-  })
+    return fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestFrontDto),
+    })
   .then(response => {
       // 응답 상태 코드 확인
       console.log('응답 상태 코드:', response.status);
@@ -75,9 +73,6 @@ function getBookmarksFromBackend(tagName, userEmail) {
 }
 
 function getAllBookmarksFromBackend(userEmail){
-    // const backendUrl3 = 
-    // `http://localhost:8080/api/tagbookmark/outAll?userEmail=${encodeURIComponent(userEmail)}`; // 백엔드 API URL
-    
     const backendUrl3 = createApiUrl(`/api/tagbookmark/outAll?userEmail=${encodeURIComponent(userEmail)}`);
  
     return fetch(backendUrl3, {
@@ -103,9 +98,8 @@ function getAllBookmarksFromBackend(userEmail){
 
 
 // 검색 결과를 백엔드에서 가져오는 함수
-function fetchSearchResults(word, email) {
-    //const apiUrl = `http://localhost:8080/api/search?word=${encodeURIComponent(word)}&email=${encodeURIComponent(email)}`;
-    const apiUrl = createApiUrl(`/api/search?word=${encodeURIComponent(word)}&email=${encodeURIComponent(email)}`);
+function fetchSearchResults(word, userEmail) {
+    const apiUrl = createApiUrl(`/api/search?word=${encodeURIComponent(word)}&email=${encodeURIComponent(userEmail)}`);
  
     return fetch(apiUrl, {
       method: 'GET',
@@ -126,10 +120,8 @@ function fetchSearchResults(word, email) {
 }
 
 // 백엔드에서 북마크 삭제 요청
-function deleteBookmarkFromBackend(title, email) {
-    // title과 email을 쿼리 파라미터로 전달
-    //const apiUrl = `http://localhost:8080/api/search/bookmarks?title=${encodeURIComponent(title)}&email=${encodeURIComponent(email)}`;
-    const apiUrl = createApiUrl(`/api/search/bookmarks?title=${encodeURIComponent(title)}&email=${encodeURIComponent(email)}`);
+function deleteBookmarkFromBackend(title, userEmail) {
+    const apiUrl = createApiUrl(`/api/search/bookmarks?title=${encodeURIComponent(title)}&email=${encodeURIComponent(userEmail)}`);
  
     return fetch(apiUrl, {
       method: 'DELETE', // HTTP DELETE 메서드 사용
