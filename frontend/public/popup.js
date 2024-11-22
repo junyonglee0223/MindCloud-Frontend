@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: currentTab.url,
             tags: tags, // GPT로 생성된 태그 추가
           };
-          openEditPopup(bookmark); // edit-popup.js의 함수 호출
+          openEditPopup(bookmark, "save"); // edit-popup.js의 함수 호출
         })
         .catch((error) => {
           console.error('태그 생성 중 오류 발생:', error);

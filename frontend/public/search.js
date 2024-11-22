@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    function addContextMenuForBookmark(listItem, title, userEmail) {
+    function addContextMenuForBookmark(listItem, bookmark, userEmail) {
       listItem.addEventListener('contextmenu', function (event) {
         event.preventDefault(); // 기본 컨텍스트 메뉴 방지
     
@@ -65,10 +65,24 @@ document.addEventListener('DOMContentLoaded', function () {
     
         deleteOption.addEventListener('click', function () {
           menu.remove(); // 컨텍스트 메뉴 제거
-          deleteBookmark(title, userEmail); // 삭제 동작 실행
+          deleteBookmark(bookmark.title, userEmail); // 삭제 동작 실행
         });
     
         menu.appendChild(deleteOption);
+
+        // 수정 메뉴 추가
+        const editOption = document.createElement('div');
+        editOption.textContent = '수정';
+        editOption.style.cursor = 'pointer';
+        editOption.style.padding = '5px';
+        editOption.style.color = 'blue';
+
+        editOption.addEventListener('click', function () {
+            menu.remove(); // 컨텍스트 메뉴 제거
+            openEditPopup(bookmark, "edit"); // 수정 팝업 열기
+        });
+
+        menu.appendChild(editOption);
     
         // 컨텍스트 메뉴 닫기
         document.addEventListener('click', function closeMenu() {
@@ -108,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <p>Tags: ${bookmark.tags.join(", ")}</p>
       `;
       // 컨텍스트 메뉴 추가
-      addContextMenuForBookmark(listItem, bookmark.title, userEmail);
+      addContextMenuForBookmark(listItem, bookmark, userEmail);
       return listItem;
     }
   

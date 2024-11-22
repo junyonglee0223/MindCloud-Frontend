@@ -19,7 +19,9 @@
       min-height: 100vh;
       background-color: #f5f5f5;
     }
-
+    .hidden {
+      display: none;
+    }
     .ui {
       width: 100%;
       max-width: 600px;
@@ -128,7 +130,27 @@
     <ul id="searchResults"></ul>
     <button id="goBackBtn">뒤로가기</button>
   </div>
+  <!-- 팝업 오버레이 -->
+  <div id="popupOverlay" class="hidden">
+    <div id="editPopup">
+      <h3>북마크 수정</h3>
+      <label for="bookmarkName">북마크 이름</label>
+      <input type="text" id="bookmarkName" />
+      <label for="bookmarkUrl">북마크 URL</label>
+      <input type="text" id="bookmarkUrl" />
+      
+      <h4>태그 관리</h4>
+      <div id="tagList"></div>
+      <input type="text" id="addTagInput" placeholder="태그 추가" />
+      <button id="addTagBtn">추가</button>
+
+      <button id="saveBtn">저장</button>
+      <button id="cancelBtn">취소</button>
+    </div>
+  </div>
+
   <script src="./search.js"></script>
   <script src="./backend.js"></script>
+  <script src="./edit-popup.js"></script>  
 </body>
 </html>
