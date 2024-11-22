@@ -1,52 +1,116 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" http-equiv="Content-Security-Policy" content="script-src 'self' https://cdn.tailwindcss.com">
-
-  <title>북마크 검색</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./search_vars.css">
+  <link rel="stylesheet" href="./search_style.css">
+  <title>MindCloud Bookmark Search</title>
   <style>
     body {
-      width: 300px;
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
     }
-    input[type="text"] {
+
+    .ui {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      max-width: 600px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
-    button {
+
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    #searchInput {
       width: 100%;
       padding: 10px;
-      background-color: #4CAF50;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    #searchBtn {
+      padding: 10px 20px;
+      background-color: #007BFF;
       color: white;
       border: none;
       border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #searchBtn:hover {
+      background-color: #0056b3;
+    }
+
+    #searchResults {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+    }
+
+    #searchResults li {
+      background: #f9f9f9;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #searchResults li a {
+      color: #007BFF;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    #searchResults li p {
+      margin: 5px 0 0;
+      color: #555;
+    }
+
+    #goBackBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #45a049;
-    }
-    ul {
-      margin-top: 10px;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    li {
-      margin-bottom: 8px;
+
+    #goBackBtn:hover {
+      background-color: #5a6268;
     }
   </style>
 </head>
 <body>
-  <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
-  <button id="searchBtn">검색</button>
-  <button id="goBackBtn">뒤로 가기</button>
-
-  <!-- 검색 결과를 표시할 영역 -->
-  <ul id="searchResults"></ul>
-
-  <script src="search.js"></script>
-  <script src="backend.js"></script>
+  <div class="ui">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="북마크 검색하기">
+      <button id="searchBtn">검색</button>
+    </div>
+    <ul id="searchResults"></ul>
+    <button id="goBackBtn">뒤로가기</button>
+  </div>
+  <script src="./search.js"></script>
 </body>
 </html>

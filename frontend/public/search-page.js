@@ -1,3 +1,4 @@
+//disconnect backend only use temporary storage
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("searchInput");
     const searchBtn = document.getElementById("searchBtn");
@@ -74,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 북마크 검색 함수
     function searchBookmarks(query) {
       return new Promise((resolve, reject) => {
+        // <<< CHROME SYNC START
         chrome.storage.sync.get("bookmarks", ({ bookmarks }) => {
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError);
@@ -91,12 +93,14 @@ document.addEventListener("DOMContentLoaded", function () {
   
           resolve(results);
         });
+        // >>> CHROME SYNC END
       });
     }
   
     // 모든 북마크 가져오기 함수
     function getAllBookmarks() {
       return new Promise((resolve, reject) => {
+        // <<< CHROME SYNC START
         chrome.storage.sync.get("bookmarks", ({ bookmarks }) => {
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError);
@@ -104,10 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           resolve(bookmarks || []);
         });
+        // >>> CHROME SYNC END
       });
     }
   
     // 페이지 로드 시 모든 북마크 표시
     displayAllBookmarks();
-  });
-  
+});

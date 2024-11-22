@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   goToSearchBtn.addEventListener('click', function () {
     //window.location.href = 'search.html';
     chrome.tabs.create({
-      url: chrome.runtime.getURL('search_page.html') // 열고자 하는 HTML 파일 경로
+      url: chrome.runtime.getURL('search.html') // 열고자 하는 HTML 파일 경로
     });  
   });
 
