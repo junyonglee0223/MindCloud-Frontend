@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         editOption.addEventListener('click', function () {
             menu.remove(); // 컨텍스트 메뉴 제거
+            console.log("수정하기 클릭한 객체 bookmark data", bookmark);//test
             openEditPopup(bookmark, "edit"); // 수정 팝업 열기
         });
 
@@ -150,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const listItem = document.createElement('li');
           listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.bookmarkName}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
           // 컨텍스트 메뉴 추가
-          addContextMenuForBookmark(listItem, bookmark.bookmarkName, userEmail);
+          addContextMenuForBookmark(listItem, bookmark, userEmail);
           searchResults.appendChild(listItem);
         });
       }
@@ -165,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const listItem = document.createElement('li');
           listItem.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.bookmarkName}</a><p>Tags: ${bookmark.tags.join(', ')}</p>`;
           // 컨텍스트 메뉴 추가
-          addContextMenuForBookmark(listItem, bookmark.bookmarkName, userEmail);
+          addContextMenuForBookmark(listItem, bookmark, userEmail);
           searchResults.appendChild(listItem);
         });
       }
@@ -197,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
       
     // 페이지 로드 시 기본 북마크 출력
     displayAllBookmarks();
+    window.displayAllBookmarks = displayAllBookmarks;
 
 });
   

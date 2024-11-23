@@ -32,12 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         mode = popupMode;
-        currentBookmark = {...bookmark};
-        //currentBookmark = bookmark;
+        //currentBookmark = {...bookmark};
+        currentBookmark = bookmark;
         if(mode === "edit"){
           prevBookmarkName = bookmark.title;
         }
-    
+        
         // 기존 데이터 채우기
         bookmarkNameInput.value = currentBookmark.title;
         bookmarkUrlInput.value = currentBookmark.url;
@@ -117,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
               // 기존 북마크 수정
               sendModifyRequestToBackend(currentBookmark, prevBookmarkName, userEmail)
                   .then(() => {
-                      alert("북마크가 성공적으로 수정되었습니다.");
                       // chrome.storage.sync에 데이터 저장
                       chrome.storage.sync.get({ bookmarks: [] }, function (data) {
                         // 기존 북마크 수정 (URL 기반 비교)
@@ -131,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         chrome.storage.sync.set({ bookmarks: updatedBookmarks }, function () {
                             alert("북마크가 성공적으로 수정되었습니다.");
                             popupOverlay.classList.add('hidden'); // 팝업창 닫기
-                            initializeData(); // UI 갱신
+                            displayAllBookmarks(); // UI 갱신
                         });
                     });
                   })
