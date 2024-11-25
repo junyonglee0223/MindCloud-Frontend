@@ -1,3 +1,4 @@
+import { openEditPage } from "./util_page.js";
 const userEmail = "test1@gmail.com";
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
@@ -64,20 +65,25 @@ document.addEventListener('DOMContentLoaded', function () {
       
           menu.appendChild(deleteOption);
   
-        //   // 수정 메뉴 추가
-        //   const editOption = document.createElement('div');
-        //   editOption.textContent = '수정';
-        //   editOption.style.cursor = 'pointer';
-        //   editOption.style.padding = '5px';
-        //   editOption.style.color = 'blue';
+          // 수정 메뉴 추가
+          const editOption = document.createElement('div');
+          editOption.textContent = '수정';
+          editOption.style.cursor = 'pointer';
+          editOption.style.padding = '5px';
+          editOption.style.color = 'blue';
   
-        //   editOption.addEventListener('click', function () {
-        //       menu.remove(); // 컨텍스트 메뉴 제거
-        //       console.log("수정하기 클릭한 객체 bookmark data", bookmark);//test
-        //       openEditPopup(bookmark, "edit"); // 수정 팝업 열기
-        //   });
+          editOption.addEventListener('click', function () {
+              menu.remove(); // 컨텍스트 메뉴 제거
+              console.log(openEditPage);//test
+              console.log("수정하기 클릭한 객체 bookmark data", bookmark);//test
+
+
+
+
+              openEditPage(bookmark, "edit"); // 수정 팝업 열기
+          });
   
-        //   menu.appendChild(editOption);
+          menu.appendChild(editOption);
       
           // 컨텍스트 메뉴 닫기
           document.addEventListener('click', function closeMenu() {
@@ -121,8 +127,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // 썸네일 박스 생성
         const thumbnailBox = document.createElement("div");
         thumbnailBox.classList.add("thumbnail-div-box-1");
-
-        console.log("각각 bookmark 정보 확인: ", bookmark);//test
 
         // 썸네일 HTML 구조
         thumbnailBox.innerHTML = `
