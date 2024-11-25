@@ -1,0 +1,276 @@
+.group-6,
+.group-6 * {
+  box-sizing: border-box;
+}
+.group-6 {
+  position: relative;
+}
+.background {
+  width: 518px;
+  height: 271px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: visible;
+}
+.div {
+  background: #3e92f8;
+  border-radius: 40px;
+  width: 62px;
+  height: 36px;
+  position: absolute;
+  left: 414px;
+  top: 214px;
+  overflow: hidden;
+}
+.div2 {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  position: absolute;
+  left: 17px;
+  top: 6px;
+}
+.div3 {
+  background: #e14942;
+  border-radius: 40px;
+  width: 62px;
+  height: 36px;
+  position: absolute;
+  left: 346px;
+  top: 214px;
+  overflow: hidden;
+}
+.tag {
+  width: 425px;
+  height: 30px;
+  position: absolute;
+  left: 29px;
+  top: 133px;
+}
+.div4 {
+  color: #180101;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  position: absolute;
+  left: 0px;
+  top: 3px;
+}
+._1 {
+  background: #e8edf2;
+  border-radius: 40px;
+  width: 88px;
+  height: 30px;
+  position: absolute;
+  left: 46px;
+  top: 0px;
+  overflow: hidden;
+}
+.div5 {
+  color: #000000;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  left: 11px;
+  top: 6px;
+}
+.x {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 63px;
+  top: 6px;
+  overflow: visible;
+}
+._4 {
+  background: #e8edf2;
+  border-radius: 40px;
+  width: 88px;
+  height: 30px;
+  position: absolute;
+  left: 337px;
+  top: 0px;
+  overflow: hidden;
+}
+.x2 {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 64px;
+  top: 7px;
+  overflow: visible;
+}
+._3 {
+  background: #e8edf2;
+  border-radius: 40px;
+  width: 88px;
+  height: 30px;
+  position: absolute;
+  left: 240px;
+  top: 0px;
+  overflow: hidden;
+}
+.div6 {
+  color: #000000;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  left: 13px;
+  top: 6px;
+}
+.x3 {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 64px;
+  top: 7px;
+  overflow: visible;
+}
+._2 {
+  background: #e8edf2;
+  border-radius: 40px;
+  width: 88px;
+  height: 30px;
+  position: absolute;
+  left: 143px;
+  top: 0px;
+  overflow: hidden;
+}
+.x4 {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 64px;
+  top: 7px;
+  overflow: visible;
+}
+.tagname {
+  border-radius: 40px;
+  border-style: solid;
+  border-color: #3e92f8;
+  border-width: 1px;
+  width: 88px;
+  height: 30px;
+  position: absolute;
+  left: 46px;
+  top: 51px;
+  box-shadow: 3px 5px 10px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.div7 {
+  color: #b29c9c;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  left: 20px;
+  top: 6px;
+}
+.addtag {
+  background: #3e92f8;
+  border-radius: 40px;
+  width: 47px;
+  height: 30px;
+  position: absolute;
+  left: 144px;
+  top: 51px;
+  overflow: hidden;
+}
+.div8 {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  left: 12px;
+  top: 6px;
+}
+.name {
+  width: 134px;
+  height: 30px;
+  position: absolute;
+  left: 29px;
+  top: 82px;
+}
+.frame-12 {
+  border-radius: 40px;
+  border-style: solid;
+  border-color: #3e92f8;
+  border-width: 1px;
+  width: 88px;
+  height: 30px;
+  position: absolute;
+  left: 46px;
+  top: 0px;
+  box-shadow: 3px 5px 10px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.div9 {
+  color: #b29c9c;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  left: 18px;
+  top: 6px;
+}
+.div10 {
+  color: #180101;
+  text-align: center;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  position: absolute;
+  left: 0px;
+  top: 4px;
+}
+.line-3 {
+  width: 516.01px;
+  height: 0px;
+  position: absolute;
+  left: 1px;
+  top: 66.22px;
+  overflow: visible;
+}
+.div11 {
+  width: 479px;
+  height: 34px;
+  position: absolute;
+  left: 18px;
+  top: 16px;
+}
+.mind-cloud {
+  color: #4f4f4f;
+  text-align: left;
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 28.789466857910156px;
+  letter-spacing: 0.51px;
+  font-weight: 400;
+  position: absolute;
+  left: 45px;
+  top: 1px;
+  width: 434px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.mindcloud-icon-2 {
+  width: 41.12px;
+  height: 33px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  object-fit: cover;
+}
