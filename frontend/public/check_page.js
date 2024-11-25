@@ -93,28 +93,28 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // 태그 렌더링 함수
-        function renderTags(tags) {
-            tagList.innerHTML = ''; // 기존 태그 초기화
-            tags.forEach((tag) => {
-                const tagContainer = document.createElement('div');
-                tagContainer.className = '_1'; // 태그 컨테이너 클래스
-                tagContainer.innerHTML = `
-                    <div class="div5">${tag}</div>
-                    <img class="x" src="x0.svg" alt="삭제" />
-                `;
-        
-                // 태그 삭제 이벤트
-                tagContainer.querySelector('.x').addEventListener('click', function () {
-                    currentTags = currentTags.filter((t) => t !== tag);
-                    renderTags(currentTags);
-                });
-        
-                tagList.appendChild(tagContainer);
-            });
-            console.log("태그 렌더링",tagList);//test
-        }        
     });        
+    // 태그 렌더링 함수
+    function renderTags(tags) {
+        tagList.innerHTML = ''; // 기존 태그 초기화
+        tags.forEach((tag) => {
+            const tagContainer = document.createElement('div');
+            tagContainer.className = '_1'; // 태그 컨테이너 클래스
+            tagContainer.innerHTML = `
+                <div class="div5">${tag}</div>
+                <img class="x" src="x0.svg" alt="삭제" />
+            `;
+    
+            // 태그 삭제 이벤트
+            tagContainer.querySelector('.x').addEventListener('click', function () {
+                currentTags = currentTags.filter((t) => t !== tag);
+                renderTags(currentTags);
+            });
+    
+            tagList.appendChild(tagContainer);
+        });
+        console.log("태그 렌더링",tagList);//test
+    }        
 
 
 
