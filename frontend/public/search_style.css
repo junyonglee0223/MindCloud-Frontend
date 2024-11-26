@@ -281,7 +281,7 @@
   justify-content: flex-start;
   align-self: stretch;
   flex-shrink: 0;
-  height: 403px;
+  height: auto;
   position: relative;
 }
 .thumbnail-div-box {
