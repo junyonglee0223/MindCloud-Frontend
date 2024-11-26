@@ -121,10 +121,39 @@ function getRandomColor() {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
+async function fetchThumbnailUrl(url) {
+  try {
+      console.log(`Fetching thumbnail for URL: ${url}`); // 디버깅 로그 추가
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const html = await response.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const metaTags = doc.getElementsByTagName('meta');
+      
+      for (let meta of metaTags) {
+          if (meta.getAttribute('property') === 'og:image' || meta.getAttribute('name') === 'twitter:image') {
+              const thumbnailUrl = meta.getAttribute('content');
+              console.log(`Found thumbnail URL: ${thumbnailUrl}`); // 디버깅 로그 추가
+              return thumbnailUrl;
+          }
+      }
+      console.warn('No thumbnail URL found in meta tags');
+      return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+  } catch (error) {
+      console.error('썸네일 URL 추출 중 오류 발생:', error);
+      return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+  }
+}
+
+
 // 북마크 리스트 아이템 생성 함수 수정
-function createBookmarkListItem(bookmark) {
+async function createBookmarkListItem(bookmark) {
     const defaultThumbnail = "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
-    const thumbnailUrl = bookmark.thumbnailUrl ? bookmark.thumbnailUrl : defaultThumbnail;
+    let thumbnailUrl = bookmark.thumbnailUrl ? bookmark.thumbnailUrl : await fetchThumbnailUrl(bookmark.url);    
     const title = bookmark.title || bookmark.bookmarkName || "제목 없음";
 
     const thumbnailBox = document.createElement("div");
@@ -236,30 +265,34 @@ function displayFilteredBookmarks(filteredBookmarks, tag) {
 
 
     // 모든 북마크 출력 함수
-    function displayAllBookmarks() {
-        getAllBookmarksFromBackend(userEmail) // backend.js의 함수 호출
-        .then((bookmarks) => {
-            searchResults.innerHTML = ''; // 기존 결과 초기화
-
-            loadedbookmarks = bookmarks;
-
-            if (bookmarks.length === 0) {
-            searchResults.innerHTML = 
-            '<div class="no-results">저장된 북마크가 없습니다.</div>';
-            return;
-            }
-            
-            // 모든 북마크 출력
-            bookmarks.forEach((bookmark) => {
-            const listItem = createBookmarkListItem(bookmark);
-            searchResults.appendChild(listItem);
-            });
-        })
-        .catch((error) => {
-            console.error('북마크 불러오기 중 오류 발생:', error);
-            alert('북마크를 불러오는 데 실패했습니다.');
-        });
-        }
+    async function displayAllBookmarks() {
+      try {
+          const bookmarks = await getAllBookmarksFromBackend(userEmail); // backend.js의 함수 호출
+          searchResults.innerHTML = ''; // 기존 결과 초기화
+  
+          loadedbookmarks = bookmarks;
+  
+          if (bookmarks.length === 0) {
+              searchResults.innerHTML = 
+              '<div class="no-results">저장된 북마크가 없습니다.</div>';
+              return;
+          }
+          
+          // 모든 북마크 출력
+          for (const bookmark of bookmarks) {
+              const listItem = await createBookmarkListItem(bookmark); // 비동기 함수 호출
+              if (listItem instanceof Node) {
+                  searchResults.appendChild(listItem);
+              } else {
+                  console.error("Invalid Node returned from createBookmarkListItem:", listItem);
+              }
+          }
+      } catch (error) {
+          console.error('북마크 불러오기 중 오류 발생:', error);
+          alert('북마크를 불러오는 데 실패했습니다.');
+      }
+  }
+  
       
     // 페이지 로드 시 기본 북마크 출력
     displayAllBookmarks();
