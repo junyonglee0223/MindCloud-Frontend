@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (mode === 'edit') {
         // 수정 모드일 경우
-        saveBtn.textContent = '수정 완료'; // 버튼 텍스트 변경
+        saveBtn.textContent = '완료'; // 버튼 텍스트 변경
         saveBtn.style.backgroundColor = '#4CAF50'; // 수정 완료 스타일
-        cancelBtn.textContent = '수정 취소'; // 버튼 텍스트 변경
+        cancelBtn.textContent = '취소'; // 버튼 텍스트 변경
     } else {
         // 저장 모드일 경우 (기본값)
         saveBtn.textContent = '저장'; // 버튼 텍스트 변경

@@ -45,21 +45,25 @@
 }
 .tag {
   width: 425px;
-  height: 30px;
+  height: auto;
   position: absolute;
   left: 29px;
   top: 133px;
+  display: flex;
 }
 .tag-list {
   display: flex; /* 태그를 가로로 정렬 */
   flex-wrap: wrap; /* 넘칠 경우 줄바꿈 */
   gap: 10px; /* 태그 간 간격 */
   align-items: center; /* 수직 정렬 */
-  margin-top: 10px;
+  position: absolute;
+  left: 46px;
+
 }
 
 .div4 {
   color: #180101;
+  width: auto;
   text-align: center;
   font-family: "Poppins-Regular", sans-serif;
   font-size: 15px;
@@ -67,6 +71,11 @@
   position: absolute;
   left: 0px;
   top: 3px;
+}
+
+.div5 {
+  width: auto;
+  height: auto;
 }
 /* ._1 {
   background: #e8edf2;
@@ -191,12 +200,11 @@
   border-style: solid;
   border-color: #3e92f8;
   border-width: 1px;
-  width: 88px;
+  width: 92px;
   height: 30px;
   position: absolute;
   left: 46px;
   top: 51px;
-  box-shadow: 3px 5px 10px 0px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 .div7 {
@@ -241,12 +249,11 @@
   border-style: solid;
   border-color: #3e92f8;
   border-width: 1px;
-  width: 88px;
+  width: 120px;
   height: 30px;
   position: absolute;
   left: 46px;
   top: 0px;
-  box-shadow: 3px 5px 10px 0px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 .div9 {
