@@ -354,6 +354,8 @@
   justify-content: flex-start;
   align-self: stretch;
   flex-shrink: 0;
+  width:auto;
+  height: auto;
   position: relative;
 }
 .www-naver-com {
