@@ -207,57 +207,68 @@ async function createBookmarkListItem(bookmark) {
 
 
 // 필터링된 북마크 표시 함수
-function displayFilteredBookmarks(filteredBookmarks, tag) {
-    searchResults.innerHTML = `<h3>태그 "${tag}"에 해당하는 북마크</h3>`;
+async function displayFilteredBookmarks(filteredBookmarks, tag) {
+  searchResults.innerHTML = `<h3>태그 "${tag}"에 해당하는 북마크</h3>`;
 
-    if (filteredBookmarks.length === 0) {
-        searchResults.innerHTML += `<div>해당 태그의 북마크가 없습니다.</div>`;
-        console.log('해당 태그의 북마크가 없습니다:', tag); // 디버깅 로그 추가
-        return;
-    }
+  if (filteredBookmarks.length === 0) {
+      searchResults.innerHTML += `<div>해당 태그의 북마크가 없습니다.</div>`;
+      console.log('해당 태그의 북마크가 없습니다:', tag); // 디버깅 로그 추가
+      return;
+  }
 
-    filteredBookmarks.forEach((bookmark) => {
-        const listItem = createBookmarkListItem(bookmark);
-        searchResults.appendChild(listItem);
-    });
+  for (const bookmark of filteredBookmarks) {
+      const listItem = await createBookmarkListItem(bookmark); // 비동기 함수 호출
+      if (listItem instanceof Node) {
+          searchResults.appendChild(listItem);
+      } else {
+          console.error("Invalid Node returned from createBookmarkListItem:", listItem);
+      }
+  }
 }
 
 
+
     // 검색 결과 표시 함수
-    function displaySearchResults(tagResults, bookmarkResults, query) {
-        searchResults.innerHTML = ''; // 기존 결과 초기화
-    
-        if (tagResults.length === 0 && bookmarkResults.length === 0) {
+    async function displaySearchResults(tagResults, bookmarkResults, query) {
+      searchResults.innerHTML = ''; // 기존 결과 초기화
+  
+      if (tagResults.length === 0 && bookmarkResults.length === 0) {
           searchResults.innerHTML = `<div>검색어 "${query}"에 대한 결과가 없습니다.</div>`;
           return;
-        }
-    
-        // 태그 검색 결과 출력
-        if (tagResults.length > 0) {
+      }
+  
+      // 태그 검색 결과 출력
+      if (tagResults.length > 0) {
           const tagHeader = document.createElement('h3');
           tagHeader.textContent = '태그로 검색된 결과';
           searchResults.appendChild(tagHeader);
-    
-          tagResults.forEach(function (bookmark) {
-            // createBookmarkListItem 함수 사용
-            const bookmarkItem = createBookmarkListItem(bookmark);
-            searchResults.appendChild(bookmarkItem);
-          });
-        }
-    
-        // 북마크 이름 검색 결과 출력
-        if (bookmarkResults.length > 0) {
+  
+          for (const bookmark of tagResults) {
+              const bookmarkItem = await createBookmarkListItem(bookmark); // 비동기 함수 호출
+              if (bookmarkItem instanceof Node) {
+                  searchResults.appendChild(bookmarkItem);
+              } else {
+                  console.error("Invalid Node returned from createBookmarkListItem:", bookmarkItem);
+              }
+          }
+      }
+  
+      // 북마크 이름 검색 결과 출력
+      if (bookmarkResults.length > 0) {
           const bookmarkHeader = document.createElement('h3');
           bookmarkHeader.textContent = '북마크 이름으로 검색된 결과';
           searchResults.appendChild(bookmarkHeader);
-    
-          bookmarkResults.forEach(function (bookmark) {
-            // createBookmarkListItem 함수 사용
-            const bookmarkItem = createBookmarkListItem(bookmark);
-            searchResults.appendChild(bookmarkItem);
-          });
-        }
+  
+          for (const bookmark of bookmarkResults) {
+              const bookmarkItem = await createBookmarkListItem(bookmark); // 비동기 함수 호출
+              if (bookmarkItem instanceof Node) {
+                  searchResults.appendChild(bookmarkItem);
+              } else {
+                  console.error("Invalid Node returned from createBookmarkListItem:", bookmarkItem);
+              }
+          }
       }
+  }
   
   
     
