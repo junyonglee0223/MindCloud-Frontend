@@ -8,12 +8,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchResults = document.getElementById('searchResults');
     let loadedbookmarks = []; // 전역 변수로 bookmarks 선언
 
+    
+  
+      // 검색 버튼 클릭 이벤트
+    searchBtn.addEventListener('click', handleSearch);
+    searchInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+          handleSearch();
+      }
+  });
 
-    // 검색 버튼 클릭 이벤트
-    searchBtn.addEventListener('click', function () {
-        const query = searchInput.value.trim();
+
+    function handleSearch(){
+      const query = searchInput.value.trim();
         if (!query) {
-          alert('검색어를 입력하세요.');
+          //alert('검색어를 입력하세요.');
           displayAllBookmarks();      //빈 문자 입력 시 
           return;
         }
@@ -30,6 +39,22 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('검색 중 오류 발생:', error);
             alert('검색 중 문제가 발생했습니다. 다시 시도해주세요.');
         });
+
+    }
+
+    // 검색 버튼 클릭 이벤트
+    searchBtn.addEventListener('click', function () {
+        
+      });
+
+    // 검색 버튼 클릭 이벤트
+    searchBtn.addEventListener('click', function () {
+        
+      });
+
+    // 검색 버튼 클릭 이벤트
+    searchBtn.addEventListener('click', function () {
+        
       });
 
 

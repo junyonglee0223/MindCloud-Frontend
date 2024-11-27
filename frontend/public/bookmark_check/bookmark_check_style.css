@@ -2,11 +2,25 @@
 .bookmark-check-div * {
   box-sizing: border-box;
 }
-.bookmark-check-div {
+/* .bookmark-check-div {
   background: #ffffff;
   height: 713px;
   position: relative;
+} */
+.bookmark-check-div {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center;
+  justify-content: flex-start; /* 위쪽부터 요소 배치 */
+  padding: 10px;
+  width: 100%;
+  /* max-width: 600px; 최대 폭 제한 */
+  height: auto;
+  margin: 0 auto; /* 가운데 정렬 */
+  background: #ffffff;
+  box-sizing: border-box;
 }
+
 .thumnail-1-div {
   border-style: solid;
   border-color: #8c8c8c;
