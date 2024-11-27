@@ -239,20 +239,30 @@ async function createBookmarkListItem(bookmark) {
       
 
                 // Hover 효과 추가
+        if (!tagButton.classList.contains('selected')) { 
         tagButton.addEventListener("mouseover", () => {
           tagButton.style.backgroundColor = "#29DE2C"; // hover 시 색상
           tagButton.style.color = "#ffffff";         // hover 시 글자 색
           tagButton.style.transform = "scale(1.05)"; // hover 시 크기
         });
+            
 
         tagButton.addEventListener("mouseout", () => {
           tagButton.style.backgroundColor = "#E8EDF2"; // 원래 색상으로 복귀
           tagButton.style.color = "#0D141C";          // 원래 글자 색으로 복귀
           tagButton.style.transform = "scale(1)";     // 크기 복귀
         });
-
+      }
         
-
+        // 선택된 태그에 'selected' 클래스 추가
+        tagButton.addEventListener('click', () => {
+          // 클릭된 버튼에 'selected' 클래스 추가
+          tagButton.classList.add('selected');
+          // 선택된 버튼의 색상 고정
+          tagButton.style.backgroundColor = "#29DE2C";
+          tagButton.style.color = "#ffffff";
+          tagButton.style.transform = "scale(1)"; // 크기 고정
+        });
         tagBox.appendChild(tagButton);
     });
 
@@ -282,7 +292,8 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
 
   // 태그 버튼 색상 변경 
   const tagButtons = document.querySelectorAll('.thumbnail-div-box-1-tagbox button'); 
-  tagButtons.forEach(button => { if (button.textContent === tag) 
+  tagButtons.forEach(button => { 
+    if (button.textContent === tag) 
     { button.style.backgroundColor = '#29DE2C';
        // 원하는 배경색으로 변경 
        button.style.color = '#ffffff'; 
