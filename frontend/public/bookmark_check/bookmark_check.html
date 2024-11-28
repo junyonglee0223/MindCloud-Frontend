@@ -6,74 +6,81 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./bookmark_check_vars.css">
   <link rel="stylesheet" href="./bookmark_check_style.css">
-  
-  
   <style>
-   a,
-   button,
-   input,
-   select,
-   h1,
-   h2,
-   h3,
-   h4,
-   h5,
-   * {
-       box-sizing: border-box;
-       margin: 0;
-       padding: 0;
-       border: none;
-       text-decoration: none;
-       background: none;
-   
-       -webkit-font-smoothing: antialiased;
-   }
-   
-   menu, ol, ul {
-       list-style-type: none;
-       margin: 0;
-       padding: 0;
-   }
-   </style>
+    a, button, input, select, h1, h2, h3, h4, h5, * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      background: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    menu, ol, ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 태그 버튼 스타일 */
+    .tag {
+      background-color: #e14942;
+      border: none;
+      border-radius: 20px;
+      color: #ffffff;
+      font-size: 12px;
+      padding: 10px 15px;
+      margin: 5px;
+      cursor: pointer;
+      font-family: "Poppins-Regular", sans-serif;
+    }
+
+    /* 북마크 아이템 컨테이너 스타일 */
+    .bookmark-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px;
+    }
+
+    /* 북마크 제목 버튼 스타일 */
+    .bookmark-title {
+      background-color: #e14942;
+      border: none;
+      border-radius: 20px;
+      color: #ffffff;
+      font-size: 14px;
+      padding: 10px 15px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      font-family: "Poppins-Regular", sans-serif;
+    }
+
+    /* 북마크 이미지 스타일 */
+    .bookmark-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    /* 태그 및 북마크 컨테이너 레이아웃 */
+    .tag-div, .thumnail-1-div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 10px;
+    }
+  </style>
   <title>Document</title>
 </head>
 <body>
   <div class="bookmark-check-div">
-    <div class="thumnail-1-div">
-      <button class="thumnail-2-tag">
-        <div class="thumnail-2-text">구글</div>
-      </button>
-      <img class="thumnail-2-img" src="thumnail-2-img0.png" />
-      <button class="thumnail-1-tag">
-        <div class="thumnail-1-text">네이버</div>
-      </button>
-      <img class="thumnail-1-img" src="thumnail-1-img0.png" />
+    <div class="thumnail-1-div" id="bookmarkList">
+      <!-- 동적으로 북마크가 추가됩니다 -->
     </div>
-    <div class="tag-div">
-      <button class="tag-1-box">
-        <div class="tag-1-text">검색 엔진</div>
-      </button>
-      <button class="tag-2-box">
-        <div class="tag-2-text">게임</div>
-      </button>
-      <button class="tag-3-box">
-        <div class="tag-3-text">인공지능</div>
-      </button>
-      <button class="tag-4-box">
-        <div class="tag-4-text">뉴스</div>
-      </button>
-      <button class="tag-5-box">
-        <div class="tag-5-text">개발</div>
-      </button>
-      <button class="tag-6-box">
-        <div class="tag-6-text">투자</div>
-      </button>
-      <button class="tag-7-box">
-        <div class="tag-7-text">스포츠</div>
-      </button>
-      <button class="tag-8-box">
-        <div class="tag-8-text">운동</div>
-      </button>
+    <div class="tag-div" id="tagContainer">
+      <!-- 동적으로 태그가 추가됩니다 -->
     </div>
     <div class="setting-div">
       <button class="hint-box">
@@ -102,6 +109,8 @@
       <img class="logo-icon" src="logo-icon0.png" />
     </div>
   </div>
-  
+  <script src="../config.js"></script>
+  <script type="module" src="../bookmark_check/bookmark_check.js"></script>
+  <script src="../backend.js"></script>
 </body>
 </html>

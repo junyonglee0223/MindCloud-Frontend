@@ -5,7 +5,7 @@
   "description": "Save and view your bookmarks.",
   "permissions": ["storage", "activeTab"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "bookmark_check/bookmark_check.html",
     "default_icon": {
       "16": "icon16.png"
     }

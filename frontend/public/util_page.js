@@ -10,5 +10,8 @@ export function openEditPage(bookmark, mode = 'save') {
         mode: mode, // mode 추가
     });
     console.log("인자 전달 테스트 확인",params);//test
-    window.location.href = `check_page.html?${params.toString()}`;
+    chrome.tabs.create({
+        url: chrome.runtime.getURL(`../check_page.html?${params.toString()}`) // 열고자 하는 HTML 파일 경로
+      });  
+    //window.location.href = `../check_page.html?${params.toString()}`;
 }
