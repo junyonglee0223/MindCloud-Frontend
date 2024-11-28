@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const url = params.get('url') || '';
     const tags = JSON.parse(params.get('tags') || '[]');
     const mode = params.get('mode') || 'save'; // mode 파라미터 확인
+    // //썸네일 생성
+    // const imageUrl = fetchThumbnailUrl(url);
+    // console.log("썸네일 edit 창 생성시 탐색",imageUrl);//test
+    
 
     console.log("DOM 로드 후 파라미터 체크:", params, title, url, tags, mode); // 테스트
 
@@ -37,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 완료 버튼 이벤트 설정
-    saveBtn.addEventListener('click', function () {
+    saveBtn.addEventListener('click', async function () {
         const updatedBookmark = {
             title: bookmarkNameInput.value.trim(),
             url: url, // URL은 수정하지 않도록 설정
@@ -46,6 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (mode === 'save') {
             // 저장 모드: 새로운 북마크 저장
+
+            //썸네일 생성
+            const imageUrl = await fetchThumbnailUrl(url);
+            updatedBookmark.imageUrl = imageUrl;
+
             sendBookmarkToBackend(updatedBookmark, userEmail)
                 .then(() => {
                     alert('북마크가 성공적으로 저장되었습니다.');
@@ -94,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderTags() {
         tagList.innerHTML = ''; // 기존 태그 초기화
 
-        console.log("현재 태그 상태 체크:", currentTags); // 테스트
+        //console.log("현재 태그 상태 체크:", currentTags); // 테스트
         currentTags.forEach((tag) => {
             const tagContainer = document.createElement('div');
             tagContainer.className = '_1'; // 태그 컨테이너 클래스
@@ -108,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // currentTags 배열에서 해당 태그 삭제
                 currentTags = currentTags.filter((t) => t !== tag);
 
-                console.log("태그 삭제 결과 테스트:", currentTags); // 삭제 후 상태 확인
+                //console.log("태그 삭제 결과 테스트:", currentTags); // 삭제 후 상태 확인
 
                 // 삭제된 태그로 렌더링 갱신
                 renderTags();
@@ -121,3 +130,32 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("태그 렌더링 완료:", tagList); // 렌더링 결과 확인 (테스트)
     }
 });
+
+
+async function fetchThumbnailUrl(url) {
+    try {
+        console.log(`Fetching thumbnail for URL: ${url}`); // 디버깅 로그 추가
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const metaTags = doc.getElementsByTagName('meta');
+        
+        for (let meta of metaTags) {
+            if (meta.getAttribute('property') === 'og:image' || meta.getAttribute('name') === 'twitter:image') {
+                const thumbnailUrl = meta.getAttribute('content');
+                console.log(`Found thumbnail URL: ${thumbnailUrl}`); // 디버깅 로그 추가
+                return thumbnailUrl;
+            }
+        }
+        console.warn('No thumbnail URL found in meta tags');
+        return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+    } catch (error) {
+        console.error('썸네일 URL 추출 중 오류 발생:', error);
+        return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+    }
+  }
