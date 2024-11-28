@@ -2,7 +2,7 @@ const userEmail = "test1@gmail.com";
 // 팝업 오버레이 관리 로직
 document.addEventListener('DOMContentLoaded', function () {
     const bookmarkNameInput = document.querySelector('.div9'); // 이름 설정 input
-    const tagList = document.querySelector('.tag'); // 태그 리스트 컨테이너
+    const tagList = document.querySelector('.tag-list'); // 태그 리스트 컨테이너
     const addTagInput = document.querySelector('.div7'); // 태그 추가 input
     const addTagBtn = document.querySelector('.addtag'); // 태그 추가 버튼
     const saveBtn = document.querySelector('.div'); // 완료 버튼
@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             tagList.appendChild(tagContainer);
+
         });
 
         console.log("태그 렌더링 완료:", tagList); // 렌더링 결과 확인 (테스트)

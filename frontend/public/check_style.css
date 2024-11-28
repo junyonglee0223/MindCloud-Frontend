@@ -202,7 +202,7 @@
   border-width: 1px;
   width: 92px;
   height: 30px;
-  position: absolute;
+  position: relative;
   left: 46px;
   top: 51px;
   overflow: hidden;
@@ -222,7 +222,7 @@
   border-radius: 40px;
   width: 47px;
   height: 30px;
-  position: absolute;
+  position: relative;
   left: 144px;
   top: 51px;
   overflow: hidden;
