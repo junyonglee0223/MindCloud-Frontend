@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     listItem.className = "bookmark-item";
     listItem.innerHTML = `
       <button class="bookmark-title">${bookmark.title}</button>
-      <img class="bookmark-img" src="${bookmark.url}" alt="${bookmark.title}" />
+      <img class="bookmark-img" src="${bookmark.imageUrl}" alt="${bookmark.title}" />
     `;
     bookmarkList.appendChild(listItem);
   }
