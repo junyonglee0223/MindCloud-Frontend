@@ -16,10 +16,13 @@ function sendBookmarkToBackend(bookmark, userEmail) {
         url: bookmark.url,
         tags: bookmark.tags,
         userName: userName,   
-        email: userEmail  
+        email: userEmail,
+        imageUrl: bookmark.imageUrl
     };
     // 요청 전 로그 출력
     console.log('백엔드로 보낼 데이터:', requestFrontDto);
+    console.log('백엔드로 보낼 데이터 (JSON):', JSON.stringify(requestFrontDto, null, 2));
+
 
     return fetch(backendUrl, {
         method: 'POST',

@@ -4,65 +4,103 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="./bookmark_vars.css">
   <link rel="stylesheet" href="./bookmark_style.css">
-  
-  
   <style>
-   a,
-   button,
-   input,
-   select,
-   h1,
-   h2,
-   h3,
-   h4,
-   h5,
-   * {
-       box-sizing: border-box;
-       margin: 0;
-       padding: 0;
-       border: none;
-       text-decoration: none;
-       background: none;
-   
-       -webkit-font-smoothing: antialiased;
-   }
-   
-   menu, ol, ul {
-       list-style-type: none;
-       margin: 0;
-       padding: 0;
-   }
-   </style>
+    a, button, input, select, h1, h2, h3, h4, h5, * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      background: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    menu, ol, ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 태그 버튼 스타일 */
+    .tag {
+      background-color: #e14942;
+      border: none;
+      border-radius: 20px;
+      color: #ffffff;
+      font-size: 12px;
+      padding: 10px 15px;
+      margin: 3px;
+      cursor: pointer;
+      font-family: "Poppins-Regular", sans-serif;
+    }
+
+    /* 북마크 아이템 컨테이너 스타일 */
+    .bookmark-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 북마크 제목 버튼 스타일 */
+    .bookmark-title {
+      background-color: #E8EDF2;
+      border: none;
+      border-radius: 5px;
+      color: #0D141C;
+      font-size: 14px;
+      padding: 5px 10px;
+      margin-bottom: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-family: "Poppins-Regular", sans-serif;
+    }
+
+    /* hover 상태 스타일 */
+    .bookmark-title:hover {
+      background-color: #29DE2C; /* hover 시 더 어두운 배경색 */
+      color: #ffffff; /* 텍스트 색 변경 */
+    }
+
+    /* 북마크 이미지 스타일 */
+    .bookmark-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      margin-top: 10px;
+
+
+    }
+
+    /* 태그 및 북마크 컨테이너 레이아웃 */
+    .tag-div, .thumnail-1-div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+  </style>
   <title>Document</title>
 </head>
 <body>
   <div class="bookmark-check-div">
-    <div class="thumnail-1-div">
-      <button class="thumnail-2-tag">
-        <div class="thumnail-2-text">구글</div>
-      </button>
-      <img class="thumnail-2-img" src="thumnail-2-img0.png" />
-      <button class="thumnail-1-tag">
-        <div class="thumnail-1-text">네이버</div>
-      </button>
-      <img class="thumnail-1-img" src="thumnail-1-img0.png" />
+    <div class="logo-div">
+      <img class="logo-icon" src="logo-icon0.png" />
+      <div class="logo-text">MindCloud</div>
     </div>
-    <div class="setting-div">
-      <button class="hint-box">
-        <div class="hint-text">도움말</div>
-        <img class="hint-icon" src="hint-icon0.svg" />
-      </button>
-      <button class="tagmanage-box">
-        <div class="tagmanage-text">태그 관리</div>
-        <img class="tagmanage-icon" src="tagmanage-icon0.svg" />
-      </button>
-      <button class="setting-box">
-        <div class="setting-text">확장자 설정</div>
-        <img class="setting-icon" src="setting-icon0.svg" />
-      </button>
-    </div>
+    <button class="save-div">
+      <img class="save-icon" src="save-icon0.svg" />
+      <div class="save-text">북마크 저장하기</div>
+    </button>
+    <button class="search-div">
+      <img class="search-img" src="search-img0.svg" />
+      <div class="search-text">북마크 검색하기</div>
+    </button>
     <div class="tag-div">
       <button class="tag-1-box">
         <div class="tag-1-text">검색 엔진</div>
@@ -89,19 +127,26 @@
         <div class="tag-8-text">운동</div>
       </button>
     </div>
-    <button class="search-div">
-      <div class="search-text">북마크 검색하기</div>
-      <img class="search-img" src="search-img0.svg" />
-    </button>
-    <button class="save-div">
-      <div class="save-text">북마크 저장하기</div>
-      <img class="save-icon" src="save-icon0.svg" />
-    </button>
-    <div class="logo-div">
-      <div class="logo-text">MindCloud</div>
-      <img class="logo-icon" src="logo-icon0.png" />
+    <div class="thumnail-1-div" id="bookmarkList">
+      <!-- 동적으로 북마크가 추가됩니다 -->
+    </div>
+    <div class="setting-div">
+      <button class="hint-box">
+        <img class="hint-icon" src="hint-icon0.svg" />
+        <div class="hint-text">도움말</div>
+      </button>
+      <button class="tagmanage-box">
+        <img class="tagmanage-icon" src="tagmanage-icon0.svg" />
+        <div class="tagmanage-text">태그 관리</div>
+      </button>
+      <button class="setting-box">
+        <img class="setting-icon" src="setting-icon0.svg" />
+        <div class="setting-text">확장자 설정</div>
+      </button>
     </div>
   </div>
-  
+  <script src="../config.js"></script>
+  <script type="module" src="../bookmark_check/bookmark_check.js"></script>
+  <script src="../backend.js"></script>
 </body>
 </html>

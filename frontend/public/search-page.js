@@ -178,7 +178,9 @@ async function fetchThumbnailUrl(url) {
 // 북마크 리스트 아이템 생성 함수 수정
 async function createBookmarkListItem(bookmark) {
     const defaultThumbnail = "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
-    let thumbnailUrl = bookmark.thumbnailUrl ? bookmark.thumbnailUrl : await fetchThumbnailUrl(bookmark.url);    
+    //let thumbnailUrl = bookmark.thumbnailUrl ? bookmark.thumbnailUrl : await fetchThumbnailUrl(bookmark.url);    
+    let thumbnailUrl = bookmark.imageUrl ? bookmark.imageUrl : defaultThumbnail;    
+    
     const title = bookmark.title || bookmark.bookmarkName || "제목 없음";
 
     const thumbnailBox = document.createElement("div");
@@ -273,7 +275,7 @@ async function createBookmarkListItem(bookmark) {
 
 // 필터링된 북마크 표시 함수
 async function displayFilteredBookmarks(filteredBookmarks, tag) {
-  searchResults.innerHTML = `<h3>태그 "${tag}"에 해당하는 북마크</h3>`;
+  searchResults.innerHTML = `<h3>태그로 검색된 결과 "${tag}"</h3>`;
 
   if (filteredBookmarks.length === 0) {
       searchResults.innerHTML += `<div>해당 태그의 북마크가 없습니다.</div>`;
@@ -351,7 +353,10 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
   }
   
   
-    
+  document.querySelector('.title-box').addEventListener('click', () => {
+    location.reload(); // 새로고침
+  });
+  
     
 
 

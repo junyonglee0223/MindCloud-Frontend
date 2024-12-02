@@ -7,14 +7,15 @@
   width: 301px;
   height: 609px;
   position: relative;
+
 }
 .thumnail-1-div {
   border-style: solid;
   border-color: #8c8c8c;
   border-width: 0px 0px 0.7px 0px;
   width: 300px;
-  height: 326px;
-  position: absolute;
+  height: auto;
+  display: flex;
   left: 1px;
   top: 178px;
   overflow: hidden;
@@ -22,6 +23,7 @@
 .thumnail-2-box {
   position: absolute;
   inset: 0;
+
 }
 .thumnail-2-tag {
   background: #e8edf2;
@@ -93,22 +95,32 @@
 }
 .setting-div {
   border-style: solid;
+  display: flex;
   border-color: #8c8c8c;
   border-width: 0px 0px 0.7px 0px;
   width: 301px;
   height: 105px;
-  position: absolute;
   left: 0px;
-  top: 504px;
+  flex-direction: column;
   overflow: hidden;
 }
 .hint-box {
   width: 301px;
   height: 33px;
-  position: absolute;
+  align-items: center;
+  display: flex;
   left: 0px;
   top: 69px;
+  cursor: pointer;
 }
+/* hover 상태 스타일 */
+.hint-box:hover {
+  background-color: #e0e0e0; /* hover 시 배경색 */
+  border-color: #b0b0b0; /* hover 시 테두리 색 */
+  color: #333333; /* hover 시 텍스트 색 */
+}
+
+
 .hint-text {
   color: #4f4f4f;
   text-align: left;
@@ -116,7 +128,6 @@
   font-size: 12px;
   letter-spacing: 0.51px;
   font-weight: 400;
-  position: absolute;
   left: 39px;
   top: 0px;
   width: 262px;
@@ -124,21 +135,31 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-left: 5px;
+
 }
 .hint-icon {
   width: 16px;
   height: 16px;
-  position: absolute;
-  left: 17px;
-  top: 9px;
   overflow: visible;
+  position: relative;
+  margin-left: 7px;
+
 }
 .tagmanage-box {
   width: 301px;
   height: 33px;
-  position: absolute;
+  display: flex;
+  align-items: center;
   left: 0px;
   top: 36px;
+  cursor: pointer;
+}
+/* hover 상태 스타일 */
+.tagmanage-box:hover {
+  background-color: #e0e0e0; /* hover 시 배경색 */
+  border-color: #b0b0b0; /* hover 시 테두리 색 */
+  color: #333333; /* hover 시 텍스트 색 */
 }
 .tagmanage-text {
   color: #4f4f4f;
@@ -147,29 +168,39 @@
   font-size: 12px;
   letter-spacing: 0.51px;
   font-weight: 400;
-  position: absolute;
   left: 39px;
   top: 0px;
   width: 262px;
   height: 33px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-start;  
+  margin-left: 5px;
+
 }
 .tagmanage-icon {
   width: 16px;
   height: 16px;
-  position: absolute;
   left: 17px;
   top: 9px;
   overflow: visible;
+  margin-left: 7px;
+
 }
 .setting-box {
   width: 301px;
   height: 33px;
-  position: absolute;
+  display: flex;
+  align-items: center;
   left: 0px;
   top: 3px;
+  cursor: pointer;
+
+}
+.setting-box:hover {
+  background-color: #e0e0e0; /* hover 시 배경색 */
+  border-color: #b0b0b0; /* hover 시 테두리 색 */
+  color: #333333; /* hover 시 텍스트 색 */
 }
 .setting-text {
   color: #4f4f4f;
@@ -178,33 +209,35 @@
   font-size: 12px;
   letter-spacing: 0.51px;
   font-weight: 400;
-  position: absolute;
   left: 39px;
   top: 0px;
   width: 262px;
   height: 33px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-start;  
+  margin-left: 5px;
+
 }
 .setting-icon {
   width: 16px;
   height: 16px;
-  position: absolute;
   left: 17px;
   top: 9px;
   overflow: visible;
+  margin-left: 7px;
+
 }
 .tag-div {
   border-style: solid;
   border-color: #8c8c8c;
   border-width: 0px 0px 0.7px 0px;
-  width: 301px;
-  height: 79px;
-  position: absolute;
+  width: 295px;
+  height: auto;
   left: 0px;
   top: 99px;
-  overflow: hidden;
+  display: flex;
+
 }
 .tag-box {
   position: absolute;
@@ -376,14 +409,22 @@
   border-width: 0px 0px 0.7px 0px;
   width: 301px;
   height: 33px;
-  position: absolute;
-  left: 0px;
+  display: flex;
+  align-items: center;
   top: 66px;
   overflow: hidden;
+  cursor: pointer;
+
+}
+.search-div:hover {
+  background-color: #e0e0e0; /* hover 시 배경색 */
+  border-color: #b0b0b0; /* hover 시 테두리 색 */
+  color: #333333; /* hover 시 텍스트 색 */
 }
 .search-box {
-  position: absolute;
   inset: 0;
+  align-items: center;
+
 }
 .search-text {
   color: #4f4f4f;
@@ -392,7 +433,6 @@
   font-size: 12px;
   letter-spacing: 0.51px;
   font-weight: 400;
-  position: absolute;
   left: 39px;
   top: 0px;
   width: 262px;
@@ -400,12 +440,14 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-left: 5px;
+
 }
 .search-img {
   width: 16.07px;
   height: 15.71px;
-  position: absolute;
   left: 17px;
+  margin-left: 7px;
   top: 8px;
   overflow: visible;
 }
@@ -415,14 +457,23 @@
   border-width: 0px 0px 0.7px 0px;
   width: 301px;
   height: 33px;
-  position: absolute;
+  display: flex;
   left: 0px;
+  align-items: center;
   top: 33px;
   overflow: hidden;
+  cursor: pointer;
+
+}
+.save-div:hover {
+  background-color: #e0e0e0; /* hover 시 배경색 */
+  border-color: #b0b0b0; /* hover 시 테두리 색 */
+  color: #333333; /* hover 시 텍스트 색 */
 }
 .save-box {
-  position: absolute;
   inset: 0;
+  align-items: center;
+
 }
 .save-text {
   color: #4f4f4f;
@@ -431,7 +482,6 @@
   font-size: 12px;
   letter-spacing: 0.51px;
   font-weight: 400;
-  position: absolute;
   left: 39px;
   top: 0px;
   width: 262px;
@@ -439,14 +489,17 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-left: 8px;
+
 }
 .save-icon {
   width: 11px;
   height: 12.74px;
-  position: absolute;
   left: 19px;
   top: 10px;
   overflow: visible;
+  margin-left: 9px;
+
 }
 .logo-div {
   border-style: solid;
@@ -454,13 +507,15 @@
   border-width: 0px 0px 0.7px 0px;
   width: 301px;
   height: 33px;
-  position: absolute;
+  display: flex;
   left: 0px;
   top: 0px;
   overflow: hidden;
+  align-items: center;
+
 }
 .logo-box {
-  position: absolute;
+  align-items: center;
   inset: 0;
 }
 .logo-text {
@@ -470,7 +525,6 @@
   font-size: 12px;
   letter-spacing: 0.51px;
   font-weight: 400;
-  position: absolute;
   left: 39px;
   top: 0px;
   width: 262px;
@@ -478,12 +532,15 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-left: 5px;
+
 }
 .logo-icon {
   width: 16.07px;
   height: 12px;
-  position: absolute;
   left: 16px;
   top: 11px;
   object-fit: cover;
+  margin-left: 7px;
+
 }
