@@ -25,38 +25,44 @@
 </head>
 <body>
   <div class="group-6">
-    <img class="background" src="background0.svg" alt="Background" />
-    <button id="saveBtn" class="div" style="cursor: pointer;">
-      <div class="div2">완료</div>
-    </button>
-    <button id="deleteBtn" class="div3" style="cursor: pointer;">
-      <div class="div2">삭제</div>
-    </button>
-    <div class="tag">
-      <div class="div4">태그</div>
-      <div class="div5">
-        <div id="tagList" class="tag-list">
-          <!-- 태그 리스트가 JavaScript에서 동적으로 렌더링됩니다 -->
-        </div>
+    <!-- <img class="background" src="background0.svg" alt="Background" /> -->
+    <div class="div11">
+      <img class="mindcloud-icon-2" src="mindcloud-icon-20.png" alt="MindCloud Icon" />
+      <div class="mind-cloud">MindCloud</div>
     </div>
+    <div class="name">
+      <div class="div10">이름</div>
+      <div class="frame-12">
+        <input id="bookmarkNameInput" class="div9" size="6" placeholder="이름 설정"/>
+      </div>
+    </div>
+    <div class="tag">
+        <div class="taglistbox">
+          <div class="div4">태그</div>
+          <div class="div5">
+            <div id="tagList" class="tag-list">
+              <!-- 태그 리스트가 JavaScript에서 동적으로 렌더링됩니다 -->
+            </div>
+        </div>
+      </div>
+    <div class="tagbox">
       <div class="tagname">
-        <input id="addTagInput" class="div7" size="6" placeholder="태그 추가" style="width: 50px;"/>
+        <input id="addTagInput" class="div7" size="6" placeholder="태그 추가" />
       </div>
       <button id="addTagBtn" class="addtag" style="cursor: pointer;">
         <div class="div8">추가</div>
       </button>
     </div>
-    <div class="name">
-      <div class="frame-12">
-        <input id="bookmarkNameInput" class="div9" size="6" placeholder="이름 설정" style="width: 80px;"/>
+      <div class="buttonbox">
+        <button id="deleteBtn" class="div3" style="cursor: pointer;">
+          <div class="div2">삭제</div>
+        </button>
+        <button id="saveBtn" class="div" style="cursor: pointer;">
+          <div class="div2">완료</div>
+        </button>
       </div>
-      <div class="div10">이름</div>
     </div>
     <img class="line-3" src="line-30.svg" alt="Line" />
-    <div class="div11">
-      <div class="mind-cloud">MindCloud</div>
-      <img class="mindcloud-icon-2" src="mindcloud-icon-20.png" alt="MindCloud Icon" />
-    </div>
   </div>
   <script src="./check_page.js" defer></script>
   <script src="./backend.js" defer></script>

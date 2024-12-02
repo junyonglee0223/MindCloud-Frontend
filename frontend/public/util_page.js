@@ -19,7 +19,7 @@ export function openEditPage(bookmark, mode = 'save') {
             url: chrome.runtime.getURL(`../check_page.html?${params.toString()}`), // 열고자 하는 HTML 파일 경로
             type: 'popup', // 팝업 형태로 열기 (제목 표시줄과 주소 표시줄 없음)
             width: 518, // 창 너비
-            height: 271, // 창 높이
+            height: 300, // 창 높이
             top: 120, // 화면 상단
             left: screenWidth - 518, // 화면 오른쪽 끝에 정렬
         });

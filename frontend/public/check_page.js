@@ -36,15 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         cancelBtn.textContent = '취소'; // 버튼 텍스트 변경
         cancelBtn.style.backgroundColor = '#E8EDF2'; // 버튼 텍스트 변경
-        
     } else {
         // 저장 모드일 경우 (기본값)
         saveBtn.textContent = '저장'; // 버튼 텍스트 변경
         saveBtn.style.backgroundColor = '#3e92f8'; // 저장 스타일
-        cancelBtn.textContent = '취소'; // 버튼 텍스트 변경
-        cancelBtn.style.backgroundColor = '#E8EDF2'; // 버튼 텍스트 변경
         saveBtn.style.color = '#ffffff'; // 수정 완료 스타일
 
+        cancelBtn.textContent = '취소'; // 버튼 텍스트 변경
+        cancelBtn.style.backgroundColor = '#E8EDF2'; // 버튼 텍스트 변경
     }
 
     // 완료 버튼 이벤트 설정

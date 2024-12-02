@@ -4,11 +4,12 @@
 }
 .group-6 {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .background {
   width: 518px;
   height: 271px;
-  position: absolute;
   left: 0px;
   top: 0px;
   overflow: visible;
@@ -19,7 +20,7 @@
   width: 62px;
   height: 36px;
   position: absolute;
-  left: 414px;
+  left: 424px;
   top: 214px;
   overflow: hidden;
 }
@@ -33,49 +34,67 @@
   left: 17px;
   top: 6px;
 }
+.buttonbox {
+  width: 200px;
+  height: auto;
+  display: flex;
+}
+
 .div3 {
   background: #e14942;
   border-radius: 40px;
   width: 62px;
   height: 36px;
   position: absolute;
-  left: 346px;
+  left: 356px;
   top: 214px;
   overflow: hidden;
 }
 .tag {
   width: 425px;
   height: auto;
-  position: absolute;
+  display: flex;
   left: 29px;
   top: 133px;
-  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+  margin-top: 20px;
+
 }
 .tag-list {
   display: flex; /* 태그를 가로로 정렬 */
   flex-wrap: wrap; /* 넘칠 경우 줄바꿈 */
   gap: 10px; /* 태그 간 간격 */
   align-items: center; /* 수직 정렬 */
-  position: absolute;
   left: 46px;
+  height: auto;
 
+  margin-left: 10px;
+
+}
+.taglistbox{
+  display: flex;
+  flex-direction: row;
 }
 
 .div4 {
   color: #180101;
-  width: auto;
+  width: 50px;
   text-align: center;
   font-family: "Poppins-Regular", sans-serif;
   font-size: 15px;
   font-weight: 400;
-  position: absolute;
   left: 0px;
   top: 3px;
+  margin-top: 3px;
+
 }
 
 .div5 {
   width: auto;
   height: auto;
+  margin-left: 10px;
+
 }
 /* ._1 {
   background: #e8edf2;
@@ -203,9 +222,18 @@
   width: 92px;
   height: 30px;
   position: relative;
-  left: 46px;
-  top: 51px;
+  align-items: center;
   overflow: hidden;
+}
+
+.tagbox {
+  width: 425px;
+  height: 30px;
+  display: flex;
+
+  margin-left: 45px;
+  margin-top: 20px;
+
 }
 .div7 {
   color: #b29c9c;
@@ -213,19 +241,24 @@
   font-family: "Poppins-Regular", sans-serif;
   font-size: 12px;
   font-weight: 400;
-  position: absolute;
-  left: 20px;
   top: 6px;
+  width: 90px;
+  height: 29px;
+  display: flex;
 }
+.div7:focus{
+  outline: none;
+}
+
 .addtag {
   background: #3e92f8;
   border-radius: 40px;
   width: 47px;
   height: 30px;
   position: relative;
-  left: 144px;
-  top: 51px;
   overflow: hidden;
+
+  margin-left: 30px;
 }
 .div8 {
   color: #ffffff;
@@ -233,16 +266,18 @@
   font-family: "Poppins-Regular", sans-serif;
   font-size: 12px;
   font-weight: 400;
-  position: absolute;
   left: 12px;
   top: 6px;
 }
 .name {
   width: 134px;
   height: 30px;
-  position: absolute;
-  left: 29px;
+  display: flex;
+  left: 50px;
   top: 82px;
+  margin-left: 11px;
+  margin-top: 10px;
+
 }
 .frame-12 {
   border-radius: 40px;
@@ -251,10 +286,11 @@
   border-width: 1px;
   width: 120px;
   height: 30px;
-  position: absolute;
   left: 46px;
   top: 0px;
   overflow: hidden;
+  margin-left: 13px;
+
 }
 .div9 {
   color: #b29c9c;
@@ -262,9 +298,14 @@
   font-family: "Poppins-Regular", sans-serif;
   font-size: 12px;
   font-weight: 400;
-  position: absolute;
   left: 18px;
   top: 6px;
+  width: 83px;
+  height: 28px;
+}
+
+.div9:focus {
+  outline: none; /* 클릭 시 테두리 제거 */
 }
 .div10 {
   color: #180101;
@@ -272,9 +313,11 @@
   font-family: "Poppins-Regular", sans-serif;
   font-size: 15px;
   font-weight: 400;
-  position: absolute;
   left: 0px;
   top: 4px;
+  width: 50px;
+  margin-top: 5px;
+
 }
 .line-3 {
   width: 516.01px;
@@ -287,9 +330,12 @@
 .div11 {
   width: 479px;
   height: 34px;
-  position: absolute;
+  display: flex;
   left: 18px;
   top: 16px;
+
+  margin-left: 10px;
+  margin-top: 10px;
 }
 .mind-cloud {
   color: #4f4f4f;
@@ -298,7 +344,6 @@
   font-size: 28.789466857910156px;
   letter-spacing: 0.51px;
   font-weight: 400;
-  position: absolute;
   left: 45px;
   top: 1px;
   width: 434px;
@@ -306,11 +351,13 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
+  margin-left: 10px;
+
 }
 .mindcloud-icon-2 {
   width: 41.12px;
   height: 33px;
-  position: absolute;
   left: 0px;
   top: 0px;
   object-fit: cover;
