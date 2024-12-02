@@ -142,7 +142,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const listItem = document.createElement("div");
     listItem.className = "bookmark-item";
     listItem.innerHTML = `
-    <img class="bookmark-img" src="${bookmark.imageUrl}" alt="${bookmark.title}" />
+    <a href="${bookmark.url}" target="_blank" style="width:120px;margin:10px;flex-direction:column;align-items:center;justify-content:center;display:flex">
+    <img class="bookmark-img" src="${bookmark.imageUrl}" alt="${bookmark.title}" style="cursor:pointer"/>
     <button class="bookmark-title">${bookmark.title}</button>
     `;
     bookmarkList.appendChild(listItem);
