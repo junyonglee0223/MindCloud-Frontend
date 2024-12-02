@@ -209,6 +209,7 @@ async function createBookmarkListItem(bookmark) {
             >${bookmark.url}</div>
         </div>
         </div>
+        </a>
         <div class="thumbnail-div-box-1-tagbox"></div>
     `;
 
@@ -284,6 +285,7 @@ async function createBookmarkListItem(bookmark) {
 
 // 필터링된 북마크 표시 함수
 async function displayFilteredBookmarks(filteredBookmarks, tag) {
+  searchResults.innerHTML = '';
   searchSetting.innerHTML = `
   <div style="
   font-size: 18px; /* 폰트 크기 */
@@ -291,6 +293,7 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
   display: flex; /* Flexbox */
   align-items: center; /* Flexbox 중앙 정렬 (수직) */
   justify-content: center; /* Flexbox 중앙 정렬 (수평) */
+  margin-bottom:20px;
   ">
   태그로 검색된 결과 "${tag}"
   </div>`;
@@ -304,7 +307,7 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
   for (const bookmark of filteredBookmarks) {
       const listItem = await createBookmarkListItem(bookmark); // 비동기 함수 호출
       if (listItem instanceof Node) {
-          searchResults.appendChild(listItem);
+        searchSetting.appendChild(listItem);
       } else {
           console.error("Invalid Node returned from createBookmarkListItem:", listItem);
       }
@@ -337,7 +340,7 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
         searchSetting.innerHTML = `<div>검색어 "${query}"에 대한 결과가 없습니다.</div>`;
           return;
       }
-  
+      
   
       // 북마크 이름 검색 결과 출력
       if (bookmarkResults.length > 0) {
@@ -379,6 +382,18 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
             }
         }
     }
+
+      // 검색된 태그의 색 변경
+      const tagButtons = document.querySelectorAll('.thumbnail-div-box-1-tagbox button'); 
+      tagButtons.forEach(button => { 
+          if (button.textContent.includes(query)) { 
+              button.style.backgroundColor = '#29DE2C';  // 원하는 배경색으로 변경 
+              button.style.color = '#ffffff';           // 원하는 텍스트 색상으로 변경 
+          } else { 
+              button.style.backgroundColor = "#E8EDF2"; // 기본 색상으로 변경 
+              button.style.color = "#0D141C";           // 기본 텍스트 색상으로 변경 
+          }
+      });
   }
   
   
