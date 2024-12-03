@@ -175,9 +175,16 @@ document.addEventListener("DOMContentLoaded", function () {
           new Set(bookmarks.flatMap((bookmark) => bookmark.tags))
         );
 
+        let showTags = [];
+        bookmarks.forEach((bookmark) => {
+          showTags.push(bookmark.tags[0]);
+        })
+        console.log("first tags", showTags);//test
+
         // UI 업데이트
         displayBookmarks(bookmarks);
-        addTagsToUI(tagCache);
+        addTagsToUI(showTags);
+        //addTagsToUI(tagCache);
       })
       .catch((error) => {
         console.error("초기화 중 오류 발생:", error);
