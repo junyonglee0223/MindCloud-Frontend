@@ -64,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
             sendBookmarkToBackend(updatedBookmark, userEmail)
                 .then(() => {
                     alert('북마크가 성공적으로 저장되었습니다.');
-                    window.location.href = 'search_page.html';
+                    window.close();
+                    //window.location.href = 'search_page.html';
                 })
                 .catch((error) => {
                     console.error('북마크 저장 중 오류 발생:', error);
@@ -75,7 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
             sendModifyRequestToBackend(updatedBookmark, title, userEmail)
                 .then(() => {
                     alert('북마크가 성공적으로 수정되었습니다.');
-                    window.location.href = 'search_page.html';
+                    window.close();
+                    //window.location.href = 'search_page.html';
                 })
                 .catch((error) => {
                     console.error('북마크 수정 중 오류 발생:', error);
@@ -88,10 +90,12 @@ document.addEventListener('DOMContentLoaded', function () {
     cancelBtn.addEventListener('click', function () {
         if (mode === 'edit') {
             if (confirm('수정을 취소하시겠습니까?')) {
-                window.location.href = 'search_page.html'; // 수정 취소 시 이전 페이지로 이동
+                window.close();
+//                window.location.href = 'search_page.html'; // 수정 취소 시 이전 페이지로 이동
             }
         } else {
-            window.location.href = 'search_page.html'; // 저장 취소 시 이전 페이지로 이동
+            window.close();
+            //window.location.href = 'search_page.html'; // 저장 취소 시 이전 페이지로 이동
         }
     });
 
