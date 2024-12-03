@@ -42,8 +42,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const apiKey = config.OPENAI_API_KEY;
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
-    const prompt = `Generate 6 tags in korean for the following website based on its URL and title: URL: ${url}, Title: ${title}. Output format: tag1, tag2, tag3, tag4, tag5, tag6`;
+    // const prompt = `chose one category and Generate 5 Korean tags for the given website based on its URL and title. 
+    // URL: ${url}, Title: ${title}
+    // The "tag1" must be one of the following category: "교육, 비즈니스, 엔터테인먼트, 건강 및 피트니스, 기술 및 개발, 금융 및 투자, 쇼핑, 여행, 예술 및 창작, 기타".
+    // Output format: tag1, tag2, tag3, tag4, tag5, tag6
+    // `;
 
+    const prompt = `chose one category for the given website based on its URL and title. 
+    URL: ${url}, Title: ${title}
+    it must be one of the following category: "교육, 비즈니스, 엔터테인먼트, 건강 및 피트니스, 기술 및 개발, 금융 및 투자, 쇼핑, 여행, 예술 및 창작, 기타".
+    `;
+    
     return fetch(apiUrl, {
       method: 'POST',
       headers: {

@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchResults = document.getElementById('searchResults');
     const searchSetting = document.getElementById('searchSetting');
     const recResults = document.getElementById('recResults');
+    const recText = document.getElementById('recText');
 
 
 
@@ -116,9 +117,6 @@ async function fetchRecommendedSites(query) {
   console.log("추천 사이트",recBookmarks[0])
 
 
-  // 여기서 recBookmarks를 만들어서 recResults에 추가
-  const recResults = document.getElementById('recResults');
-
 
   // recommendedSites.forEach(async site => {
   //   const recBookmarksItem = document.createElement('div');
@@ -167,13 +165,34 @@ async function fetchRecommendedSites(query) {
   //   recResults.appendChild(recBookmarksItem);
   // });
 // 추천 사이트 배열을 비동기적으로 처리
-for (const site of recommendedSites) {
+
+recText.style.cssText = `
+      width: 222px;
+            display: flex;
+
+font-size: 18px; /* 폰트 크기 */
+font-weight: bold; /* 볼드체 */
+display: flex; /* Flexbox */
+align-items: center; /* Flexbox 중앙 정렬 (수직) */
+justify-content: center; /* Flexbox 중앙 정렬 (수평) */
+margin-bottom:20px;
+">
+`;
+recText.innerHTML = `
+AI 추천 사이트
+`
+;
+
+for (let i = 0; i < 3; i++) {
+  
+  const site = recommendedSites[i];
+
   const recBookmarksItem = document.createElement('div');
-  recBookmarksItem.innerHTML="";
+  // recBookmarksItem.innerHTML="";
   
   // 비동기적으로 썸네일 URL을 가져옴
   let thumbnailUrl = await fetchThumbnailUrl(site.url);
-  
+  // let thumbnailUrl="";
   // 아이템의 스타일을 설정
   recBookmarksItem.className = 'rec-bookmarks-item';
   recBookmarksItem.style.cssText = `
@@ -187,6 +206,13 @@ for (const site of recommendedSites) {
       flex-shrink: 0;
       width: 222px;
       position: relative;
+      font-size: 18px; /* 폰트 크기 */
+      font-weight: bold; /* 볼드체 */
+      display: flex; /* Flexbox */
+      align-items: center; /* Flexbox 중앙 정렬 (수직) */
+      justify-content: center; /* Flexbox 중앙 정렬 (수평) */
+      margin-bottom:20px;
+      ">
   `;
 
   // HTML 내용 설정
@@ -211,6 +237,8 @@ for (const site of recommendedSites) {
   
   // 비동기적으로 fetch가 끝난 후에 DOM에 추가
   recResults.appendChild(recBookmarksItem);
+
+  console.log("한번 돔",i)
 }
 
 
@@ -346,33 +374,83 @@ function getRandomColor() {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
+// async function fetchThumbnailUrl(url) {
+//   try {
+//       console.log(`Fetching thumbnail for URL: ${url}`); // 디버깅 로그 추가
+//       const response = await fetch(url);
+      
+//       if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`);
+//       }
+
+//       const html = await response.text();
+//       const doc = new DOMParser().parseFromString(html, 'text/html');
+//       const metaTags = doc.getElementsByTagName('meta');
+      
+//       for (let meta of metaTags) {
+//           if (meta.getAttribute('property') === 'og:image' || meta.getAttribute('name') === 'twitter:image') {
+//               const thumbnailUrl = meta.getAttribute('content');
+//               console.log(`Found thumbnail URL: ${thumbnailUrl}`); // 디버깅 로그 추가
+//               return thumbnailUrl;
+//           }
+//       }
+//       console.warn('No thumbnail URL found in meta tags');
+//       return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+//   } catch (error) {
+//       console.error('썸네일 URL 추출 중 오류 발생:', error);
+//       return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+//   }
+// }
+
+// Set to keep track of processed URLs
+const processedUrls = new Set();
+
 async function fetchThumbnailUrl(url) {
   try {
-      console.log(`Fetching thumbnail for URL: ${url}`); // 디버깅 로그 추가
-      const response = await fetch(url);
-      
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    // 이미 처리된 URL 확인
+    if (processedUrls.has(url)) {
+      console.log(`이미 처리된 URL: ${url}`);
+      return; // 이미 처리된 URL이면 종료
+    }
+    
+    // URL 처리
+    processedUrls.add(url);
 
-      const html = await response.text();
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const metaTags = doc.getElementsByTagName('meta');
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const html = await response.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    
+    const metaTags = doc.getElementsByTagName('meta');
+    
+    for (let meta of metaTags) {
+      const property = meta.getAttribute('property');
+      const name = meta.getAttribute('name');
       
-      for (let meta of metaTags) {
-          if (meta.getAttribute('property') === 'og:image' || meta.getAttribute('name') === 'twitter:image') {
-              const thumbnailUrl = meta.getAttribute('content');
-              console.log(`Found thumbnail URL: ${thumbnailUrl}`); // 디버깅 로그 추가
-              return thumbnailUrl;
-          }
+      if (property === 'og:image' || name === 'twitter:image') {
+        const thumbnailUrl = meta.getAttribute('content');
+        
+        if (thumbnailUrl) {
+          console.log(`Found thumbnail URL: ${thumbnailUrl}`);
+          return thumbnailUrl;
+        }
       }
-      console.warn('No thumbnail URL found in meta tags');
-      return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+    }
+
+    // 썸네일을 찾을 수 없으면 기본 이미지 사용
+    console.warn('No thumbnail URL found in meta tags.');
+    return "/path/to/default-thumbnail.png";  // 경로를 절대경로로 설정해야 할 수도 있습니다.
+
   } catch (error) {
-      console.error('썸네일 URL 추출 중 오류 발생:', error);
-      return "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
+    console.error('Error fetching thumbnail URL:', error);
+    return "/path/to/default-thumbnail.png";  // 경로를 절대경로로 설정해야 할 수도 있습니다.
   }
 }
+
 
 
 // 북마크 리스트 아이템 생성 함수 수정
@@ -476,6 +554,7 @@ async function createBookmarkListItem(bookmark) {
         tagBox.appendChild(tagButton);
     });
 
+
     addContextMenuForBookmark(thumbnailBox, bookmark, userEmail);
     return thumbnailBox;
 }
@@ -483,18 +562,24 @@ async function createBookmarkListItem(bookmark) {
 
 // 필터링된 북마크 표시 함수
 async function displayFilteredBookmarks(filteredBookmarks, tag) {
+
   searchResults.innerHTML = '';
-  searchSetting.innerHTML = `
-  <div style="
-  font-size: 18px; /* 폰트 크기 */
-  font-weight: bold; /* 볼드체 */
-  display: flex; /* Flexbox */
-  align-items: center; /* Flexbox 중앙 정렬 (수직) */
-  justify-content: center; /* Flexbox 중앙 정렬 (수평) */
-  margin-bottom:20px;
-  ">
-  태그로 검색된 결과 "${tag}"
-  </div>`;
+  searchSetting.style.flexDirection="row";
+  searchSetting.style.display="row";
+
+  searchbox3.style.flexDirection="column";
+
+//   searchText.innerHTML = `
+//   <div style="
+//   font-size: 18px; /* 폰트 크기 */
+//   font-weight: bold; /* 볼드체 */
+//   display: flex; /* Flexbox */
+//   align-items: center; /* Flexbox 중앙 정렬 (수직) */
+//   justify-content: center; /* Flexbox 중앙 정렬 (수평) */
+//   margin-bottom:20px;>
+//     태그로 검색된 결과 "${tag}"
+//   </div>
+// `;
 
   if (filteredBookmarks.length === 0) {
     searchSetting.innerHTML += `<div>해당 태그의 북마크가 없습니다.</div>`;
@@ -528,16 +613,21 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
 }
 
 
-
     // 검색 결과 표시 함수
     async function displaySearchResults(tagResults, bookmarkResults, query) {
+
+      const resultsContainer = document.getElementById('results');
+
+      
       searchSetting.innerHTML = ''; // 기존 결과 초기화
       searchResults.innerHTML = ''; // 기존 결과 초기화
+      searchText.innerHTML='';
 
       if (tagResults.length === 0 && bookmarkResults.length === 0) {
         searchSetting.innerHTML = `<div>검색어 "${query}"에 대한 결과가 없습니다.</div>`;
           return;
       }
+
       
   
       // 북마크 이름 검색 결과 출력
@@ -548,12 +638,12 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
           bookmarkHeader.style.fontSize= "18px"; /* 폰트 크기 */
           bookmarkHeader.style.fontWeight= "bold"; /* 볼드체 */
           bookmarkHeader.style.marginBottom="35px";
-          searchSetting.appendChild(bookmarkHeader);
+          searchText.appendChild(bookmarkHeader);
   
           for (const bookmark of bookmarkResults) {
               const bookmarkItem = await createBookmarkListItem(bookmark); // 비동기 함수 호출
               if (bookmarkItem instanceof Node) {
-                searchSetting.appendChild(bookmarkItem);
+                searchText.appendChild(bookmarkItem);
               } else {
                   console.error("Invalid Node returned from createBookmarkListItem:", bookmarkItem);
               }
@@ -575,7 +665,7 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
         tagHeader.style.fontWeight= "bold"; /* 볼드체 */
         tagHeader.style.marginBottom="35px";
 
-        searchSetting.appendChild(tagHeader);
+        searchText.appendChild(tagHeader);
 
         for (const bookmark of tagResults) {
             const bookmarkItem = await createBookmarkListItem(bookmark); // 비동기 함수 호출
@@ -586,8 +676,6 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
             }
         }
     }
-
-    fetchRecommendedSites(query);
 
 
       // 검색된 태그의 색 변경
@@ -601,6 +689,21 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
               button.style.color = "#0D141C";           // 기본 텍스트 색상으로 변경 
           }
       });
+
+      await fetchRecommendedSites(query);
+
+        // // 추천 사이트 표시
+        // const recommendationsHTML = recommendedSites.map(site => {
+        //   const [title, url] = site.split('-'); // 'Title - URL' 형식으로 분리
+        //   return `<div><a href="${url.trim()}" target="_blank">${title.trim()}</a></div>`;
+        // }).join('');
+
+        // resultsContainer.innerHTML += `
+        //   <div class="recommendations">
+        //       <h3>Recommended Sites</h3>
+        //       ${recommendationsHTML}
+        //   </div>
+        // `;
   }
   
   

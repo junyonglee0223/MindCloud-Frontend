@@ -72,6 +72,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('북마크 저장에 실패했습니다.');
                 });
         } else if (mode === 'edit') {
+            //썸네일 생성
+            const imageUrl = await fetchThumbnailUrl(url);
+            updatedBookmark.imageUrl = imageUrl;
+
+            console.log(updatedBookmark);//test
+            
             // 수정 모드: 기존 북마크 수정
             sendModifyRequestToBackend(updatedBookmark, title, userEmail)
                 .then(() => {

@@ -1,4 +1,4 @@
-//const baseUrl = "http://localhost:8080";
+// const baseUrl = "http://localhost:8080";
 const baseUrl = "http://43.201.62.22:8080";
 
 function createApiUrl(endpoint){
@@ -160,6 +160,7 @@ function sendModifyRequestToBackend(bookmark, prevBookmarkName, userEmail) {
           bookmarkName: bookmark.title, // 새 북마크 이름
           url: bookmark.url, // 새 URL
           tags: bookmark.tags, // 수정된 태그 목록
+          imageUrl: bookmark.imageUrl
       },
       preBookmarkName: prevBookmarkName, // 기존 북마크 이름
       email: userEmail, // 사용자 이메일
