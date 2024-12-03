@@ -290,12 +290,14 @@
 }
 .thumbnail-div-box {
   display: flex;
+  flex-wrap: wrap; /* 넘칠 경우 줄바꿈 */
+  max-width: 100%; /* 부모 컨테이너 너비 */
   flex-direction: row;
   gap: 12px;
   align-items: flex-start;
   justify-content: flex-start;
   flex: 1;
-  width: 915px;
+  width: 935px;
   position: relative;
   height: auto;
   
