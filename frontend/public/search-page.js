@@ -20,6 +20,39 @@ document.addEventListener('DOMContentLoaded', function () {
       }
   });
 
+  async function fetchRecommendedSites(searchQuery) {
+    const API_KEY = config.OPENAI_API_KEY; // OpenAI API Key
+    const endpoint = 'https://api.openai.com/v1/completions';
+    
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+        },
+        body: JSON.stringify({
+            model: 'text-davinci-003', // 적절한 모델 선택
+            prompt: `${searchQuery} 이 사이트랑 비슷한 사이트 3개를 추천해줘. Provide title and URL.`,
+            max_tokens: 100,
+            n: 1,
+            stop: null,
+            temperature: 0.7,
+        })
+    });
+
+    async function handleSearch(searchQuery) {
+      // 북마크 검색 로직
+      const bookmarks = await fetchBookmarks(searchQuery);
+  
+      // GPT 추천 사이트 가져오기
+      const recommendedSites = await fetchRecommendedSites(searchQuery);
+  
+      // 결과를 화면에 표시
+      renderResults(bookmarks, recommendedSites);
+      }
+    const data = await response.json();
+    return data.choices[0].text.split('\n').filter(Boolean); // 결과를 배열로 분리
+    }
 
     function handleSearch(){
       const query = searchInput.value.trim();
@@ -333,6 +366,9 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
 
     // 검색 결과 표시 함수
     async function displaySearchResults(tagResults, bookmarkResults, query) {
+      const resultsContainer = document.getElementById('results');
+
+      
       searchSetting.innerHTML = ''; // 기존 결과 초기화
       searchResults.innerHTML = ''; // 기존 결과 초기화
 
@@ -394,6 +430,20 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
               button.style.color = "#0D141C";           // 기본 텍스트 색상으로 변경 
           }
       });
+
+
+        // 추천 사이트 표시
+        const recommendationsHTML = recommendedSites.map(site => {
+          const [title, url] = site.split('-'); // 'Title - URL' 형식으로 분리
+          return `<div><a href="${url.trim()}" target="_blank">${title.trim()}</a></div>`;
+        }).join('');
+
+        resultsContainer.innerHTML += `
+          <div class="recommendations">
+              <h3>Recommended Sites</h3>
+              ${recommendationsHTML}
+          </div>
+        `;
   }
   
   
