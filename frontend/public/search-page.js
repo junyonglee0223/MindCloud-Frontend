@@ -42,8 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let loadedbookmarks = []; // 전역 변수로 bookmarks 선언
 
-    
-  
       // 검색 버튼 클릭 이벤트
     searchBtn.addEventListener('click', handleSearch);
     searchInput.addEventListener('keydown', function (event) {
@@ -167,15 +165,14 @@ async function fetchRecommendedSites(query) {
 // 추천 사이트 배열을 비동기적으로 처리
 
 recText.style.cssText = `
-      width: 222px;
-            display: flex;
-
+width: 222px;
+display: flex;
 font-size: 18px; /* 폰트 크기 */
 font-weight: bold; /* 볼드체 */
 display: flex; /* Flexbox */
 align-items: center; /* Flexbox 중앙 정렬 (수직) */
 justify-content: center; /* Flexbox 중앙 정렬 (수평) */
-margin-bottom:20px;
+margin-bottom:21px;
 ">
 `;
 recText.innerHTML = `
@@ -212,6 +209,8 @@ for (let i = 0; i < 3; i++) {
       align-items: center; /* Flexbox 중앙 정렬 (수직) */
       justify-content: center; /* Flexbox 중앙 정렬 (수평) */
       margin-bottom:20px;
+      margin-left:20px;
+
       ">
   `;
 
@@ -482,7 +481,9 @@ async function createBookmarkListItem(bookmark) {
         <div 
         class="thumbnail-div-box-1-inbox-url">
             <div
-            >${bookmark.url}</div>
+            style="overflow:hidden;width:222px"
+            >${bookmark.url}
+            </div>
         </div>
         </div>
         </a>
