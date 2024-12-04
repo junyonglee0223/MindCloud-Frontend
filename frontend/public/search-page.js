@@ -454,10 +454,20 @@ async function fetchThumbnailUrl(url) {
 
 // 북마크 리스트 아이템 생성 함수 수정
 async function createBookmarkListItem(bookmark) {
-    const defaultThumbnail = "thumbnail-div-box-1-img0.png"; // 기본 이미지 경로
-    //let thumbnailUrl = bookmark.thumbnailUrl ? bookmark.thumbnailUrl : await fetchThumbnailUrl(bookmark.url);    
-    let thumbnailUrl = bookmark.imageUrl ? bookmark.imageUrl : defaultThumbnail;    
-    
+    const defaultThumbnail = "myprofile0.png"; // 기본 이미지 경로
+    //let thumbnailUrl = bookmark.thumbnailUrl ? bookmark.thumbnailUrl : await fetchThumbnailUrl(bookmark.url); 
+
+    //let thumbnailUrl = bookmark.imageUrl ? bookmark.imageUrl : defaultThumbnail;
+    const validateImage = async (url) =>{
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(url); // 유효한 이미지
+        img.onerror = () => resolve(defaultThumbnail); // 기본 이미지로 대체
+        img.src = url;
+    });
+    };
+    let thumbnailUrl = await validateImage(bookmark.imageUrl || defaultThumbnail);
+     
     const title = bookmark.title || bookmark.bookmarkName || "제목 없음";
 
     const thumbnailBox = document.createElement("div");
