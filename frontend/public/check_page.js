@@ -1,6 +1,18 @@
-const userEmail = "test1@gmail.com";
+//const userEmail = "test1@gmail.com";
 // 팝업 오버레이 관리 로직
 document.addEventListener('DOMContentLoaded', function () {
+    let userEmail;
+    chrome.storage.sync.get("userData", ({ userData }) => {
+        if (userData && userData.email) {
+          userEmail = userData.email; // Retrieve the email dynamically
+          console.log("User email retrieved:", userEmail);
+    
+          // Example usage
+          loadBookmarks(userEmail);
+        } else {
+          console.error("User email not found in chrome.storage.sync");
+        }
+      });
     const bookmarkNameInput = document.querySelector('.div9'); // 이름 설정 input
     const tagList = document.querySelector('.tag-list'); // 태그 리스트 컨테이너
     const addTagInput = document.querySelector('.div7'); // 태그 추가 input

@@ -1,5 +1,5 @@
 import { openEditPage } from "./util_page.js";
-const userEmail = "test1@gmail.com";
+//const userEmail = "test1@gmail.com";
 let query = "";
 
 const recBookmarks = [
@@ -30,6 +30,8 @@ const recBookmarks = [
 ];
 
 document.addEventListener('DOMContentLoaded', function () {
+    let userEmail;
+
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
     //const goBackBtn = document.getElementById('goBackBtn');
@@ -757,10 +759,17 @@ async function displayFilteredBookmarks(filteredBookmarks, tag) {
       }
   }
   
-      
-    // 페이지 로드 시 기본 북마크 출력
-    displayAllBookmarks();
-    window.displayAllBookmarks = displayAllBookmarks;
+  chrome.storage.sync.get("userData", ({ userData }) => {
+    if (userData && userData.email) {
+      userEmail = userData.email; // Retrieve the email dynamically
+      console.log("User email:", userEmail);
+        // 페이지 로드 시 기본 북마크 출력
+        displayAllBookmarks();
+        window.displayAllBookmarks = displayAllBookmarks;
 
+    } else {
+      console.error("User email not found in chrome.storage.sync");
+    }
+  });
 });
   

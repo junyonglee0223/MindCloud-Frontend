@@ -1,5 +1,4 @@
 import { openEditPage } from "../util_page.js";
-const userEmail = "test1@gmail.com";
 
 let bookmarkCache = []; // 북마크 데이터를 저장할 전역 변수
 let tagCache = []; // 태그 데이터를 저장할 전역 변수
@@ -9,6 +8,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const tagContainer = document.querySelector(".tag-div");
   const bookmarkList = document.querySelector(".thumnail-1-div");
   const goToSearchBtn = document.querySelector(".search-div");
+
+  let userEmail;
+  chrome.storage.sync.get("userData", ({ userData }) => {
+    if (userData && userData.email) {
+      userEmail = userData.email; // Retrieve the email dynamically
+      console.log("User email:", userEmail);
+      initializeData();
+    } else {
+      console.error("User email not found in chrome.storage.sync");
+    }
+  });
+
 
   // 검색 버튼 클릭 시 search_page.html로 이동
   goToSearchBtn.addEventListener("click", function () {
@@ -169,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 초기화 함수
   function initializeData() {
+    console.log(userEmail, "백엔드에서 가져올 userEmail");//test
     getAllBookmarksFromBackend(userEmail)
       .then((bookmarks) => {
         console.log("초기 데이터:", bookmarks);
@@ -195,5 +207,5 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  initializeData();
+  //initializeData();
 });

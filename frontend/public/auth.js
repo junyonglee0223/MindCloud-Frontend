@@ -1,30 +1,59 @@
-// 사용자 인증 및 정보를 가져오는 함수
-function getUserInfo() {
-    return new Promise((resolve, reject) => {
-      // Chrome Identity API를 사용하여 사용자 인증
-      chrome.identity.getAuthToken({ interactive: true }, function(token) {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
-          return;
-        }
-  
-        // 인증 토큰을 사용하여 사용자 정보 가져오기
-        fetch('<https://www.googleapis.com/oauth2/v1/userinfo?alt=json>', {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        })
-        .then(response => response.json())
-        .then(userInfo => {
-          const userEmail = userInfo.email;
-          const userName = userInfo.name;
-          resolve({ email: userEmail, name: userName });
-        })
-        .catch(error => {
-          reject('사용자 정보를 가져오는 중 오류 발생: ' + error);
-        });
-      });
+// 로그인 버튼 클릭 이벤트
+document.getElementById("login-button").addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "login" }, () => {
+    chrome.storage.sync.get("userData", ({ userData }) => {
+      if (userData) {
+        window.location.href = "../bookmark_check/bookmark_check.html";
+        // document.getElementById("user-info").innerHTML = `
+        //   <p>Welcome, ${userData.name} (${userData.email})</p>
+        // `;
+      } else {
+        document.getElementById("user-info").innerHTML = `
+          <p>Login failed. Please try again.</p>
+        `;
+      }
     });
-  }
-  
+  });
+});
+
+// 회원가입 버튼 클릭 이벤트
+document.getElementById("signup-button").addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "signup" }, () => {
+    chrome.storage.sync.get("userData", ({ userData }) => {
+      if (userData) {
+        window.location.href = "../bookmark_check/bookmark_check.html";
+        // document.getElementById("user-info").innerHTML = `
+        //   <p>Welcome (or signed up), ${userData.name} (${userData.email})</p>
+        // `;
+      } else {
+        document.getElementById("user-info").innerHTML = `
+          <p>Sign up failed. Please try again.</p>
+        `;
+      }
+    });
+  });
+});
+
+// 로그아웃 버튼 클릭 이벤트
+document.getElementById("logout-button").addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "logout" }, () => {
+    document.getElementById("user-info").innerHTML = `
+      <p>You have been logged out. Please log in or sign up.</p>
+    `;
+  });
+});
+
+// 페이지 로드 시 기존 사용자 정보 표시
+document.addEventListener("DOMContentLoaded", () => {
+  chrome.storage.sync.get("userData", ({ userData }) => {
+    if (userData) {
+      window.location.href = "../bookmark_check/bookmark_check.html";
+
+      // document.getElementById("user-info").innerHTML = `
+      //   <p>Welcome back, ${userData.name} (${userData.email})</p>
+      // `;
+    } else {
+      document.getElementById("user-info").innerHTML = "<p>Please log in, sign up, or log out.</p>";
+    }
+  });
+});
