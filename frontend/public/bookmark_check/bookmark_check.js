@@ -20,6 +20,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // 로그아웃 버튼 이벤트 리스너 추가
+  const logoutButton = document.getElementById("logout-button");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      console.log("Logging out...");
+
+      // chrome.storage.sync 데이터 초기화 (리셋)
+      chrome.storage.sync.clear(() => {
+        if (chrome.runtime.lastError) {
+          console.error("Error clearing storage:", chrome.runtime.lastError);
+        } else {
+          console.log("Chrome storage cleared successfully.");
+        }
+
+        // 로그아웃 후 auth.html로 화면 이동
+        window.location.href = "../auth.html";
+      });
+    });
+  }
+
+
 
   // 검색 버튼 클릭 시 search_page.html로 이동
   goToSearchBtn.addEventListener("click", function () {
