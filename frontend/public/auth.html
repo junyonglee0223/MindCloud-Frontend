@@ -1,15 +1,56 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Bookmark Manager</title>
-  </head>
-  <body>
-    <div id="user-info">
-      <p>Please log in, sign up, or log out.</p>
-    </div>
-    <button id="login-button">Log in with Google</button>
-    <button id="signup-button">Sign up</button>
-    <button id="logout-button">Log out</button>
-    <script src="auth.js"></script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./auth_vars.css">
+  <link rel="stylesheet" href="./auth_style.css">
+  
+  
+  <style>
+   a,
+   button,
+   input,
+   select,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   * {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+       border: none;
+       text-decoration: none;
+       background: none;
+       -webkit-font-smoothing: antialiased;
+   }
+   
+   menu, ol, ul {
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+   }
+   </style>
+  <title>Document</title>
+</head>
+<body>
+  <div class="google-login" style="width: 444px;height: 215px;">
+    <button id="login-button" class="login-button">
+      <div class="button-box">
+        <div class="google-logo">
+          <img class="logo-googleg-48-dp" src="logo-googleg-48-dp0.svg" />
+        </div>
+        <div class="login-text">구글 계정으로 로그인</div>
+      </div>
+    </button>
+    <div class="div">로그인</div>
+
+  </div>
+  <script src="auth.js"></script>
+
+</body>
+
 </html>
